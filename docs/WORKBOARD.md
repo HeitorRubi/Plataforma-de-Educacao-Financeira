@@ -8,10 +8,9 @@ Este arquivo é o quadro operacional compartilhado dos dois desenvolvedores e do
 
 ```text
 branch integrada: main
-HEAD observado na análise: 610560d
-última etapa integrada observada: ETAPA 3 — AUTENTICAÇÃO
-etapa ativa: ETAPA 4 — CURSOS
-branch da tarefa ativa: feature/courses
+base funcional integrada observada: 94e7a2f
+última etapa integrada observada: ETAPA 4 — CURSOS
+próxima etapa oficial: ETAPA 5 — MÓDULOS
 ```
 
 Antes de confiar nesse baseline, cada Codex deve comparar com o Git real.
@@ -48,7 +47,7 @@ Esta tarefa não autoriza iniciar módulos.
 ## Tarefa P-4 — Cursos completos
 
 **Responsável:** Desenvolvedor principal
-**Status:** PRONTO PARA REVISÃO
+**Status:** INTEGRADO
 **Branch:** `feature/courses`
 
 ### Objetivo
@@ -286,7 +285,7 @@ Somente depois a ETAPA 5 pode ser considerada elegível.
 # 6. Tarefas ativas
 
 ```text
-P-4: PRONTO PARA REVISÃO — branch feature/courses
+P-4: INTEGRADO — main 94e7a2f
 Segundo desenvolvedor: NENHUMA TAREFA ATIVA REGISTRADA
 ```
 
@@ -358,8 +357,8 @@ HANDOFF
 Responsável: Desenvolvedor principal
 Tarefa: P-4 — Cursos completos
 Branch: feature/courses
-Commit/PR: a criar
-Status: PRONTO PARA REVISÃO
+Commit/PR: 483fc77 / integrado na main em 94e7a2f
+Status: INTEGRADO
 
 Arquivos principais alterados:
 - src/app/admin/cursos/**
@@ -398,13 +397,10 @@ Resultados reais:
 - rota administrativa redirecionou USER
 
 Pendências:
-- criar commit/PR
-- integrar a branch na main
-- repetir preflight e teste de integração após o merge
+- nenhuma pendência funcional da ETAPA 4
 
 Dependências para integração:
-- revisar o diff completo
-- sincronizar com main se houver novos commits remotos
+- integração concluída na main em 94e7a2f
 
 Arquivos compartilhados tocados:
 - src/components/auth/authenticated-header.tsx

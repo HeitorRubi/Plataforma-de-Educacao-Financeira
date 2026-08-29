@@ -6,15 +6,14 @@ Atualizado a partir do repositório e dos testes executados em 29/08/2026.
 
 ```text
 branch integrada: main
-HEAD integrado observado: 610560d
-origin/main conhecido: 610560d
-branch da tarefa atual: feature/courses
-status da tarefa atual: PRONTO PARA REVISÃO
+base funcional integrada observada: 94e7a2f
+última etapa integrada: ETAPA 4 — CURSOS
 ```
 
 Histórico principal observado:
 
 ```text
+94e7a2f  Gerenciamento e catálogo de cursos integrado à main
 610560d  Contexto compartilhado entre Codex
 562a4e2  Autenticação de usuários com Supabase
 90bc3ee  Banco criado no Supabase, relacionamentos validados e documentação
@@ -86,7 +85,7 @@ Arquivos principais:
 - `supabase/tests/auth_profiles_validation.sql`
 - `docs/authentication.md`
 
-### ETAPA 4 — pronta para revisão na branch `feature/courses`
+### ETAPA 4 — concluída no histórico Git
 
 Implementação observada:
 
@@ -119,11 +118,11 @@ Validações reais registradas:
 
 ## Próxima etapa elegível
 
-**ETAPA 5 — MÓDULOS permanece bloqueada.**
+**ETAPA 5 — MÓDULOS**
 
-A ETAPA 4 precisa ser revisada, commitada e integrada à `main`. Depois da
-integração, o Git e os fluxos principais devem ser conferidos novamente antes
-de autorizar a ETAPA 5.
+A ETAPA 4 está integrada e foi validada novamente na `main` com lint e build.
+A ETAPA 5 está tecnicamente elegível, mas não deve ser iniciada sem autorização
+explícita e registro prévio no `WORKBOARD.md`.
 
 ## Pontos que não foram verificados externamente nesta análise
 
