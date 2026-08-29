@@ -96,11 +96,18 @@ Complementa o usuário mantido pelo Supabase Auth.
 
 ## Row Level Security
 
-RLS é habilitada nas seis tabelas pela migration. Nenhuma política é criada
-nesta etapa, e os privilégios de `anon` e `authenticated` são revogados. Assim,
-esses clientes não acessam as tabelas pela API até que privilégios e políticas
-específicos sejam implementados. `service_role` mantém acesso administrativo e
-nunca deverá ser exposta no navegador.
+RLS é habilitada nas seis tabelas pela migration inicial. Na criação do schema,
+os privilégios de `anon` e `authenticated` foram revogados para que cada etapa
+posterior libere somente as operações necessárias.
+
+As evoluções de acesso são feitas por migrations novas:
+
+- autenticação: leitura e atualização controlada do próprio `profile`;
+- cursos: leitura de publicados para usuários autenticados e administração
+  somente para perfis `ADMIN`.
+
+`service_role` mantém acesso administrativo no Supabase e nunca deverá ser
+exposta no navegador.
 
 ## Aplicação no Supabase
 

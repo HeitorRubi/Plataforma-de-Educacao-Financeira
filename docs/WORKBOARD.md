@@ -1,4 +1,4 @@
-# Workboard Compartilhado — Desenvolvedor A + Desenvolvedor B
+# Workboard Compartilhado — Desenvolvedor principal + segundo desenvolvedor
 
 Este arquivo é o quadro operacional compartilhado dos dois desenvolvedores e dos dois Codex.
 
@@ -8,141 +8,117 @@ Este arquivo é o quadro operacional compartilhado dos dois desenvolvedores e do
 
 ```text
 branch integrada: main
-HEAD observado na análise: 562a4e2
+HEAD observado na análise: 610560d
 última etapa integrada observada: ETAPA 3 — AUTENTICAÇÃO
-próxima etapa oficial: ETAPA 4 — CURSOS
+etapa ativa: ETAPA 4 — CURSOS
+branch da tarefa ativa: feature/courses
 ```
 
 Antes de confiar nesse baseline, cada Codex deve comparar com o Git real.
 
+Em 29/08/2026, `git fetch origin` foi tentado pelo agente, mas o terminal
+automatizado não conseguiu autenticar no GitHub. A branch da tarefa foi criada
+a partir da `main` local limpa, alinhada ao `origin/main` conhecido em `610560d`.
+
 ## 2. Estratégia da ETAPA 4
 
-A ETAPA 4 será dividida em duas trilhas para permitir paralelismo sem pular para a ETAPA 5.
+A ETAPA 4 será implementada integralmente pelo desenvolvedor principal. O
+segundo desenvolvedor não possui uma trilha paralela de cursos e atuará somente
+em melhorias pequenas de etapas já implementadas, registradas separadamente
+neste quadro.
 
 ```text
-                       ETAPA 4 — CURSOS
-                              │
-                 ┌────────────┴────────────┐
-                 │                         │
-          4A — ADMIN                 4B — USUÁRIO
-        Desenvolvedor A             Desenvolvedor B
-                 │                         │
-      CRUD/publicação            leitura de publicados
-                 │                         │
-                 └────────────┬────────────┘
-                              │
-                         integração
-                              │
-                        ETAPA 4 concluída
+DESENVOLVEDOR PRINCIPAL
+          ↓
+ADMINISTRAÇÃO DE CURSOS
+          ↓
+PUBLICAÇÃO / DESPUBLICAÇÃO
+          ↓
+VISUALIZAÇÃO PELO USUÁRIO
+          ↓
+TESTE INTEGRADO DA ETAPA 4
 ```
 
-Nenhuma das trilhas autoriza iniciar módulos.
+Esta tarefa não autoriza iniciar módulos.
 
 ---
 
-# DESENVOLVEDOR A
+# DESENVOLVEDOR PRINCIPAL
 
-## Tarefa A-4A — Cursos: administração
+## Tarefa P-4 — Cursos completos
 
-**Responsável:** Desenvolvedor A  
-**Status inicial:** AGUARDANDO AUTORIZAÇÃO  
-**Branch recomendada:** `feature/courses-admin`
+**Responsável:** Desenvolvedor principal
+**Status:** PRONTO PARA REVISÃO
+**Branch:** `feature/courses`
 
 ### Objetivo
 
-Implementar o lado administrativo da ETAPA 4:
+Implementar a ETAPA 4 completa:
 
 - criar curso;
 - listar cursos para administração;
 - consultar curso;
 - editar curso;
 - publicar/despublicar curso;
-- garantir que somente `ADMIN` execute operações administrativas.
+- garantir que somente `ADMIN` execute operações administrativas;
+- listar cursos publicados para o usuário;
+- impedir que cursos não publicados apareçam ao usuário comum;
+- permitir consultar os dados de um curso publicado;
+- tratar estados vazio, carregamento e erro quando aplicável.
 
-### Áreas reservadas ao Desenvolvedor A
+### Áreas reservadas ao desenvolvedor principal
 
-Após autorização, o Desenvolvedor A pode propor/usar principalmente:
+Durante a ETAPA 4, o desenvolvedor principal pode propor/usar:
 
 ```text
 src/app/admin/cursos/**
-src/components/courses/admin/**
-src/lib/courses/admin*
-supabase/migrations/*course*_admin*.sql
-supabase/tests/*course*_admin*.sql
-```
-
-Os nomes exatos podem variar após inspeção, mas a separação de responsabilidade deve ser preservada.
-
-### Não tocar sem coordenação
-
-```text
 src/app/cursos/**
+src/components/courses/admin/**
 src/components/courses/public/**
-src/lib/courses/public*
+src/lib/courses/**
+supabase/migrations/*course*.sql
+supabase/tests/*course*.sql
 ```
 
-Essas áreas pertencem ao Desenvolvedor B durante a ETAPA 4.
+Os nomes exatos podem variar após inspeção, mas o escopo deve permanecer restrito
+a cursos.
 
 ### Regras
 
 - não iniciar módulos;
 - não alterar autenticação existente sem necessidade comprovada;
 - alterações de autorização/RLS devem ser mínimas e testadas;
-- migrations são responsabilidade primária desta trilha quando necessárias para o CRUD administrativo;
-- qualquer política que também afete leitura pública/autenticada deve ser registrada no contrato compartilhado abaixo.
+- alterações de banco devem usar uma migration nova;
+- políticas devem respeitar o contrato compartilhado abaixo.
 
 ---
 
-# DESENVOLVEDOR B
+# SEGUNDO DESENVOLVEDOR
 
-## Tarefa B-4B — Cursos: experiência do usuário
+## Melhorias em etapas anteriores
 
-**Responsável:** Desenvolvedor B  
-**Status inicial:** AGUARDANDO AUTORIZAÇÃO  
-**Branch recomendada:** `feature/courses-public`
+**Responsável:** Segundo desenvolvedor
+**Status:** NENHUMA TAREFA ATIVA REGISTRADA
 
 ### Objetivo
 
-Implementar o lado do usuário da ETAPA 4:
+Executar apenas melhorias pequenas em funcionalidades já implementadas. Cada
+melhoria deve possuir tarefa, branch, arquivos previstos e status registrados
+neste documento antes da alteração.
 
-- listar cursos publicados;
-- impedir que cursos não publicados apareçam ao usuário comum;
-- permitir consultar os dados do curso necessários nesta etapa;
-- criar a interface de visualização dos cursos publicados;
-- tratar vazio, carregamento/erro quando aplicável.
-
-### Áreas reservadas ao Desenvolvedor B
-
-Após autorização, o Desenvolvedor B pode propor/usar principalmente:
-
-```text
-src/app/cursos/**
-src/components/courses/public/**
-src/lib/courses/public*
-```
-
-Se testes específicos de leitura forem necessários, propor arquivos próprios sem editar os testes da trilha A.
-
-### Não tocar sem coordenação
+### Não tocar durante a ETAPA 4 sem reatribuição explícita
 
 ```text
 src/app/admin/cursos/**
-src/components/courses/admin/**
-src/lib/courses/admin*
-supabase/migrations/**
+src/app/cursos/**
+src/components/courses/**
+src/lib/courses/**
+supabase/migrations/*course*.sql
+supabase/tests/*course*.sql
 ```
 
-Por padrão, migrations da ETAPA 4 ficam com o Desenvolvedor A para evitar colisão.
-
-Se a trilha B descobrir necessidade de nova política/migration, deve:
-1. registrar a necessidade;
-2. informar o Desenvolvedor A;
-3. aguardar integração da migration;
-4. não criar migration concorrente sem reatribuição explícita.
-
-### Regra de teste
-
-A trilha B pode implementar código antes da política de leitura estar integrada, mas não pode declarar o fluxo remoto aprovado enquanto depender da migration/política da trilha A.
+Se uma melhoria precisar alterar arquivo compartilhado ou código de cursos, o
+segundo desenvolvedor deve registrar a necessidade e aguardar coordenação.
 
 ---
 
@@ -240,7 +216,7 @@ Regra:
 
 # 5. Ordem de trabalho
 
-## Passo 0 — ambos
+## Passo 0 — antes de cada tarefa
 
 Cada um:
 
@@ -254,47 +230,34 @@ git log --oneline --decorate -10
 
 Confirmar que o projeto está sincronizado.
 
-## Passo 1 — criar branches separadas
+## Passo 1 — criar a branch da tarefa
 
-Desenvolvedor A:
-
-```bash
-git switch -c feature/courses-admin
-```
-
-Desenvolvedor B:
+ETAPA 4:
 
 ```bash
-git switch -c feature/courses-public
+git switch -c feature/courses
 ```
 
 A criação/troca de branch deve ser feita pelo humano ou com autorização explícita ao agente.
 
-## Passo 2 — autorizar os Codex
+Melhorias do segundo desenvolvedor devem usar branches próprias, com nomes
+compatíveis com a tarefa registrada.
 
-Para A:
-
-```text
-INICIAR TAREFA A-4A
-```
-
-Para B:
+## Passo 2 — autorizar a tarefa
 
 ```text
-INICIAR TAREFA B-4B
+INICIAR ETAPA 4
 ```
 
-## Passo 3 — trabalhar sem cruzar ownership
+## Passo 3 — trabalhar sem cruzar responsabilidades
 
-Cada Codex deve permanecer em sua área.
+Cada Codex deve permanecer na tarefa e nos arquivos registrados.
 
 ## Passo 4 — integração
 
-A ordem de merge pode variar.
-
-Se a trilha B depender de RLS/política criada pela trilha A para testar o fluxo real, integrar A primeiro é preferível.
-
-Depois que uma trilha entrar na `main`, a outra sincroniza antes do teste final.
+A ETAPA 4 deve ser revisada e integrada por Pull Request/merge consciente. Uma
+melhoria paralela só deve ser integrada depois de verificar conflitos e repetir
+os testes afetados.
 
 ## Passo 5 — teste integrado da ETAPA 4
 
@@ -322,14 +285,12 @@ Somente depois a ETAPA 5 pode ser considerada elegível.
 
 # 6. Tarefas ativas
 
-Inicialmente:
-
 ```text
-A-4A: AGUARDANDO AUTORIZAÇÃO
-B-4B: AGUARDANDO AUTORIZAÇÃO
+P-4: PRONTO PARA REVISÃO — branch feature/courses
+Segundo desenvolvedor: NENHUMA TAREFA ATIVA REGISTRADA
 ```
 
-Após iniciar, cada responsável deve alterar seu status para:
+Ao iniciar uma nova tarefa, o responsável deve registrar o status:
 
 ```text
 EM ANDAMENTO
@@ -351,7 +312,7 @@ INTEGRADO
 
 # 7. Handoff obrigatório
 
-Cada trilha deve registrar no encerramento:
+Cada tarefa deve registrar no encerramento:
 
 ```text
 HANDOFF
@@ -388,3 +349,73 @@ Observações para o outro desenvolvedor:
 ```
 
 Nunca substituir o handoff do outro desenvolvedor; manter os dois registros quando existirem.
+
+## Handoff P-4 — ETAPA 4
+
+```text
+HANDOFF
+
+Responsável: Desenvolvedor principal
+Tarefa: P-4 — Cursos completos
+Branch: feature/courses
+Commit/PR: a criar
+Status: PRONTO PARA REVISÃO
+
+Arquivos principais alterados:
+- src/app/admin/cursos/**
+- src/app/cursos/**
+- src/components/courses/**
+- src/lib/courses/**
+- src/app/area-autenticada/page.tsx
+- src/components/auth/authenticated-header.tsx
+- docs/courses.md
+- docs/database.md
+- docs/DECISIONS.md
+- docs/STATUS.md
+- docs/WORKBOARD.md
+
+Banco/migrations:
+- supabase/migrations/20260829000000_configure_course_access.sql
+- migration aplicada no Supabase compartilhado
+- supabase/tests/course_access_validation.sql aprovado
+
+Testes executados:
+- git diff --check
+- npm.cmd run lint
+- npm.cmd run build
+- proteção de rotas sem sessão
+- CRUD administrativo sem exclusão física
+- publicação e despublicação
+- catálogo e consulta como USER
+- bloqueio administrativo e ocultação de rascunho para USER
+
+Resultados reais:
+- lint sem erros ou avisos
+- build aprovado com todas as rotas de cursos
+- ADMIN criou, consultou, editou, publicou e despublicou
+- USER visualizou somente Curso Publicado de Teste
+- Curso Rascunho de Teste não apareceu para USER
+- rota administrativa redirecionou USER
+
+Pendências:
+- criar commit/PR
+- integrar a branch na main
+- repetir preflight e teste de integração após o merge
+
+Dependências para integração:
+- revisar o diff completo
+- sincronizar com main se houver novos commits remotos
+
+Arquivos compartilhados tocados:
+- src/components/auth/authenticated-header.tsx
+- src/app/area-autenticada/page.tsx
+- docs/database.md
+- docs/DECISIONS.md
+- docs/STATUS.md
+- docs/WORKBOARD.md
+
+Observações para o outro desenvolvedor:
+- não alterar arquivos de cursos enquanto P-4 não estiver integrada
+- não criar migration concorrente para public.courses
+- nenhuma funcionalidade de módulos foi iniciada
+```

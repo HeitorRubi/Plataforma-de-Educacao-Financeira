@@ -1,18 +1,21 @@
 # Status Atual do Projeto
 
-Atualizado a partir do repositório recebido em 28/08/2026.
+Atualizado a partir do repositório e dos testes executados em 29/08/2026.
 
 ## Baseline Git observado
 
 ```text
-branch: main
-HEAD: 562a4e2
-origin/main: 562a4e2
+branch integrada: main
+HEAD integrado observado: 610560d
+origin/main conhecido: 610560d
+branch da tarefa atual: feature/courses
+status da tarefa atual: PRONTO PARA REVISÃO
 ```
 
 Histórico principal observado:
 
 ```text
+610560d  Contexto compartilhado entre Codex
 562a4e2  Autenticação de usuários com Supabase
 90bc3ee  Banco criado no Supabase, relacionamentos validados e documentação
 84a9895  Projeto Next.js base configurado e funcionando localmente
@@ -83,24 +86,52 @@ Arquivos principais:
 - `supabase/tests/auth_profiles_validation.sql`
 - `docs/authentication.md`
 
+### ETAPA 4 — pronta para revisão na branch `feature/courses`
+
+Implementação observada:
+
+- criação, listagem, consulta e edição administrativa de cursos;
+- publicação e despublicação sem exclusão física;
+- listagem e consulta de cursos publicados pelo usuário;
+- verificação `ADMIN` nas páginas e Server Actions;
+- grants mínimos e policies RLS em `public.courses`;
+- estados vazio, carregamento, erro e retorno de formulário.
+
+Arquivos principais:
+
+- `src/app/admin/cursos/`;
+- `src/app/cursos/`;
+- `src/components/courses/`;
+- `src/lib/courses/`;
+- `supabase/migrations/20260829000000_configure_course_access.sql`;
+- `supabase/tests/course_access_validation.sql`;
+- `docs/courses.md`.
+
+Validações reais registradas:
+
+- migration aplicada no Supabase;
+- teste SQL executado sem exceção;
+- `ADMIN` criou, editou, publicou e despublicou curso;
+- `USER` visualizou somente o curso publicado;
+- curso rascunho não apareceu no catálogo;
+- `USER` não recebeu acesso à administração;
+- lint e build aprovados.
+
 ## Próxima etapa elegível
 
-**ETAPA 4 — CURSOS**
+**ETAPA 5 — MÓDULOS permanece bloqueada.**
 
-Ela não deve ser iniciada automaticamente. A tarefa precisa ser registrada em `WORKBOARD.md`, a branch correta deve estar ativa e o usuário deve autorizar o início.
+A ETAPA 4 precisa ser revisada, commitada e integrada à `main`. Depois da
+integração, o Git e os fluxos principais devem ser conferidos novamente antes
+de autorizar a ETAPA 5.
 
 ## Pontos que não foram verificados externamente nesta análise
 
-O arquivo recebido permite observar código e histórico Git, mas não confirma diretamente o estado atual do projeto remoto no painel do Supabase.
+O agente não consulta diretamente o painel do Supabase. O estado remoto da
+ETAPA 4 foi confirmado pelas execuções e imagens fornecidas pelo usuário.
 
-Portanto, antes de depender do banco remoto, verificar:
-
-- se as migrations foram realmente aplicadas ao projeto Supabase compartilhado;
-- se os testes SQL foram executados no banco remoto;
-- se `Confirm email` está configurado conforme a decisão acadêmica;
-- se as variáveis locais apontam para o projeto Supabase correto.
-
-Não declarar esses itens como aprovados sem verificação real.
+Alterações externas futuras ainda precisam ser registradas e testadas; não se
+deve presumir que o painel permaneceu igual apenas com base neste documento.
 
 ## Dívida de documentação observada
 
