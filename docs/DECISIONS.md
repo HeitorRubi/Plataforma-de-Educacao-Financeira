@@ -87,3 +87,22 @@ Permitidas no cliente apenas variáveis explicitamente públicas, como a URL do 
 **MOTIVO:** chats são locais/transitórios e podem divergir; arquivos versionados acompanham o código.
 
 **REGRA:** fatos transitórios, responsáveis e bloqueios ficam em `STATUS.md`/`WORKBOARD.md`, não em instruções permanentes.
+
+## D-012 — Autorização de cursos pela sessão e pelo RLS
+
+**DECISÃO:** executar consultas e mutações de cursos com o cliente SSR associado
+à sessão do usuário, combinando verificação `ADMIN` no servidor com grants
+mínimos e policies RLS no PostgreSQL.
+
+**MOTIVO:** proteger as operações mesmo quando uma Server Action ou a API do
+Supabase for chamada fora da interface prevista.
+
+**ALTERNATIVAS CONSIDERADAS:** esconder controles somente na interface ou usar
+`service_role` nas ações administrativas.
+
+**JUSTIFICATIVA:** a interface não é uma barreira de segurança e `service_role`
+ignoraria o RLS. A sessão autenticada mantém a decisão de acesso no banco e no
+servidor.
+
+**REGRA:** cursos não são excluídos fisicamente nesta etapa; publicação e
+despublicação atendem ao ciclo de vida necessário do MVP.
