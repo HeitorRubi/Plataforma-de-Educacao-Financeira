@@ -106,3 +106,30 @@ servidor.
 
 **REGRA:** cursos não são excluídos fisicamente nesta etapa; publicação e
 despublicação atendem ao ciclo de vida necessário do MVP.
+
+## D-013 — Ordenação transacional de módulos
+
+**DECISÃO:** criar e reordenar módulos por funções PostgreSQL transacionais com
+`SECURITY INVOKER`, chamadas pelas Server Actions através de RPC.
+
+**MOTIVO:** a restrição `(course_id, position)` não permite que duas linhas
+ocupem temporariamente a mesma posição durante uma troca.
+
+**ALTERNATIVAS CONSIDERADAS:** executar várias atualizações independentes no
+Next.js ou usar funções `SECURITY DEFINER`.
+
+**JUSTIFICATIVA:** uma função mantém a troca atômica no banco. O modo
+`SECURITY INVOKER` conserva os grants e o RLS do usuário autenticado, sem elevar
+privilégios ou utilizar `service_role`.
+
+## D-014 — Visibilidade dos módulos pelo curso
+
+**DECISÃO:** módulos herdam a visibilidade do curso ao qual pertencem.
+
+**MOTIVO:** a modelagem atual não possui publicação independente em `modules`.
+
+**ALTERNATIVAS CONSIDERADAS:** adicionar `is_published` aos módulos nesta etapa.
+
+**JUSTIFICATIVA:** a publicação individual não foi solicitada para a ETAPA 5 e
+alteraria a modelagem sem necessidade. Usuários comuns veem módulos somente
+quando `courses.is_published = true`.

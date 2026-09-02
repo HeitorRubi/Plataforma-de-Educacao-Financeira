@@ -104,7 +104,13 @@ As evoluções de acesso são feitas por migrations novas:
 
 - autenticação: leitura e atualização controlada do próprio `profile`;
 - cursos: leitura de publicados para usuários autenticados e administração
-  somente para perfis `ADMIN`.
+  somente para perfis `ADMIN`;
+- módulos: leitura quando o curso está publicado e administração somente para
+  perfis `ADMIN`.
+
+A criação e a ordenação dos módulos usam funções PostgreSQL transacionais com
+`SECURITY INVOKER`. Assim, a posição permanece única dentro do curso e as
+funções continuam sujeitas aos grants e às policies RLS da sessão.
 
 `service_role` mantém acesso administrativo no Supabase e nunca deverá ser
 exposta no navegador.
@@ -119,6 +125,9 @@ exposta no navegador.
 5. Em outra consulta, execute
    `supabase/tests/learning_schema_validation.sql`.
 6. Confirme a mensagem `Estrutura educacional validada com sucesso.`.
+
+As migrations e os testes de acesso adicionados pelas etapas posteriores estão
+documentados em `docs/authentication.md`, `docs/courses.md` e `docs/modules.md`.
 
 A migration ainda não aplicada não deve ser marcada como executada apenas por
 existir no repositório.

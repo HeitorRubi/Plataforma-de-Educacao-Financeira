@@ -3,8 +3,10 @@ import { notFound } from "next/navigation";
 
 import { AuthenticatedHeader } from "@/components/auth/authenticated-header";
 import { CourseStatus } from "@/components/courses/course-status";
+import { CourseModuleOutline } from "@/components/modules/course-module-outline";
 import { requireUser } from "@/lib/auth/session";
 import { getPublishedCourse } from "@/lib/courses/queries";
+import { listPublishedCourseModules } from "@/lib/modules/queries";
 
 export default async function CoursePage({
   params,
@@ -12,9 +14,10 @@ export default async function CoursePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const [user, course] = await Promise.all([
+  const [user, course, modules] = await Promise.all([
     requireUser(),
     getPublishedCourse(id),
+    listPublishedCourseModules(id),
   ]);
 
   if (!course) {
@@ -46,6 +49,8 @@ export default async function CoursePage({
               {course.description || "Sem descrição."}
             </p>
           </div>
+
+          <CourseModuleOutline modules={modules} />
         </article>
       </main>
     </div>

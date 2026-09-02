@@ -1,6 +1,6 @@
 # Status Atual do Projeto
 
-Atualizado a partir do repositório e dos testes executados em 29/08/2026.
+Atualizado a partir do repositório e dos testes executados em 02/09/2026.
 
 ## Baseline Git observado
 
@@ -8,6 +8,8 @@ Atualizado a partir do repositório e dos testes executados em 29/08/2026.
 branch integrada: main
 base funcional integrada observada: 94e7a2f
 última etapa integrada: ETAPA 4 — CURSOS
+branch ativa: feature/modules
+tarefa pronta para revisão: ETAPA 5 — MÓDULOS
 ```
 
 Histórico principal observado:
@@ -116,18 +118,49 @@ Validações reais registradas:
 - `USER` não recebeu acesso à administração;
 - lint e build aprovados.
 
-## Próxima etapa elegível
+### ETAPA 5 — concluída na branch `feature/modules`
 
-**ETAPA 5 — MÓDULOS**
+Implementação observada:
 
-A ETAPA 4 está integrada e foi validada novamente na `main` com lint e build.
-A ETAPA 5 está tecnicamente elegível, mas não deve ser iniciada sem autorização
-explícita e registro prévio no `WORKBOARD.md`.
+- criação e edição de módulos vinculados a cursos;
+- posição automática ao final do curso;
+- listagem ordenada na administração;
+- movimentação para cima e para baixo;
+- visualização dos módulos em cursos publicados;
+- verificação `ADMIN` nas Server Actions;
+- grants mínimos e policies RLS em `public.modules`;
+- funções PostgreSQL transacionais com `SECURITY INVOKER`;
+- ausência de exclusão física e de funcionalidades de aulas.
+
+Arquivos principais:
+
+- `src/app/admin/cursos/[id]/modulos/`;
+- `src/components/modules/`;
+- `src/lib/modules/`;
+- `supabase/migrations/20260902000000_configure_module_access.sql`;
+- `supabase/tests/module_access_validation.sql`;
+- `docs/modules.md`.
+
+Validações reais registradas:
+
+- migration e teste SQL informados pelo usuário como aprovados no Supabase;
+- `ADMIN` criou dois módulos de teste, editou e reordenou;
+- ações de criação, edição e ordenação executadas sem erro no servidor;
+- `USER` visualizou os dois módulos na ordem persistida;
+- controles administrativos não apareceram para o usuário comum;
+- lint e build aprovados.
+
+## Próxima ação
+
+Integrar a branch `feature/modules` na `main` após revisão e commit.
+
+A ETAPA 6 — AULAS não deve ser iniciada antes dessa integração e de autorização
+explícita do desenvolvedor principal.
 
 ## Pontos que não foram verificados externamente nesta análise
 
-O agente não consulta diretamente o painel do Supabase. O estado remoto da
-ETAPA 4 foi confirmado pelas execuções e imagens fornecidas pelo usuário.
+O agente não consulta diretamente o painel do Supabase. O estado remoto das
+ETAPAS 4 e 5 foi confirmado pelas execuções e imagens fornecidas pelo usuário.
 
 Alterações externas futuras ainda precisam ser registradas e testadas; não se
 deve presumir que o painel permaneceu igual apenas com base neste documento.
