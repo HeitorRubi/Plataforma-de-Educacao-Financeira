@@ -5,7 +5,9 @@ import { AuthenticatedHeader } from "@/components/auth/authenticated-header";
 import { AdminCoursesNav } from "@/components/courses/admin/admin-courses-nav";
 import { CoursePublicationForm } from "@/components/courses/admin/course-publication-form";
 import { CourseStatus } from "@/components/courses/course-status";
+import { AdminModuleList } from "@/components/modules/admin/admin-module-list";
 import { getAdminCourse, requireAdmin } from "@/lib/courses/queries";
+import { listAdminModules } from "@/lib/modules/queries";
 
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
   dateStyle: "medium",
@@ -18,9 +20,10 @@ export default async function AdminCoursePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const [user, course] = await Promise.all([
+  const [user, course, modules] = await Promise.all([
     requireAdmin(),
     getAdminCourse(id),
+    listAdminModules(id),
   ]);
 
   if (!course) {
@@ -74,6 +77,8 @@ export default async function AdminCoursePage({
             </dd>
           </div>
         </dl>
+
+        <AdminModuleList courseId={course.id} modules={modules} />
 
         <section className="py-8">
           <h2 className="text-lg font-semibold">Publicação</h2>

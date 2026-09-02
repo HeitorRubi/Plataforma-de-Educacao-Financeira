@@ -11,38 +11,83 @@ branch integrada: main
 base funcional integrada observada: 94e7a2f
 última etapa integrada observada: ETAPA 4 — CURSOS
 próxima etapa oficial: ETAPA 5 — MÓDULOS
+branch de trabalho atual: feature/modules
 ```
 
 Antes de confiar nesse baseline, cada Codex deve comparar com o Git real.
 
-Em 29/08/2026, `git fetch origin` foi tentado pelo agente, mas o terminal
-automatizado não conseguiu autenticar no GitHub. A branch da tarefa foi criada
-a partir da `main` local limpa, alinhada ao `origin/main` conhecido em `610560d`.
+Em 02/09/2026, `git fetch origin` foi tentado pelo agente, mas o terminal
+automatizado não conseguiu autenticar no GitHub. A branch `feature/modules` foi
+criada a partir da `main` local limpa, alinhada ao `origin/main` conhecido em
+`06824fd`.
 
-## 2. Estratégia da ETAPA 4
+## 2. Estratégia da ETAPA 5
 
-A ETAPA 4 será implementada integralmente pelo desenvolvedor principal. O
-segundo desenvolvedor não possui uma trilha paralela de cursos e atuará somente
+A ETAPA 5 será implementada integralmente pelo desenvolvedor principal. O
+segundo desenvolvedor não possui uma trilha paralela de módulos e atuará somente
 em melhorias pequenas de etapas já implementadas, registradas separadamente
 neste quadro.
 
 ```text
 DESENVOLVEDOR PRINCIPAL
           ↓
-ADMINISTRAÇÃO DE CURSOS
+ADMINISTRAÇÃO DE MÓDULOS
           ↓
-PUBLICAÇÃO / DESPUBLICAÇÃO
+VÍNCULO COM O CURSO
           ↓
-VISUALIZAÇÃO PELO USUÁRIO
+ORDENAÇÃO
           ↓
-TESTE INTEGRADO DA ETAPA 4
+VISUALIZAÇÃO NO CURSO
+          ↓
+TESTE INTEGRADO DA ETAPA 5
 ```
 
-Esta tarefa não autoriza iniciar módulos.
+Esta tarefa não autoriza iniciar aulas.
 
 ---
 
 # DESENVOLVEDOR PRINCIPAL
+
+## Tarefa P-5 — Módulos completos
+
+**Responsável:** Desenvolvedor principal
+**Status:** PRONTO PARA REVISÃO
+**Branch:** `feature/modules`
+
+### Objetivo
+
+Implementar a ETAPA 5 completa:
+
+- criar módulos vinculados a um curso;
+- listar módulos na ordem definida;
+- consultar e editar módulos;
+- mover módulos para cima ou para baixo;
+- garantir que somente `ADMIN` execute operações administrativas;
+- exibir os módulos dos cursos publicados para usuários autenticados;
+- tratar estados vazios e erros quando aplicável.
+
+### Áreas reservadas ao desenvolvedor principal
+
+```text
+src/app/admin/cursos/[id]/modulos/**
+src/components/modules/**
+src/lib/modules/**
+src/app/admin/cursos/[id]/page.tsx
+src/app/cursos/[id]/page.tsx
+supabase/migrations/*module*.sql
+supabase/tests/*module*.sql
+docs/modules.md
+```
+
+### Regras
+
+- não iniciar aulas;
+- não permitir exclusão física de módulos pela aplicação nesta etapa;
+- manter a ordem positiva e única dentro de cada curso;
+- validar autorização nas Server Actions e no RLS;
+- alterações de banco devem usar uma migration nova.
+
+---
 
 ## Tarefa P-4 — Cursos completos
 
@@ -105,18 +150,20 @@ Executar apenas melhorias pequenas em funcionalidades já implementadas. Cada
 melhoria deve possuir tarefa, branch, arquivos previstos e status registrados
 neste documento antes da alteração.
 
-### Não tocar durante a ETAPA 4 sem reatribuição explícita
+### Não tocar durante a ETAPA 5 sem reatribuição explícita
 
 ```text
-src/app/admin/cursos/**
-src/app/cursos/**
-src/components/courses/**
-src/lib/courses/**
-supabase/migrations/*course*.sql
-supabase/tests/*course*.sql
+src/app/admin/cursos/[id]/modulos/**
+src/components/modules/**
+src/lib/modules/**
+src/app/admin/cursos/[id]/page.tsx
+src/app/cursos/[id]/page.tsx
+supabase/migrations/*module*.sql
+supabase/tests/*module*.sql
+docs/modules.md
 ```
 
-Se uma melhoria precisar alterar arquivo compartilhado ou código de cursos, o
+Se uma melhoria precisar alterar arquivo compartilhado ou código de módulos, o
 segundo desenvolvedor deve registrar a necessidade e aguardar coordenação.
 
 ---
@@ -178,6 +225,44 @@ Se um dos desenvolvedores precisar alterar esse contrato:
 3. comunicar o outro desenvolvedor;
 4. integrar a decisão em `main`;
 5. só então os dois lados passam a depender da nova forma.
+
+---
+
+# 3.1. Contrato compartilhado C-MODULE-001
+
+A tabela `public.modules` já existe e deve manter semanticamente:
+
+```text
+id             uuid
+course_id      uuid
+title          text
+description    text | null
+position       integer positivo e único no curso
+created_at     timestamptz
+updated_at     timestamptz
+```
+
+Regras de acesso da ETAPA 5:
+
+- `ADMIN` pode criar, consultar, editar e ordenar módulos;
+- usuário autenticado pode consultar módulos de cursos publicados;
+- `anon` não possui acesso;
+- a aplicação não oferece exclusão física;
+- aulas não fazem parte desta tarefa.
+
+Representação mínima de leitura:
+
+```ts
+type CourseModule = {
+  id: string;
+  course_id: string;
+  title: string;
+  description: string | null;
+  position: number;
+  created_at: string;
+  updated_at: string;
+};
+```
 
 ---
 
@@ -286,6 +371,7 @@ Somente depois a ETAPA 5 pode ser considerada elegível.
 
 ```text
 P-4: INTEGRADO — main 94e7a2f
+P-5: PRONTO PARA REVISÃO — feature/modules
 Segundo desenvolvedor: NENHUMA TAREFA ATIVA REGISTRADA
 ```
 
@@ -414,4 +500,73 @@ Observações para o outro desenvolvedor:
 - não alterar arquivos de cursos enquanto P-4 não estiver integrada
 - não criar migration concorrente para public.courses
 - nenhuma funcionalidade de módulos foi iniciada
+```
+
+## Handoff P-5 — ETAPA 5
+
+```text
+HANDOFF
+
+Responsável: Desenvolvedor principal
+Tarefa: P-5 — Módulos completos
+Branch: feature/modules
+Commit/PR: a criar
+Status: PRONTO PARA REVISÃO
+
+Arquivos principais alterados:
+- src/app/admin/cursos/[id]/modulos/**
+- src/app/admin/cursos/[id]/page.tsx
+- src/app/cursos/[id]/page.tsx
+- src/components/modules/**
+- src/lib/modules/**
+- docs/modules.md
+- docs/database.md
+- docs/DECISIONS.md
+- docs/ROADMAP.md
+- docs/STATUS.md
+- docs/WORKBOARD.md
+
+Banco/migrations:
+- supabase/migrations/20260902000000_configure_module_access.sql
+- migration aplicada no Supabase compartilhado, conforme confirmação do usuário
+- supabase/tests/module_access_validation.sql informado como aprovado
+
+Testes executados:
+- git diff --check
+- npm.cmd run lint
+- npm.cmd run build
+- inicialização do servidor Next.js
+- proteção de rotas sem sessão
+- criação e edição de módulos como ADMIN
+- ordenação de módulos como ADMIN
+- visualização ordenada no curso publicado como USER
+
+Resultados reais:
+- lint sem erros ou avisos
+- build aprovado com as novas rotas de módulos
+- servidor iniciado em http://localhost:3000
+- createModuleAction, updateModuleAction e moveModuleAction executadas sem erro
+- ADMIN criou dois módulos de teste, editou e alterou sua ordem
+- USER visualizou os dois módulos na mesma ordem no curso publicado
+- interface USER não exibiu controles administrativos
+
+Pendências:
+- criar commit e integrar a branch feature/modules na main
+
+Dependências para integração:
+- revisar o diff e criar o commit da ETAPA 5
+
+Arquivos compartilhados tocados:
+- src/app/admin/cursos/[id]/page.tsx
+- src/app/cursos/[id]/page.tsx
+- docs/database.md
+- docs/DECISIONS.md
+- docs/ROADMAP.md
+- docs/STATUS.md
+- docs/WORKBOARD.md
+
+Observações para o outro desenvolvedor:
+- não alterar arquivos de módulos antes da integração de P-5
+- não criar migration concorrente para public.modules
+- nenhuma funcionalidade de aulas foi iniciada
 ```

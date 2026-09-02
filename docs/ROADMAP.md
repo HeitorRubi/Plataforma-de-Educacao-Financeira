@@ -9,7 +9,7 @@ Este roadmap mantém o desenvolvimento incremental do projeto. Uma etapa não de
 - [x] ETAPA 2 — Supabase e banco de dados
 - [x] ETAPA 3 — Autenticação
 - [x] ETAPA 4 — Cursos
-- [ ] ETAPA 5 — Módulos
+- [x] ETAPA 5 — Módulos
 - [ ] ETAPA 6 — Aulas
 - [ ] ETAPA 7 — Progresso
 - [ ] ETAPA 8 — Painel administrativo
