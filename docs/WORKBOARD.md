@@ -8,50 +8,94 @@ Este arquivo é o quadro operacional compartilhado dos dois desenvolvedores e do
 
 ```text
 branch integrada: main
-base funcional integrada observada: 94e7a2f
-última etapa integrada observada: ETAPA 4 — CURSOS
-próxima etapa oficial: ETAPA 5 — MÓDULOS
-branch de trabalho atual: feature/modules
+base funcional integrada observada: 65712a2
+última etapa integrada observada: ETAPA 5 — MÓDULOS
+próxima etapa oficial: ETAPA 6 — AULAS
+branch de trabalho atual: feature/lessons
 ```
 
 Antes de confiar nesse baseline, cada Codex deve comparar com o Git real.
 
-Em 02/09/2026, `git fetch origin` foi tentado pelo agente, mas o terminal
-automatizado não conseguiu autenticar no GitHub. A branch `feature/modules` foi
-criada a partir da `main` local limpa, alinhada ao `origin/main` conhecido em
-`06824fd`.
+Em 03/09/2026, a branch `feature/lessons` foi criada a partir da `main` local
+limpa, alinhada ao `origin/main` observado em `65712a2`.
 
-## 2. Estratégia da ETAPA 5
+## 2. Estratégia da ETAPA 6
 
-A ETAPA 5 será implementada integralmente pelo desenvolvedor principal. O
-segundo desenvolvedor não possui uma trilha paralela de módulos e atuará somente
+A ETAPA 6 será implementada integralmente pelo desenvolvedor principal. O
+segundo desenvolvedor não possui uma trilha paralela de aulas e atuará somente
 em melhorias pequenas de etapas já implementadas, registradas separadamente
 neste quadro.
 
 ```text
 DESENVOLVEDOR PRINCIPAL
           ↓
-ADMINISTRAÇÃO DE MÓDULOS
+ADMINISTRAÇÃO DE AULAS
           ↓
-VÍNCULO COM O CURSO
+CONTEÚDO TEXTUAL E FONTES
           ↓
-ORDENAÇÃO
+PUBLICAÇÃO E ORDENAÇÃO
           ↓
-VISUALIZAÇÃO NO CURSO
+LEITURA E NAVEGAÇÃO
           ↓
-TESTE INTEGRADO DA ETAPA 5
+TESTE INTEGRADO DA ETAPA 6
 ```
 
-Esta tarefa não autoriza iniciar aulas.
+Esta tarefa não autoriza iniciar progresso.
 
 ---
 
 # DESENVOLVEDOR PRINCIPAL
 
-## Tarefa P-5 — Módulos completos
+## Tarefa P-6 — Aulas completas
 
 **Responsável:** Desenvolvedor principal
 **Status:** PRONTO PARA REVISÃO
+**Branch:** `feature/lessons`
+
+### Objetivo
+
+Implementar a ETAPA 6 completa:
+
+- criar, listar e editar aulas textuais vinculadas a módulos;
+- publicar e despublicar aulas;
+- ordenar aulas dentro do módulo;
+- armazenar e renderizar conteúdo em Markdown;
+- criar, editar, listar e ordenar fontes de cada aula;
+- exibir somente aulas publicadas de cursos publicados;
+- navegar para a aula anterior e a próxima na ordem do curso;
+- manter autorização administrativa no servidor e no RLS.
+
+### Áreas reservadas ao desenvolvedor principal
+
+```text
+src/app/admin/cursos/[id]/modulos/[moduleId]/aulas/**
+src/app/cursos/[id]/modulos/[moduleId]/aulas/**
+src/components/lessons/**
+src/lib/lessons/**
+src/components/modules/admin/admin-module-list.tsx
+src/components/modules/course-module-outline.tsx
+supabase/migrations/*lesson*.sql
+supabase/tests/*lesson*.sql
+docs/lessons.md
+package.json
+package-lock.json
+```
+
+### Regras
+
+- não iniciar progresso;
+- não implementar vídeos;
+- não inserir conteúdo financeiro definitivo ou referências inventadas;
+- não oferecer exclusão física de aulas nesta etapa;
+- validar a relação curso → módulo → aula em consultas e mutações;
+- alterações de banco devem usar uma migration nova.
+
+---
+
+## Tarefa P-5 — Módulos completos
+
+**Responsável:** Desenvolvedor principal
+**Status:** INTEGRADO
 **Branch:** `feature/modules`
 
 ### Objetivo
@@ -150,20 +194,23 @@ Executar apenas melhorias pequenas em funcionalidades já implementadas. Cada
 melhoria deve possuir tarefa, branch, arquivos previstos e status registrados
 neste documento antes da alteração.
 
-### Não tocar durante a ETAPA 5 sem reatribuição explícita
+### Não tocar durante a ETAPA 6 sem reatribuição explícita
 
 ```text
-src/app/admin/cursos/[id]/modulos/**
-src/components/modules/**
-src/lib/modules/**
-src/app/admin/cursos/[id]/page.tsx
-src/app/cursos/[id]/page.tsx
-supabase/migrations/*module*.sql
-supabase/tests/*module*.sql
-docs/modules.md
+src/app/admin/cursos/[id]/modulos/[moduleId]/aulas/**
+src/app/cursos/[id]/modulos/[moduleId]/aulas/**
+src/components/lessons/**
+src/lib/lessons/**
+src/components/modules/admin/admin-module-list.tsx
+src/components/modules/course-module-outline.tsx
+supabase/migrations/*lesson*.sql
+supabase/tests/*lesson*.sql
+docs/lessons.md
+package.json
+package-lock.json
 ```
 
-Se uma melhoria precisar alterar arquivo compartilhado ou código de módulos, o
+Se uma melhoria precisar alterar arquivo compartilhado ou código de aulas, o
 segundo desenvolvedor deve registrar a necessidade e aguardar coordenação.
 
 ---
@@ -266,6 +313,47 @@ type CourseModule = {
 
 ---
 
+# 3.2. Contratos compartilhados C-LESSON-001 e C-SOURCE-001
+
+A tabela `public.lessons` mantém semanticamente:
+
+```text
+id             uuid
+module_id      uuid
+title          text
+content        text em Markdown
+position       integer positivo e único no módulo
+is_published   boolean
+created_at     timestamptz
+updated_at     timestamptz
+```
+
+A tabela `public.lesson_sources` mantém semanticamente:
+
+```text
+id                 uuid
+lesson_id          uuid
+title              text
+author             text | null
+url                text | null
+publication_year   integer | null
+position           integer positivo e único na aula
+created_at         timestamptz
+updated_at         timestamptz
+```
+
+Regras de acesso da ETAPA 6:
+
+- `ADMIN` administra aulas, publicação, ordem e fontes;
+- usuário autenticado lê somente aulas publicadas de cursos publicados;
+- fontes herdam a visibilidade da aula;
+- `anon` não possui acesso;
+- a aplicação não oferece exclusão física;
+- a navegação pública considera somente aulas publicadas e segue a ordem de
+  módulos e aulas do curso.
+
+---
+
 # 4. Arquivos compartilhados de alto risco
 
 Os seguintes arquivos não têm dono exclusivo e exigem coordenação:
@@ -316,10 +404,10 @@ Confirmar que o projeto está sincronizado.
 
 ## Passo 1 — criar a branch da tarefa
 
-ETAPA 4:
+ETAPA 6:
 
 ```bash
-git switch -c feature/courses
+git switch -c feature/lessons
 ```
 
 A criação/troca de branch deve ser feita pelo humano ou com autorização explícita ao agente.
@@ -330,7 +418,7 @@ compatíveis com a tarefa registrada.
 ## Passo 2 — autorizar a tarefa
 
 ```text
-INICIAR ETAPA 4
+INICIAR ETAPA 6
 ```
 
 ## Passo 3 — trabalhar sem cruzar responsabilidades
@@ -339,31 +427,26 @@ Cada Codex deve permanecer na tarefa e nos arquivos registrados.
 
 ## Passo 4 — integração
 
-A ETAPA 4 deve ser revisada e integrada por Pull Request/merge consciente. Uma
+A ETAPA 6 deve ser revisada e integrada por Pull Request/merge consciente. Uma
 melhoria paralela só deve ser integrada depois de verificar conflitos e repetir
 os testes afetados.
 
-## Passo 5 — teste integrado da ETAPA 4
+## Passo 5 — teste integrado da ETAPA 6
 
-A ETAPA 4 só pode ser marcada como concluída quando, na base integrada:
+A ETAPA 6 só pode ser marcada como concluída quando:
 
 ```text
-ADMIN cria curso
-      ↓
-publica
-      ↓
-USER visualiza
+ADMIN cria aula → adiciona fonte → publica
+USER lê aula → navega para anterior/próxima → consulta fontes
 ```
 
 e também for validado que:
 
 ```text
-curso não publicado
-      ↓
-não aparece para USER
+aula não publicada → não aparece para USER
 ```
 
-Somente depois a ETAPA 5 pode ser considerada elegível.
+Somente depois a ETAPA 7 pode ser considerada elegível.
 
 ---
 
@@ -371,7 +454,8 @@ Somente depois a ETAPA 5 pode ser considerada elegível.
 
 ```text
 P-4: INTEGRADO — main 94e7a2f
-P-5: PRONTO PARA REVISÃO — feature/modules
+P-5: INTEGRADO — main 65712a2
+P-6: PRONTO PARA REVISÃO — feature/lessons
 Segundo desenvolvedor: NENHUMA TAREFA ATIVA REGISTRADA
 ```
 
@@ -510,8 +594,8 @@ HANDOFF
 Responsável: Desenvolvedor principal
 Tarefa: P-5 — Módulos completos
 Branch: feature/modules
-Commit/PR: a criar
-Status: PRONTO PARA REVISÃO
+Commit/PR: 2c2681a / integrado na main em 65712a2
+Status: INTEGRADO
 
 Arquivos principais alterados:
 - src/app/admin/cursos/[id]/modulos/**
@@ -551,10 +635,10 @@ Resultados reais:
 - interface USER não exibiu controles administrativos
 
 Pendências:
-- criar commit e integrar a branch feature/modules na main
+- nenhuma pendência funcional da ETAPA 5
 
 Dependências para integração:
-- revisar o diff e criar o commit da ETAPA 5
+- integração concluída na main em 65712a2
 
 Arquivos compartilhados tocados:
 - src/app/admin/cursos/[id]/page.tsx
@@ -566,7 +650,86 @@ Arquivos compartilhados tocados:
 - docs/WORKBOARD.md
 
 Observações para o outro desenvolvedor:
-- não alterar arquivos de módulos antes da integração de P-5
+- ETAPA 5 integrada e disponível como base para aulas
 - não criar migration concorrente para public.modules
 - nenhuma funcionalidade de aulas foi iniciada
+```
+
+## Handoff P-6 — ETAPA 6
+
+```text
+HANDOFF
+
+Responsável: Desenvolvedor principal
+Tarefa: P-6 — Aulas completas
+Branch: feature/lessons
+Commit/PR: ainda não criado
+Status: PRONTO PARA REVISÃO
+
+Arquivos principais alterados:
+- src/app/admin/cursos/[id]/modulos/[moduleId]/**
+- src/app/cursos/[id]/page.tsx
+- src/app/cursos/[id]/modulos/[moduleId]/aulas/**
+- src/components/lessons/**
+- src/components/modules/admin/admin-module-list.tsx
+- src/components/modules/course-module-outline.tsx
+- src/lib/lessons/**
+- docs/lessons.md
+- docs/modules.md
+- docs/database.md
+- docs/DECISIONS.md
+- docs/ROADMAP.md
+- docs/STATUS.md
+- docs/WORKBOARD.md
+- package.json
+- package-lock.json
+
+Banco/migrations:
+- supabase/migrations/20260903000000_configure_lesson_access.sql
+- migration aplicada no Supabase compartilhado, conforme confirmação do usuário
+- supabase/tests/lesson_access_validation.sql informado como aprovado
+
+Testes executados:
+- git diff --check
+- npm.cmd run lint
+- npm.cmd run build
+- proteção de rotas sem sessão
+- criação e publicação de duas aulas como ADMIN
+- criação e ordenação de duas fontes como ADMIN
+- leitura de Markdown e fontes como USER
+- ocultação de aula não publicada para USER
+- navegação anterior/próxima entre duas aulas publicadas
+
+Resultados reais:
+- lint sem erros ou avisos
+- build aprovado com as rotas de aulas e fontes
+- servidor iniciado em http://localhost:3000
+- Server Actions observadas sem erro nos logs do servidor
+- USER visualizou somente aulas publicadas do curso publicado
+- conteúdo Markdown e fontes foram renderizados
+- navegação Aula 1 → Aula 2 e Aula 2 → Aula 1 aprovada pelo usuário
+
+Pendências:
+- nenhuma pendência funcional da ETAPA 6
+
+Dependências para integração:
+- criar commit e integrar feature/lessons na main
+
+Arquivos compartilhados tocados:
+- src/app/cursos/[id]/page.tsx
+- src/components/modules/admin/admin-module-list.tsx
+- src/components/modules/course-module-outline.tsx
+- package.json
+- package-lock.json
+- docs/database.md
+- docs/modules.md
+- docs/DECISIONS.md
+- docs/ROADMAP.md
+- docs/STATUS.md
+- docs/WORKBOARD.md
+
+Observações para o outro desenvolvedor:
+- não alterar arquivos reservados de aulas antes da integração
+- não criar migration concorrente para public.lessons ou public.lesson_sources
+- lesson_progress permaneceu fora do escopo e sem novos privilégios
 ```

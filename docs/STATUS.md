@@ -1,20 +1,21 @@
 # Status Atual do Projeto
 
-Atualizado a partir do repositório e dos testes executados em 02/09/2026.
+Atualizado a partir do repositório e dos testes executados em 03/09/2026.
 
 ## Baseline Git observado
 
 ```text
 branch integrada: main
-base funcional integrada observada: 94e7a2f
-última etapa integrada: ETAPA 4 — CURSOS
-branch ativa: feature/modules
-tarefa pronta para revisão: ETAPA 5 — MÓDULOS
+base funcional integrada observada: 65712a2
+última etapa integrada: ETAPA 5 — MÓDULOS
+branch ativa: feature/lessons
+tarefa pronta para revisão: ETAPA 6 — AULAS
 ```
 
 Histórico principal observado:
 
 ```text
+65712a2  Adicionado gerenciamento de módulos
 94e7a2f  Gerenciamento e catálogo de cursos integrado à main
 610560d  Contexto compartilhado entre Codex
 562a4e2  Autenticação de usuários com Supabase
@@ -118,7 +119,7 @@ Validações reais registradas:
 - `USER` não recebeu acesso à administração;
 - lint e build aprovados.
 
-### ETAPA 5 — concluída na branch `feature/modules`
+### ETAPA 5 — integrada na `main`
 
 Implementação observada:
 
@@ -150,17 +151,53 @@ Validações reais registradas:
 - controles administrativos não apareceram para o usuário comum;
 - lint e build aprovados.
 
+### ETAPA 6 — concluída na branch `feature/lessons`
+
+Implementação observada:
+
+- criação, consulta e edição de aulas textuais vinculadas aos módulos;
+- conteúdo em Markdown com visualização segura, sem HTML bruto;
+- publicação e despublicação, exigindo conteúdo para publicar;
+- ordenação de aulas dentro do módulo;
+- criação, edição e ordenação de fontes estruturadas;
+- catálogo exibindo somente aulas publicadas;
+- leitura com fontes e navegação para a aula anterior e a próxima;
+- verificação `ADMIN` nas Server Actions;
+- grants mínimos e policies RLS em `public.lessons` e `public.lesson_sources`;
+- ausência de vídeos, progresso e exclusão física.
+
+Arquivos principais:
+
+- `src/app/admin/cursos/[id]/modulos/[moduleId]/`;
+- `src/app/cursos/[id]/modulos/[moduleId]/aulas/`;
+- `src/components/lessons/`;
+- `src/lib/lessons/`;
+- `supabase/migrations/20260903000000_configure_lesson_access.sql`;
+- `supabase/tests/lesson_access_validation.sql`;
+- `docs/lessons.md`.
+
+Validações reais registradas:
+
+- migration e teste SQL informados pelo usuário como aprovados no Supabase;
+- `ADMIN` criou e publicou duas aulas de teste;
+- `ADMIN` criou e reordenou duas fontes de teste;
+- ações de criação, publicação e ordenação executadas sem erro no servidor;
+- `USER` visualizou o conteúdo Markdown e as fontes da aula publicada;
+- aula não publicada não apareceu para `USER`;
+- navegação entre Aula 1 e Aula 2 validada nos dois sentidos;
+- lint e build aprovados.
+
 ## Próxima ação
 
-Integrar a branch `feature/modules` na `main` após revisão e commit.
+Revisar, criar o commit e integrar a branch `feature/lessons` na `main`.
 
-A ETAPA 6 — AULAS não deve ser iniciada antes dessa integração e de autorização
-explícita do desenvolvedor principal.
+A ETAPA 7 — PROGRESSO não deve ser iniciada antes dessa integração e de
+autorização explícita do desenvolvedor principal.
 
 ## Pontos que não foram verificados externamente nesta análise
 
 O agente não consulta diretamente o painel do Supabase. O estado remoto das
-ETAPAS 4 e 5 foi confirmado pelas execuções e imagens fornecidas pelo usuário.
+ETAPAS 4, 5 e 6 foi confirmado pelas execuções e imagens fornecidas pelo usuário.
 
 Alterações externas futuras ainda precisam ser registradas e testadas; não se
 deve presumir que o painel permaneceu igual apenas com base neste documento.

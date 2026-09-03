@@ -6,6 +6,7 @@ import { CourseStatus } from "@/components/courses/course-status";
 import { CourseModuleOutline } from "@/components/modules/course-module-outline";
 import { requireUser } from "@/lib/auth/session";
 import { getPublishedCourse } from "@/lib/courses/queries";
+import { listPublishedLessonsForModules } from "@/lib/lessons/queries";
 import { listPublishedCourseModules } from "@/lib/modules/queries";
 
 export default async function CoursePage({
@@ -24,6 +25,9 @@ export default async function CoursePage({
     notFound();
   }
 
+  const lessons = await listPublishedLessonsForModules(
+    modules.map((module) => module.id),
+  );
   const displayName = user.profile.full_name ?? "Usuário";
 
   return (
@@ -50,7 +54,11 @@ export default async function CoursePage({
             </p>
           </div>
 
-          <CourseModuleOutline modules={modules} />
+          <CourseModuleOutline
+            courseId={course.id}
+            lessons={lessons}
+            modules={modules}
+          />
         </article>
       </main>
     </div>

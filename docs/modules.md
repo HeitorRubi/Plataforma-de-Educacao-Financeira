@@ -27,6 +27,10 @@ VISUALIZA os módulos na ordem definida
 
 A ETAPA 5 não cria aulas nem permite abrir conteúdo de aula.
 
+A partir da ETAPA 6, a administração de cada módulo possui uma página própria
+para listar e gerenciar suas aulas. Essa extensão não altera o contrato do
+módulo.
+
 ## Rotas
 
 ```text
@@ -34,6 +38,7 @@ A ETAPA 5 não cria aulas nem permite abrir conteúdo de aula.
 /admin/cursos/[id]/modulos/novo                     cria módulo
 /admin/cursos/[id]/modulos/[moduleId]/editar        edita módulo
 /cursos/[id]                                        mostra módulos do curso publicado
+/admin/cursos/[id]/modulos/[moduleId]               gerencia aulas do módulo
 ```
 
 ## Ordenação

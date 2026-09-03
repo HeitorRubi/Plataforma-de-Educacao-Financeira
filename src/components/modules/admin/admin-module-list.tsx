@@ -55,6 +55,12 @@ export function AdminModuleList({ courseId, modules }: AdminModuleListProps) {
               <div className="flex flex-wrap items-start gap-4">
                 <Link
                   className="inline-flex h-9 items-center text-sm font-semibold text-emerald-800 hover:underline"
+                  href={`/admin/cursos/${courseId}/modulos/${module.id}`}
+                >
+                  Gerenciar aulas
+                </Link>
+                <Link
+                  className="inline-flex h-9 items-center text-sm font-semibold text-neutral-700 hover:text-neutral-950 hover:underline"
                   href={`/admin/cursos/${courseId}/modulos/${module.id}/editar`}
                 >
                   Editar
