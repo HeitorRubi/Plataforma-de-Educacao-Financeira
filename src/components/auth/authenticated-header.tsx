@@ -29,7 +29,7 @@ export function AuthenticatedHeader({
           {role === "ADMIN" && (
             <Link
               className="font-medium text-emerald-800 hover:underline"
-              href="/admin/cursos"
+              href="/admin"
             >
               Administração
             </Link>

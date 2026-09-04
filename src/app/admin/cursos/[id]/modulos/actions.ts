@@ -21,6 +21,7 @@ function logModuleMutationError(operation: string, error: unknown) {
 }
 
 function revalidateModulePaths(courseId: string, moduleId?: string) {
+  revalidatePath("/admin");
   revalidatePath("/admin/cursos");
   revalidatePath(`/admin/cursos/${courseId}`);
   revalidatePath(`/admin/cursos/${courseId}/modulos/novo`);
