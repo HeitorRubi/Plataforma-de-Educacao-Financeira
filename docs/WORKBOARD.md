@@ -8,50 +8,92 @@ Este arquivo é o quadro operacional compartilhado dos dois desenvolvedores e do
 
 ```text
 branch integrada: main
-base funcional local utilizada: 1eb21ae
-última etapa integrada informada: ETAPA 6 — AULAS
-próxima etapa oficial: ETAPA 7 — PROGRESSO
-branch de trabalho atual: feature/progress
+base funcional local utilizada: 195bebf
+última etapa integrada informada: ETAPA 7 — PROGRESSO
+etapa oficial atual: ETAPA 8 — PAINEL ADMINISTRATIVO
+branch de trabalho atual: feature/admin
 ```
 
 Antes de confiar nesse baseline, cada Codex deve comparar com o Git real.
 
-Em 04/09/2026, o desenvolvedor principal confirmou a integração da ETAPA 6.
+Em 04/09/2026, o desenvolvedor principal confirmou a integração da ETAPA 7.
 O `git fetch origin` não pôde autenticar no terminal automatizado; por isso,
-`feature/progress` foi criada diretamente do commit local validado `1eb21ae`,
-que contém a implementação completa da ETAPA 6.
+`feature/admin` foi criada diretamente do commit local validado `195bebf`, que
+contém a implementação completa e validada da ETAPA 7.
 
-## 2. Estratégia da ETAPA 7
+## 2. Estratégia da ETAPA 8
 
-A ETAPA 7 será implementada integralmente pelo desenvolvedor principal. O
-segundo desenvolvedor não possui uma trilha paralela de progresso e atuará somente
-em melhorias pequenas de etapas já implementadas, registradas separadamente
-neste quadro.
+A ETAPA 8 será implementada integralmente pelo desenvolvedor principal. O
+segundo desenvolvedor não possui uma trilha paralela administrativa e atuará
+somente em melhorias pequenas de etapas já implementadas, registradas
+separadamente neste quadro.
 
 ```text
 DESENVOLVEDOR PRINCIPAL
           ↓
-LEITURA DA AULA PUBLICADA
+PAINEL ADMINISTRATIVO
           ↓
-CONCLUSÃO PELO USUÁRIO
+CURSOS E PUBLICAÇÃO
           ↓
-PERSISTÊNCIA EM LESSON_PROGRESS
+MÓDULOS E ORDEM
           ↓
-RESUMO E PERCENTUAL DO CURSO
+AULAS, FONTES E ORDEM
           ↓
-TESTE APÓS LOGOUT E NOVO LOGIN
+VALIDAÇÃO DE BLOQUEIO PARA USER
 ```
 
-Esta tarefa não autoriza iniciar a consolidação administrativa da ETAPA 8.
+Esta tarefa não autoriza iniciar funcionalidades de IA ou o CHECKPOINT 1.
 
 ---
 
 # DESENVOLVEDOR PRINCIPAL
 
-## Tarefa P-7 — Progresso de aulas
+## Tarefa P-8 — Painel administrativo
 
 **Responsável:** Desenvolvedor principal
 **Status:** PRONTO PARA REVISÃO
+**Branch:** `feature/admin`
+
+### Objetivo
+
+Implementar a ETAPA 8 completa:
+
+- consolidar cursos, módulos, aulas e fontes em uma entrada administrativa;
+- apresentar totais e a estrutura de conteúdo por curso;
+- manter acesso às operações de edição, publicação e ordenação;
+- proteger todo o segmento administrativo no servidor;
+- garantir no RLS que `USER` não execute operações administrativas;
+- manter a ausência de exclusão física no MVP.
+
+### Áreas reservadas ao desenvolvedor principal
+
+```text
+src/app/admin/**
+src/components/admin/**
+src/components/courses/admin/admin-courses-nav.tsx
+src/components/auth/authenticated-header.tsx
+src/app/area-autenticada/page.tsx
+src/lib/admin/**
+supabase/tests/*admin*.sql
+docs/administration.md
+docs/database.md
+docs/DECISIONS.md
+```
+
+### Regras
+
+- não usar `service_role`;
+- manter `requireAdmin()` nas Server Actions e consultas;
+- não implementar gestão de usuários ou relatórios de progresso;
+- não criar migration sem alteração real de banco;
+- não iniciar as etapas de IA.
+
+---
+
+## Tarefa P-7 — Progresso de aulas
+
+**Responsável:** Desenvolvedor principal
+**Status:** INTEGRADO
 **Branch:** `feature/progress`
 
 ### Objetivo
@@ -239,20 +281,18 @@ Executar apenas melhorias pequenas em funcionalidades já implementadas. Cada
 melhoria deve possuir tarefa, branch, arquivos previstos e status registrados
 neste documento antes da alteração.
 
-### Não tocar durante a ETAPA 7 sem reatribuição explícita
+### Não tocar durante a ETAPA 8 sem reatribuição explícita
 
 ```text
-src/app/cursos/[id]/page.tsx
-src/app/cursos/[id]/modulos/[moduleId]/aulas/[lessonId]/**
-src/components/progress/**
-src/components/modules/course-module-outline.tsx
-src/lib/progress/**
-supabase/migrations/*progress*.sql
-supabase/tests/*progress*.sql
-docs/progress.md
+src/app/admin/**
+src/components/admin/**
+src/components/courses/admin/admin-courses-nav.tsx
+src/lib/admin/**
+supabase/tests/*admin*.sql
+docs/administration.md
 ```
 
-Se uma melhoria precisar alterar arquivo compartilhado ou código de progresso, o
+Se uma melhoria precisar alterar arquivo compartilhado ou código administrativo, o
 segundo desenvolvedor deve registrar a necessidade e aguardar coordenação.
 
 ---
@@ -468,10 +508,10 @@ Confirmar que o projeto está sincronizado.
 
 ## Passo 1 — criar a branch da tarefa
 
-ETAPA 7:
+ETAPA 8:
 
 ```bash
-git switch -c feature/progress
+git switch -c feature/admin
 ```
 
 A criação/troca de branch deve ser feita pelo humano ou com autorização explícita ao agente.
@@ -482,7 +522,7 @@ compatíveis com a tarefa registrada.
 ## Passo 2 — autorizar a tarefa
 
 ```text
-INICIAR ETAPA 7
+INICIAR ETAPA 8
 ```
 
 ## Passo 3 — trabalhar sem cruzar responsabilidades
@@ -491,25 +531,25 @@ Cada Codex deve permanecer na tarefa e nos arquivos registrados.
 
 ## Passo 4 — integração
 
-A ETAPA 7 deve ser revisada e integrada por Pull Request/merge consciente. Uma
+A ETAPA 8 deve ser revisada e integrada por Pull Request/merge consciente. Uma
 melhoria paralela só deve ser integrada depois de verificar conflitos e repetir
 os testes afetados.
 
-## Passo 5 — teste integrado da ETAPA 7
+## Passo 5 — teste integrado da ETAPA 8
 
-A ETAPA 7 só pode ser marcada como concluída quando:
+A ETAPA 8 só pode ser marcada como concluída quando:
 
 ```text
-USER abre aula publicada → conclui aula → progresso do curso é atualizado
+ADMIN abre o painel → gerencia conteúdo → painel reflete a alteração
 ```
 
 e também for validado que:
 
 ```text
-logout → novo login → conclusão e percentual continuam salvos
+USER tenta abrir /admin → servidor redireciona → RLS bloqueia escrita
 ```
 
-Somente depois a ETAPA 8 pode ser considerada elegível.
+Somente depois o CHECKPOINT 1 pode ser considerado elegível.
 
 ---
 
@@ -519,7 +559,8 @@ Somente depois a ETAPA 8 pode ser considerada elegível.
 P-4: INTEGRADO — main 94e7a2f
 P-5: INTEGRADO — main 65712a2
 P-6: INTEGRADO — commit funcional 1eb21ae; merge confirmado pelo usuário
-P-7: PRONTO PARA REVISÃO — feature/progress
+P-7: INTEGRADO — commit funcional 195bebf; merge confirmado pelo usuário
+P-8: PRONTO PARA REVISÃO — feature/admin
 Segundo desenvolvedor: NENHUMA TAREFA ATIVA REGISTRADA
 ```
 
@@ -806,8 +847,8 @@ HANDOFF
 Responsável: Desenvolvedor principal
 Tarefa: P-7 — Progresso de aulas
 Branch: feature/progress
-Commit/PR: ainda não criado
-Status: PRONTO PARA REVISÃO
+Commit/PR: 195bebf / integração na main confirmada pelo usuário
+Status: INTEGRADO
 
 Arquivos principais alterados:
 - src/app/cursos/[id]/page.tsx
@@ -852,7 +893,7 @@ Pendências:
 - nenhuma pendência funcional da ETAPA 7
 
 Dependências para integração:
-- criar commit e integrar feature/progress na main
+- integração confirmada pelo usuário em 04/09/2026
 
 Arquivos compartilhados tocados:
 - src/app/cursos/[id]/page.tsx
@@ -869,4 +910,74 @@ Observações para o outro desenvolvedor:
 - não alterar lesson_progress antes da integração desta branch
 - não criar migration concorrente para public.lesson_progress
 - relatórios administrativos e progresso agregado ficaram fora do escopo
+```
+
+## Handoff P-8 — ETAPA 8
+
+```text
+HANDOFF
+
+Responsável: Desenvolvedor principal
+Tarefa: P-8 — Painel administrativo
+Branch: feature/admin
+Commit/PR: ainda não criado
+Status: PRONTO PARA REVISÃO
+
+Arquivos principais alterados:
+- src/app/admin/layout.tsx
+- src/app/admin/page.tsx
+- src/app/admin/**/actions.ts
+- src/components/auth/authenticated-header.tsx
+- src/components/courses/admin/admin-courses-nav.tsx
+- src/app/area-autenticada/page.tsx
+- src/lib/admin/**
+- supabase/tests/admin_access_validation.sql
+- docs/administration.md
+- docs/database.md
+- docs/DECISIONS.md
+- docs/ROADMAP.md
+- docs/STATUS.md
+- docs/WORKBOARD.md
+
+Banco/migrations:
+- nenhuma migration nova; grants, policies RLS e funções existentes foram preservados
+- supabase/tests/admin_access_validation.sql aprovado no Supabase
+
+Testes executados:
+- git diff --check
+- npm.cmd run lint
+- npm.cmd run build
+- requisição HTTP para /admin sem sessão
+- execução de supabase/tests/admin_access_validation.sql
+- painel e navegação com conta ADMIN
+- bloqueio das rotas administrativas com conta USER
+
+Resultados reais:
+- lint sem erros ou avisos
+- build aprovado com a nova rota dinâmica /admin
+- diff check aprovado com avisos LF/CRLF
+- /admin sem sessão respondeu HTTP 307 com redirecionamento para /login
+- painel exibiu os totais esperados e permitiu acessar o gerenciamento do curso
+- teste SQL foi concluído sem exceção
+- USER não acessou nem executou operações administrativas
+
+Pendências:
+- nenhuma pendência funcional da ETAPA 8
+
+Dependências para integração:
+- criar commit e integrar feature/admin na main
+
+Arquivos compartilhados tocados:
+- src/components/auth/authenticated-header.tsx
+- src/app/area-autenticada/page.tsx
+- docs/database.md
+- docs/DECISIONS.md
+- docs/ROADMAP.md
+- docs/STATUS.md
+- docs/WORKBOARD.md
+
+Observações para o outro desenvolvedor:
+- não alterar o segmento /admin antes da integração
+- nenhuma migration foi criada na ETAPA 8
+- relatórios de progresso e gestão de usuários permanecem fora do escopo
 ```

@@ -42,9 +42,9 @@ export default async function AuthenticatedAreaPage() {
           {user.profile.role === "ADMIN" && (
             <Link
               className="inline-flex h-11 items-center rounded-md border border-neutral-300 bg-white px-5 font-semibold text-neutral-800 transition hover:border-neutral-400"
-              href="/admin/cursos"
+              href="/admin"
             >
-              Administrar cursos
+              Abrir administração
             </Link>
           )}
           <Link

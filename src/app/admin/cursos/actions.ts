@@ -16,6 +16,7 @@ function logCourseMutationError(operation: string, error: unknown) {
 }
 
 function revalidateCoursePaths(courseId?: string) {
+  revalidatePath("/admin");
   revalidatePath("/admin/cursos");
   revalidatePath("/cursos");
 

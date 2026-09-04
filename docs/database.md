@@ -125,6 +125,11 @@ transacionais com `SECURITY INVOKER`. Assim, a posição permanece única dentro
 do respectivo pai e as funções continuam sujeitas aos grants e às policies RLS
 da sessão.
 
+Na ETAPA 8 não houve alteração de schema ou de políticas. O arquivo
+`supabase/tests/admin_access_validation.sql` consolida a verificação das quatro
+tabelas de conteúdo, das doze policies administrativas, da ausência de escrita
+para usuários comuns e das funções de criação/ordenação com `SECURITY INVOKER`.
+
 `service_role` mantém acesso administrativo no Supabase e nunca deverá ser
 exposta no navegador.
 
@@ -141,7 +146,7 @@ exposta no navegador.
 
 As migrations e os testes de acesso adicionados pelas etapas posteriores estão
 documentados em `docs/authentication.md`, `docs/courses.md`, `docs/modules.md`,
-`docs/lessons.md` e `docs/progress.md`.
+`docs/lessons.md`, `docs/progress.md` e `docs/administration.md`.
 
 A migration ainda não aplicada não deve ser marcada como executada apenas por
 existir no repositório.

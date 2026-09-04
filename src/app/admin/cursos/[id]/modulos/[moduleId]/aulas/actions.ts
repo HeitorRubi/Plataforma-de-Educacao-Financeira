@@ -30,6 +30,7 @@ function revalidateLessonPaths(
   moduleId: string,
   lessonId?: string,
 ) {
+  revalidatePath("/admin");
   revalidatePath(`/admin/cursos/${courseId}`);
   revalidatePath(`/admin/cursos/${courseId}/modulos/${moduleId}`);
   revalidatePath(`/admin/cursos/${courseId}/modulos/${moduleId}/aulas/nova`);

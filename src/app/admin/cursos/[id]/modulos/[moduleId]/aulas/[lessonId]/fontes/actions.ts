@@ -37,6 +37,7 @@ function revalidateSourcePaths(
   sourceId?: string,
 ) {
   const lessonPath = adminLessonPath(courseId, moduleId, lessonId);
+  revalidatePath("/admin");
   revalidatePath(lessonPath);
   revalidatePath(`${lessonPath}/fontes/nova`);
   revalidatePath(

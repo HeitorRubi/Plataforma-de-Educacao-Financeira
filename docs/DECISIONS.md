@@ -191,3 +191,18 @@ total ou manter o progresso apenas no navegador.
 **JUSTIFICATIVA:** inserções imutáveis exigem menos permissões no banco,
 persistem entre sessões e evitam que rascunhos administrativos distorçam o
 percentual exibido ao usuário.
+
+## D-019 — Proteção administrativa em camadas
+
+**DECISÃO:** proteger todo o segmento `/admin` em um layout de servidor e manter
+as verificações `requireAdmin()` nas consultas e Server Actions, além do RLS.
+
+**MOTIVO:** o painel central não pode transformar a navegação visível em única
+barreira de acesso, e novas páginas administrativas devem nascer protegidas.
+
+**ALTERNATIVAS CONSIDERADAS:** verificar somente cada página, ocultar links para
+`USER` ou consultar os dados com `service_role`.
+
+**JUSTIFICATIVA:** o layout reduz o risco de uma rota administrativa esquecida,
+enquanto as verificações locais e o RLS protegem mutações e acessos diretos ao
+banco sem elevar privilégios.

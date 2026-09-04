@@ -6,10 +6,10 @@ Atualizado a partir do repositório e dos testes executados em 04/09/2026.
 
 ```text
 branch integrada: main
-base funcional local utilizada: 1eb21ae
-última etapa integrada informada: ETAPA 6 — AULAS
-branch ativa: feature/progress
-tarefa pronta para revisão: ETAPA 7 — PROGRESSO
+base funcional local utilizada: 195bebf
+última etapa integrada informada: ETAPA 7 — PROGRESSO
+branch ativa: feature/admin
+tarefa pronta para revisão: ETAPA 8 — PAINEL ADMINISTRATIVO
 ```
 
 Histórico principal observado:
@@ -187,7 +187,7 @@ Validações reais registradas:
 - navegação entre Aula 1 e Aula 2 validada nos dois sentidos;
 - lint e build aprovados.
 
-### ETAPA 7 — concluída na branch `feature/progress`
+### ETAPA 7 — integração na `main` confirmada pelo usuário
 
 Implementação local atual:
 
@@ -209,12 +209,36 @@ Validações reais registradas:
 - conta `ADMIN` iniciou com `0%`, confirmando isolamento entre usuários;
 - Server Actions de conclusão executadas sem erro nos logs.
 
+### ETAPA 8 — concluída na branch `feature/admin`
+
+Implementação local atual:
+
+- painel central em `/admin` com totais de cursos, módulos, aulas e fontes;
+- visão consolidada da estrutura de cada curso;
+- acesso direto ao gerenciamento hierárquico já existente;
+- proteção de todo o segmento `/admin` por layout com `requireAdmin()`;
+- proteção mantida também nas consultas, Server Actions e policies RLS;
+- atualização do painel após mutações administrativas;
+- teste SQL cumulativo de autorização administrativa;
+- ausência de migration nova e de exclusão física.
+
+Validações locais registradas:
+
+- `npm.cmd run lint` aprovado;
+- `npm.cmd run build` aprovado, incluindo a rota dinâmica `/admin`;
+- `git diff --check` aprovado, com avisos de conversão LF/CRLF;
+- acesso a `/admin` sem sessão retornou redirecionamento HTTP 307 para `/login`;
+- teste SQL remoto aprovado no Supabase, conforme confirmação do usuário;
+- painel aprovado como `ADMIN`, exibindo 2 cursos, 1 publicado, 2 módulos,
+  2 de 2 aulas publicadas e 2 fontes;
+- navegação administrativa e bloqueio das rotas para `USER` aprovados.
+
 ## Próxima ação
 
-Revisar, criar o commit e integrar a branch `feature/progress` na `main`.
+Revisar, criar o commit e integrar a branch `feature/admin` na `main`.
 
-A ETAPA 8 — PAINEL ADMINISTRATIVO não deve ser iniciada antes da conclusão,
-integração e autorização explícita do desenvolvedor principal.
+O CHECKPOINT 1 permanece bloqueado até a integração da ETAPA 8 e autorização
+explícita do desenvolvedor principal.
 
 ## Pontos que não foram verificados externamente nesta análise
 
