@@ -175,3 +175,19 @@ texto dentro da aula.
 
 **JUSTIFICATIVA:** campos estruturados permitem validação, ordenação e
 rastreabilidade, sem completar dados bibliográficos por suposição.
+
+## D-018 — Conclusão imutável e progresso por aulas publicadas
+
+**DECISÃO:** registrar uma única conclusão por usuário e aula, sem oferecer
+remoção na ETAPA 7, e calcular o percentual somente sobre aulas publicadas do
+curso publicado.
+
+**MOTIVO:** a chave primária composta de `lesson_progress` já representa uma
+conclusão única e o percurso do usuário contém somente o conteúdo disponível.
+
+**ALTERNATIVAS CONSIDERADAS:** permitir marcar/desmarcar, contar rascunhos no
+total ou manter o progresso apenas no navegador.
+
+**JUSTIFICATIVA:** inserções imutáveis exigem menos permissões no banco,
+persistem entre sessões e evitam que rascunhos administrativos distorçam o
+percentual exibido ao usuário.

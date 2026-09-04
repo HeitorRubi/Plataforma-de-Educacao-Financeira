@@ -11,7 +11,7 @@ Este roadmap mantém o desenvolvimento incremental do projeto. Uma etapa não de
 - [x] ETAPA 4 — Cursos
 - [x] ETAPA 5 — Módulos
 - [x] ETAPA 6 — Aulas
-- [ ] ETAPA 7 — Progresso
+- [x] ETAPA 7 — Progresso
 - [ ] ETAPA 8 — Painel administrativo
 - [ ] CHECKPOINT 1 — Plataforma educacional
 - [ ] ETAPA 9 — Base de conhecimento

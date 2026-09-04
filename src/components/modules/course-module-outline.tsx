@@ -4,16 +4,20 @@ import type { LessonSummary } from "@/lib/lessons/types";
 import type { CourseModule } from "@/lib/modules/types";
 
 type CourseModuleOutlineProps = {
+  completedLessonIds: string[];
   courseId: string;
   lessons: LessonSummary[];
   modules: CourseModule[];
 };
 
 export function CourseModuleOutline({
+  completedLessonIds,
   courseId,
   lessons,
   modules,
 }: CourseModuleOutlineProps) {
+  const completedLessons = new Set(completedLessonIds);
+
   return (
     <section className="py-8">
       <div className="flex flex-wrap items-end justify-between gap-3">
@@ -58,18 +62,29 @@ export function CourseModuleOutline({
                     <ol className="mt-4 divide-y divide-neutral-200 border-y border-neutral-200">
                       {moduleLessons.map((lesson) => (
                         <li
-                          className="flex flex-wrap items-center justify-between gap-3 py-3"
+                          className="grid items-center gap-2 py-3 sm:grid-cols-[5rem_1fr_auto] sm:gap-4"
                           key={lesson.id}
                         >
                           <span className="text-sm text-neutral-500">
                             Aula {lesson.position}
                           </span>
                           <Link
-                            className="font-semibold text-emerald-800 hover:underline"
+                            className="font-semibold text-emerald-800 hover:underline sm:justify-self-start"
                             href={`/cursos/${courseId}/modulos/${module.id}/aulas/${lesson.id}`}
                           >
                             {lesson.title}
                           </Link>
+                          <span
+                            className={`text-sm font-medium ${
+                              completedLessons.has(lesson.id)
+                                ? "text-emerald-800"
+                                : "text-neutral-500"
+                            }`}
+                          >
+                            {completedLessons.has(lesson.id)
+                              ? "Concluída"
+                              : "Pendente"}
+                          </span>
                         </li>
                       ))}
                     </ol>

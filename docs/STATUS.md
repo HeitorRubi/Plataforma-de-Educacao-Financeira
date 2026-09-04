@@ -1,15 +1,15 @@
 # Status Atual do Projeto
 
-Atualizado a partir do repositório e dos testes executados em 03/09/2026.
+Atualizado a partir do repositório e dos testes executados em 04/09/2026.
 
 ## Baseline Git observado
 
 ```text
 branch integrada: main
-base funcional integrada observada: 65712a2
-última etapa integrada: ETAPA 5 — MÓDULOS
-branch ativa: feature/lessons
-tarefa pronta para revisão: ETAPA 6 — AULAS
+base funcional local utilizada: 1eb21ae
+última etapa integrada informada: ETAPA 6 — AULAS
+branch ativa: feature/progress
+tarefa pronta para revisão: ETAPA 7 — PROGRESSO
 ```
 
 Histórico principal observado:
@@ -151,7 +151,7 @@ Validações reais registradas:
 - controles administrativos não apareceram para o usuário comum;
 - lint e build aprovados.
 
-### ETAPA 6 — concluída na branch `feature/lessons`
+### ETAPA 6 — integração na `main` confirmada pelo usuário
 
 Implementação observada:
 
@@ -187,17 +187,39 @@ Validações reais registradas:
 - navegação entre Aula 1 e Aula 2 validada nos dois sentidos;
 - lint e build aprovados.
 
+### ETAPA 7 — concluída na branch `feature/progress`
+
+Implementação local atual:
+
+- conclusão de aula publicada por Server Action autenticada;
+- persistência em `lesson_progress` sem duplicidade;
+- RLS de leitura e inserção restritas ao próprio usuário;
+- quantidade, percentual e barra de progresso no curso;
+- estados `Concluída` e `Pendente` na lista de aulas;
+- ausência de `UPDATE`, `DELETE`, progresso administrativo ou gamificação.
+
+Validações reais registradas:
+
+- `npm.cmd run lint` aprovado;
+- `npm.cmd run build` aprovado;
+- `git diff --check` aprovado, com avisos de conversão LF/CRLF;
+- migration aplicada e teste SQL aprovado no Supabase;
+- `USER` concluiu duas aulas, passando de `0%` para `50%` e `100%`;
+- progresso permaneceu salvo após logout e novo login;
+- conta `ADMIN` iniciou com `0%`, confirmando isolamento entre usuários;
+- Server Actions de conclusão executadas sem erro nos logs.
+
 ## Próxima ação
 
-Revisar, criar o commit e integrar a branch `feature/lessons` na `main`.
+Revisar, criar o commit e integrar a branch `feature/progress` na `main`.
 
-A ETAPA 7 — PROGRESSO não deve ser iniciada antes dessa integração e de
-autorização explícita do desenvolvedor principal.
+A ETAPA 8 — PAINEL ADMINISTRATIVO não deve ser iniciada antes da conclusão,
+integração e autorização explícita do desenvolvedor principal.
 
 ## Pontos que não foram verificados externamente nesta análise
 
 O agente não consulta diretamente o painel do Supabase. O estado remoto das
-ETAPAS 4, 5 e 6 foi confirmado pelas execuções e imagens fornecidas pelo usuário.
+ETAPAS 4, 5, 6 e 7 foi confirmado pelas execuções e imagens fornecidas pelo usuário.
 
 Alterações externas futuras ainda precisam ser registradas e testadas; não se
 deve presumir que o painel permaneceu igual apenas com base neste documento.

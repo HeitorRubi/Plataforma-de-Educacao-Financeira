@@ -56,6 +56,13 @@ a confirmação ajuda a comprovar que o usuário controla o endereço cadastrado
   privilégio de atualização.
 - O perfil é criado automaticamente quando o Supabase cria o usuário.
 
+## Tratamento de indisponibilidade
+
+Falhas de conexão com o Supabase são informadas como indisponibilidade do
+serviço. Somente erros de autenticação retornados pelo Supabase são apresentados
+como e-mail ou senha inválidos. Isso evita atribuir incorretamente um problema de
+rede às credenciais do usuário.
+
 ## Decisão técnica
 
 ```text

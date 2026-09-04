@@ -74,6 +74,12 @@ Complementa o usuário mantido pelo Supabase Auth.
 | `lesson_id` | `uuid` | sim | PK composta e FK para `lessons.id` |
 | `completed_at` | `timestamptz` | sim | Data de conclusão |
 
+Na ETAPA 7, `authenticated` recebe apenas `SELECT` e `INSERT`. As policies RLS
+permitem consultar somente linhas cujo `user_id` corresponde a `auth.uid()` e
+inserir somente o próprio usuário em aulas publicadas de cursos publicados.
+Não há `UPDATE` ou `DELETE`; a chave primária composta torna a conclusão
+idempotente.
+
 ### lesson_sources
 
 | Campo | Tipo | Obrigatório | Regra |
@@ -111,6 +117,8 @@ As evoluções de acesso são feitas por migrations novas:
   administração somente para perfis `ADMIN`;
 - fontes: leitura vinculada à visibilidade da aula e administração somente para
   perfis `ADMIN`.
+- progresso: leitura e inserção somente para o próprio usuário, sem atualização
+  ou exclusão.
 
 A criação e a ordenação de módulos, aulas e fontes usam funções PostgreSQL
 transacionais com `SECURITY INVOKER`. Assim, a posição permanece única dentro
@@ -132,8 +140,8 @@ exposta no navegador.
 6. Confirme a mensagem `Estrutura educacional validada com sucesso.`.
 
 As migrations e os testes de acesso adicionados pelas etapas posteriores estão
-documentados em `docs/authentication.md`, `docs/courses.md`, `docs/modules.md` e
-`docs/lessons.md`.
+documentados em `docs/authentication.md`, `docs/courses.md`, `docs/modules.md`,
+`docs/lessons.md` e `docs/progress.md`.
 
 A migration ainda não aplicada não deve ser marcada como executada apenas por
 existir no repositório.

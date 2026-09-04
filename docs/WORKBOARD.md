@@ -8,48 +8,93 @@ Este arquivo é o quadro operacional compartilhado dos dois desenvolvedores e do
 
 ```text
 branch integrada: main
-base funcional integrada observada: 65712a2
-última etapa integrada observada: ETAPA 5 — MÓDULOS
-próxima etapa oficial: ETAPA 6 — AULAS
-branch de trabalho atual: feature/lessons
+base funcional local utilizada: 1eb21ae
+última etapa integrada informada: ETAPA 6 — AULAS
+próxima etapa oficial: ETAPA 7 — PROGRESSO
+branch de trabalho atual: feature/progress
 ```
 
 Antes de confiar nesse baseline, cada Codex deve comparar com o Git real.
 
-Em 03/09/2026, a branch `feature/lessons` foi criada a partir da `main` local
-limpa, alinhada ao `origin/main` observado em `65712a2`.
+Em 04/09/2026, o desenvolvedor principal confirmou a integração da ETAPA 6.
+O `git fetch origin` não pôde autenticar no terminal automatizado; por isso,
+`feature/progress` foi criada diretamente do commit local validado `1eb21ae`,
+que contém a implementação completa da ETAPA 6.
 
-## 2. Estratégia da ETAPA 6
+## 2. Estratégia da ETAPA 7
 
-A ETAPA 6 será implementada integralmente pelo desenvolvedor principal. O
-segundo desenvolvedor não possui uma trilha paralela de aulas e atuará somente
+A ETAPA 7 será implementada integralmente pelo desenvolvedor principal. O
+segundo desenvolvedor não possui uma trilha paralela de progresso e atuará somente
 em melhorias pequenas de etapas já implementadas, registradas separadamente
 neste quadro.
 
 ```text
 DESENVOLVEDOR PRINCIPAL
           ↓
-ADMINISTRAÇÃO DE AULAS
+LEITURA DA AULA PUBLICADA
           ↓
-CONTEÚDO TEXTUAL E FONTES
+CONCLUSÃO PELO USUÁRIO
           ↓
-PUBLICAÇÃO E ORDENAÇÃO
+PERSISTÊNCIA EM LESSON_PROGRESS
           ↓
-LEITURA E NAVEGAÇÃO
+RESUMO E PERCENTUAL DO CURSO
           ↓
-TESTE INTEGRADO DA ETAPA 6
+TESTE APÓS LOGOUT E NOVO LOGIN
 ```
 
-Esta tarefa não autoriza iniciar progresso.
+Esta tarefa não autoriza iniciar a consolidação administrativa da ETAPA 8.
 
 ---
 
 # DESENVOLVEDOR PRINCIPAL
 
-## Tarefa P-6 — Aulas completas
+## Tarefa P-7 — Progresso de aulas
 
 **Responsável:** Desenvolvedor principal
 **Status:** PRONTO PARA REVISÃO
+**Branch:** `feature/progress`
+
+### Objetivo
+
+Implementar a ETAPA 7 completa:
+
+- permitir que o usuário conclua uma aula publicada;
+- persistir a conclusão em `lesson_progress`;
+- impedir leitura ou escrita do progresso de outro usuário;
+- exibir aulas concluídas e pendentes no curso;
+- calcular quantidade concluída, total publicado e percentual;
+- manter o progresso após logout e novo login.
+
+### Áreas reservadas ao desenvolvedor principal
+
+```text
+src/app/cursos/[id]/page.tsx
+src/app/cursos/[id]/modulos/[moduleId]/aulas/[lessonId]/**
+src/components/progress/**
+src/components/modules/course-module-outline.tsx
+src/lib/progress/**
+supabase/migrations/*progress*.sql
+supabase/tests/*progress*.sql
+docs/progress.md
+docs/database.md
+docs/DECISIONS.md
+```
+
+### Regras
+
+- identidade deve ser derivada da sessão, nunca recebida do formulário;
+- usuário consulta e insere somente o próprio progresso;
+- conclusão é idempotente e não possui exclusão nesta etapa;
+- o percentual considera somente aulas publicadas do curso publicado;
+- não implementar relatórios administrativos ou gamificação;
+- alterações de banco devem usar uma migration nova.
+
+---
+
+## Tarefa P-6 — Aulas completas
+
+**Responsável:** Desenvolvedor principal
+**Status:** INTEGRADO
 **Branch:** `feature/lessons`
 
 ### Objetivo
@@ -194,23 +239,20 @@ Executar apenas melhorias pequenas em funcionalidades já implementadas. Cada
 melhoria deve possuir tarefa, branch, arquivos previstos e status registrados
 neste documento antes da alteração.
 
-### Não tocar durante a ETAPA 6 sem reatribuição explícita
+### Não tocar durante a ETAPA 7 sem reatribuição explícita
 
 ```text
-src/app/admin/cursos/[id]/modulos/[moduleId]/aulas/**
-src/app/cursos/[id]/modulos/[moduleId]/aulas/**
-src/components/lessons/**
-src/lib/lessons/**
-src/components/modules/admin/admin-module-list.tsx
+src/app/cursos/[id]/page.tsx
+src/app/cursos/[id]/modulos/[moduleId]/aulas/[lessonId]/**
+src/components/progress/**
 src/components/modules/course-module-outline.tsx
-supabase/migrations/*lesson*.sql
-supabase/tests/*lesson*.sql
-docs/lessons.md
-package.json
-package-lock.json
+src/lib/progress/**
+supabase/migrations/*progress*.sql
+supabase/tests/*progress*.sql
+docs/progress.md
 ```
 
-Se uma melhoria precisar alterar arquivo compartilhado ou código de aulas, o
+Se uma melhoria precisar alterar arquivo compartilhado ou código de progresso, o
 segundo desenvolvedor deve registrar a necessidade e aguardar coordenação.
 
 ---
@@ -354,6 +396,28 @@ Regras de acesso da ETAPA 6:
 
 ---
 
+# 3.3. Contrato compartilhado C-PROGRESS-001
+
+A tabela `public.lesson_progress` mantém semanticamente:
+
+```text
+user_id       uuid, PK composta e FK para profiles.id
+lesson_id     uuid, PK composta e FK para lessons.id
+completed_at  timestamptz preenchido pelo banco
+```
+
+Regras de acesso da ETAPA 7:
+
+- cada usuário autenticado consulta somente as próprias conclusões;
+- cada usuário insere somente o próprio `user_id`;
+- somente aulas publicadas de cursos publicados podem ser concluídas;
+- a mesma aula é concluída no máximo uma vez por usuário;
+- `anon` não possui acesso;
+- não há `UPDATE` nem `DELETE` nesta etapa;
+- o percentual usa aulas publicadas como total e conclusões do usuário como parte.
+
+---
+
 # 4. Arquivos compartilhados de alto risco
 
 Os seguintes arquivos não têm dono exclusivo e exigem coordenação:
@@ -404,10 +468,10 @@ Confirmar que o projeto está sincronizado.
 
 ## Passo 1 — criar a branch da tarefa
 
-ETAPA 6:
+ETAPA 7:
 
 ```bash
-git switch -c feature/lessons
+git switch -c feature/progress
 ```
 
 A criação/troca de branch deve ser feita pelo humano ou com autorização explícita ao agente.
@@ -418,7 +482,7 @@ compatíveis com a tarefa registrada.
 ## Passo 2 — autorizar a tarefa
 
 ```text
-INICIAR ETAPA 6
+INICIAR ETAPA 7
 ```
 
 ## Passo 3 — trabalhar sem cruzar responsabilidades
@@ -427,26 +491,25 @@ Cada Codex deve permanecer na tarefa e nos arquivos registrados.
 
 ## Passo 4 — integração
 
-A ETAPA 6 deve ser revisada e integrada por Pull Request/merge consciente. Uma
+A ETAPA 7 deve ser revisada e integrada por Pull Request/merge consciente. Uma
 melhoria paralela só deve ser integrada depois de verificar conflitos e repetir
 os testes afetados.
 
-## Passo 5 — teste integrado da ETAPA 6
+## Passo 5 — teste integrado da ETAPA 7
 
-A ETAPA 6 só pode ser marcada como concluída quando:
+A ETAPA 7 só pode ser marcada como concluída quando:
 
 ```text
-ADMIN cria aula → adiciona fonte → publica
-USER lê aula → navega para anterior/próxima → consulta fontes
+USER abre aula publicada → conclui aula → progresso do curso é atualizado
 ```
 
 e também for validado que:
 
 ```text
-aula não publicada → não aparece para USER
+logout → novo login → conclusão e percentual continuam salvos
 ```
 
-Somente depois a ETAPA 7 pode ser considerada elegível.
+Somente depois a ETAPA 8 pode ser considerada elegível.
 
 ---
 
@@ -455,7 +518,8 @@ Somente depois a ETAPA 7 pode ser considerada elegível.
 ```text
 P-4: INTEGRADO — main 94e7a2f
 P-5: INTEGRADO — main 65712a2
-P-6: PRONTO PARA REVISÃO — feature/lessons
+P-6: INTEGRADO — commit funcional 1eb21ae; merge confirmado pelo usuário
+P-7: PRONTO PARA REVISÃO — feature/progress
 Segundo desenvolvedor: NENHUMA TAREFA ATIVA REGISTRADA
 ```
 
@@ -663,8 +727,8 @@ HANDOFF
 Responsável: Desenvolvedor principal
 Tarefa: P-6 — Aulas completas
 Branch: feature/lessons
-Commit/PR: ainda não criado
-Status: PRONTO PARA REVISÃO
+Commit/PR: 1eb21ae / integração na main confirmada pelo usuário
+Status: INTEGRADO
 
 Arquivos principais alterados:
 - src/app/admin/cursos/[id]/modulos/[moduleId]/**
@@ -713,7 +777,7 @@ Pendências:
 - nenhuma pendência funcional da ETAPA 6
 
 Dependências para integração:
-- criar commit e integrar feature/lessons na main
+- integração confirmada pelo usuário em 04/09/2026
 
 Arquivos compartilhados tocados:
 - src/app/cursos/[id]/page.tsx
@@ -732,4 +796,77 @@ Observações para o outro desenvolvedor:
 - não alterar arquivos reservados de aulas antes da integração
 - não criar migration concorrente para public.lessons ou public.lesson_sources
 - lesson_progress permaneceu fora do escopo e sem novos privilégios
+```
+
+## Handoff P-7 — ETAPA 7
+
+```text
+HANDOFF
+
+Responsável: Desenvolvedor principal
+Tarefa: P-7 — Progresso de aulas
+Branch: feature/progress
+Commit/PR: ainda não criado
+Status: PRONTO PARA REVISÃO
+
+Arquivos principais alterados:
+- src/app/cursos/[id]/page.tsx
+- src/app/cursos/[id]/modulos/[moduleId]/aulas/[lessonId]/actions.ts
+- src/app/cursos/[id]/modulos/[moduleId]/aulas/[lessonId]/page.tsx
+- src/components/modules/course-module-outline.tsx
+- src/components/progress/**
+- src/lib/progress/**
+- src/app/auth/actions.ts
+- docs/progress.md
+- docs/authentication.md
+- docs/database.md
+- docs/DECISIONS.md
+- docs/ROADMAP.md
+- docs/STATUS.md
+- docs/WORKBOARD.md
+
+Banco/migrations:
+- supabase/migrations/20260904000000_configure_lesson_progress.sql
+- migration aplicada no Supabase compartilhado, conforme confirmação do usuário
+- supabase/tests/lesson_progress_validation.sql aprovado
+
+Testes executados:
+- git diff --check
+- npm.cmd run lint
+- npm.cmd run build
+- inicialização do servidor Next.js com acesso ao Supabase
+- conclusão de duas aulas como USER
+- cálculo de 1/2 = 50% e 2/2 = 100%
+- logout e novo login com manutenção do progresso
+- login com outra conta e verificação de isolamento
+
+Resultados reais:
+- teste SQL concluído sem exceção
+- completeLessonAction executada sem erro para as duas aulas
+- progresso persistiu após logout e novo login
+- conta USER manteve 100% e conta ADMIN iniciou com 0%
+- aulas concluídas e pendentes foram identificadas na lista do curso
+- falha de rede do Auth passou a ser diferenciada de credenciais inválidas
+
+Pendências:
+- nenhuma pendência funcional da ETAPA 7
+
+Dependências para integração:
+- criar commit e integrar feature/progress na main
+
+Arquivos compartilhados tocados:
+- src/app/cursos/[id]/page.tsx
+- src/components/modules/course-module-outline.tsx
+- src/app/auth/actions.ts
+- docs/authentication.md
+- docs/database.md
+- docs/DECISIONS.md
+- docs/ROADMAP.md
+- docs/STATUS.md
+- docs/WORKBOARD.md
+
+Observações para o outro desenvolvedor:
+- não alterar lesson_progress antes da integração desta branch
+- não criar migration concorrente para public.lesson_progress
+- relatórios administrativos e progresso agregado ficaram fora do escopo
 ```

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { AuthenticatedHeader } from "@/components/auth/authenticated-header";
 import { LessonSources } from "@/components/lessons/lesson-sources";
 import { MarkdownContent } from "@/components/lessons/markdown-content";
+import { LessonCompletionForm } from "@/components/progress/lesson-completion-form";
 import { requireUser } from "@/lib/auth/session";
 import { getPublishedCourse } from "@/lib/courses/queries";
 import {
@@ -12,6 +13,7 @@ import {
   listPublishedLessonSources,
 } from "@/lib/lessons/queries";
 import { listPublishedCourseModules } from "@/lib/modules/queries";
+import { listUserLessonProgress } from "@/lib/progress/queries";
 
 export default async function LessonPage({
   params,
@@ -31,9 +33,10 @@ export default async function LessonPage({
     notFound();
   }
 
-  const [lessonSummaries, sources] = await Promise.all([
+  const [lessonSummaries, sources, lessonProgress] = await Promise.all([
     listPublishedLessonsForModules(modules.map((item) => item.id)),
     listPublishedLessonSources(lesson.id),
+    listUserLessonProgress([lesson.id]),
   ]);
   const orderedLessons = modules.flatMap((courseModule) =>
     lessonSummaries.filter((item) => item.module_id === courseModule.id),
@@ -82,6 +85,13 @@ export default async function LessonPage({
           </section>
 
           <LessonSources sources={sources} />
+
+          <LessonCompletionForm
+            courseId={courseId}
+            isCompleted={lessonProgress.length > 0}
+            lessonId={lesson.id}
+            moduleId={courseModule.id}
+          />
         </article>
 
         <nav
