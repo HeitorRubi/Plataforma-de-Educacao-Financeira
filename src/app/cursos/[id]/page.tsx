@@ -4,9 +4,15 @@ import { notFound } from "next/navigation";
 import { AuthenticatedHeader } from "@/components/auth/authenticated-header";
 import { CourseStatus } from "@/components/courses/course-status";
 import { CourseModuleOutline } from "@/components/modules/course-module-outline";
+import { CourseProgressSummary } from "@/components/progress/course-progress-summary";
 import { requireUser } from "@/lib/auth/session";
 import { getPublishedCourse } from "@/lib/courses/queries";
+import { listPublishedLessonsForModules } from "@/lib/lessons/queries";
 import { listPublishedCourseModules } from "@/lib/modules/queries";
+import {
+  calculateCourseProgress,
+  listUserLessonProgress,
+} from "@/lib/progress/queries";
 
 export default async function CoursePage({
   params,
@@ -24,6 +30,17 @@ export default async function CoursePage({
     notFound();
   }
 
+  const lessons = await listPublishedLessonsForModules(
+    modules.map((module) => module.id),
+  );
+  const lessonProgress = await listUserLessonProgress(
+    lessons.map((lesson) => lesson.id),
+  );
+  const completedLessonIds = lessonProgress.map((item) => item.lesson_id);
+  const courseProgress = calculateCourseProgress(
+    lessons.map((lesson) => lesson.id),
+    lessonProgress,
+  );
   const displayName = user.profile.full_name ?? "Usuário";
 
   return (
@@ -50,7 +67,14 @@ export default async function CoursePage({
             </p>
           </div>
 
-          <CourseModuleOutline modules={modules} />
+          <CourseProgressSummary progress={courseProgress} />
+
+          <CourseModuleOutline
+            completedLessonIds={completedLessonIds}
+            courseId={course.id}
+            lessons={lessons}
+            modules={modules}
+          />
         </article>
       </main>
     </div>

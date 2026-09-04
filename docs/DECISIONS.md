@@ -133,3 +133,61 @@ privilégios ou utilizar `service_role`.
 **JUSTIFICATIVA:** a publicação individual não foi solicitada para a ETAPA 5 e
 alteraria a modelagem sem necessidade. Usuários comuns veem módulos somente
 quando `courses.is_published = true`.
+
+## D-015 — Markdown para o conteúdo das aulas
+
+**DECISÃO:** armazenar `lessons.content` como Markdown e renderizar com
+`react-markdown`, sem habilitar HTML bruto.
+
+**MOTIVO:** o formato suporta texto, subtítulos, listas, links e imagens usando o
+campo `text` já existente no banco.
+
+**ALTERNATIVAS CONSIDERADAS:** texto sem formatação, HTML armazenado diretamente
+ou um editor visual completo.
+
+**JUSTIFICATIVA:** Markdown atende ao MVP com menor complexidade. A biblioteca
+evita implementar um parser próprio e não depende de `dangerouslySetInnerHTML`.
+
+## D-016 — Publicação e navegação das aulas
+
+**DECISÃO:** permitir leitura somente de aulas publicadas pertencentes a cursos
+publicados e calcular anterior/próxima pela ordem de módulos e aulas.
+
+**MOTIVO:** rascunhos não podem aparecer no catálogo nem participar do percurso
+de aprendizagem do usuário.
+
+**ALTERNATIVAS CONSIDERADAS:** navegar somente dentro do módulo ou expor todos
+os registros e filtrar apenas na interface.
+
+**JUSTIFICATIVA:** a sequência pelo curso mantém a leitura contínua entre
+módulos, enquanto o RLS protege rascunhos mesmo fora da interface.
+
+## D-017 — Fontes como dados estruturados
+
+**DECISÃO:** armazenar título, autor, URL e ano em `lesson_sources`, mantendo
+campos incompletos como nulos.
+
+**MOTIVO:** referências precisam ser exibidas e posteriormente associadas ao
+chatbot sem inventar informações ausentes.
+
+**ALTERNATIVAS CONSIDERADAS:** salvar todas as referências em um único campo de
+texto dentro da aula.
+
+**JUSTIFICATIVA:** campos estruturados permitem validação, ordenação e
+rastreabilidade, sem completar dados bibliográficos por suposição.
+
+## D-018 — Conclusão imutável e progresso por aulas publicadas
+
+**DECISÃO:** registrar uma única conclusão por usuário e aula, sem oferecer
+remoção na ETAPA 7, e calcular o percentual somente sobre aulas publicadas do
+curso publicado.
+
+**MOTIVO:** a chave primária composta de `lesson_progress` já representa uma
+conclusão única e o percurso do usuário contém somente o conteúdo disponível.
+
+**ALTERNATIVAS CONSIDERADAS:** permitir marcar/desmarcar, contar rascunhos no
+total ou manter o progresso apenas no navegador.
+
+**JUSTIFICATIVA:** inserções imutáveis exigem menos permissões no banco,
+persistem entre sessões e evitam que rascunhos administrativos distorçam o
+percentual exibido ao usuário.

@@ -29,8 +29,14 @@ function validatePassword(password: string) {
 }
 
 function getAuthErrorMessage(error: AuthError, operation: "login" | "signup") {
+  if (error.status === 0 || error.message.toLowerCase().includes("fetch failed")) {
+    return "Não foi possível conectar ao serviço de autenticação. Tente novamente em instantes.";
+  }
+
   if (operation === "login") {
-    return "E-mail ou senha inválidos.";
+    return error.code === "invalid_credentials"
+      ? "E-mail ou senha inválidos."
+      : "Não foi possível entrar. Tente novamente.";
   }
 
   switch (error.code) {
