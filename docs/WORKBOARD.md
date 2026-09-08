@@ -8,47 +8,117 @@ Este arquivo é o quadro operacional compartilhado dos dois desenvolvedores e do
 
 ```text
 branch integrada: main
-base funcional integrada observada: 149068b
-última etapa integrada: ETAPA 8 — PAINEL ADMINISTRATIVO
-tarefa oficial atual: CHECKPOINT 1 CONCLUÍDO — AGUARDANDO INTEGRAÇÃO
-branch de trabalho atual: test/checkpoint-1
+base funcional integrada observada: eb1e008
+última validação integrada: CHECKPOINT 1 — PLATAFORMA EDUCACIONAL
+tarefa oficial atual: ETAPA 9 — BASE DE CONHECIMENTO
+branch de trabalho atual: feature/knowledge-base
 ```
 
 Antes de confiar nesse baseline, cada Codex deve comparar com o Git real.
 
-Em 08/09/2026, o Git confirmou `main` e `origin/main` alinhadas em `149068b`,
-com a ETAPA 8 integrada. A branch `test/checkpoint-1` foi criada dessa base.
+Em 08/09/2026, o Git confirmou `main` e `origin/main` alinhadas em `eb1e008`,
+com o CHECKPOINT 1 integrado. A branch `feature/knowledge-base` foi criada dessa
+base.
 
-## 2. Estratégia do CHECKPOINT 1
+## 2. Estratégia da ETAPA 9
 
-O CHECKPOINT 1 será executado pelo desenvolvedor principal para validar a
-plataforma educacional integrada. O segundo desenvolvedor não possui tarefa
-ativa nesta área.
+A ETAPA 9 será executada pelo desenvolvedor principal para preparar o conteúdo
+publicado que a recuperação da ETAPA 10 poderá consumir. O segundo desenvolvedor
+não possui tarefa ativa nesta área.
 
 ```text
-DESENVOLVEDOR PRINCIPAL
+CONTEÚDO EDITORIAL PUBLICADO
           ↓
-FLUXO ADMINISTRATIVO COMPLETO
+VIEW SEGURA E SEM CÓPIA
           ↓
-CADASTRO E LOGIN DE USER
+DOCUMENTOS COM FONTES
           ↓
-CURSO, MÓDULOS E AULAS PUBLICADAS
+TRECHOS DETERMINÍSTICOS NO SERVIDOR
           ↓
-CONCLUSÃO E PERSISTÊNCIA DO PROGRESSO
-          ↓
-ISOLAMENTO E AUTORIZAÇÃO
+INSPEÇÃO ADMINISTRATIVA
 ```
 
-Esta tarefa não autoriza iniciar funcionalidades de IA.
+Esta tarefa não autoriza OpenAI, embeddings, recuperação por pergunta ou chat.
 
 ---
 
 # DESENVOLVEDOR PRINCIPAL
 
-## Tarefa CP-1 — Validação da plataforma educacional
+## Tarefa P-9 — Base de conhecimento
 
 **Responsável:** Desenvolvedor principal
 **Status:** PRONTO PARA REVISÃO
+**Branch:** `feature/knowledge-base`
+
+### Objetivo
+
+Preparar o conteúdo publicado da plataforma para a recuperação da ETAPA 10,
+mantendo vínculo rastreável com curso, módulo, aula e fontes.
+
+### Áreas reservadas ao desenvolvedor principal
+
+```text
+src/app/admin/base-conhecimento/**
+src/lib/knowledge/**
+src/components/courses/admin/admin-courses-nav.tsx
+supabase/migrations/*knowledge*.sql
+supabase/tests/*knowledge*.sql
+docs/knowledge-base.md
+docs/database.md
+docs/DECISIONS.md
+docs/ROADMAP.md
+docs/STATUS.md
+docs/WORKBOARD.md
+```
+
+### Regras
+
+- incluir somente aulas publicadas de cursos publicados;
+- preservar fontes estruturadas sem completar dados ausentes por suposição;
+- manter a consulta sob a sessão e o RLS existentes;
+- não usar `service_role`;
+- não chamar OpenAI nem gerar embeddings;
+- não implementar busca por pergunta, resposta ou interface de chatbot;
+- alterações de banco devem usar uma migration nova.
+
+### Dependências
+
+- CHECKPOINT 1 integrado na `main` em `eb1e008`;
+- conteúdo editorial e fontes das ETAPAS 4 a 6;
+- autenticação e proteção administrativa existentes.
+
+### Implementação local atual
+
+- view `knowledge_documents` baseada em conteúdo publicado;
+- consulta server-only e DTOs mínimos para documentos e fontes;
+- particionamento Markdown de até 1.200 caracteres;
+- inspeção em `/admin/base-conhecimento`;
+- migration e teste SQL próprios da etapa.
+
+### Validações locais executadas
+
+- `npm.cmd run lint` aprovado;
+- `npm.cmd run build` aprovado;
+- particionamento validado com conteúdo acima do limite;
+- `git diff --check` sem erros;
+- migration aplicada no Supabase compartilhado;
+- teste SQL aprovado sem exceção;
+- painel administrativo exibiu 1 curso, 2 aulas, 2 trechos e 2 fontes;
+- rascunhos permaneceram fora da base;
+- `USER` foi redirecionado de `/admin/base-conhecimento` para
+  `/area-autenticada`.
+
+### Pendente
+
+- revisar, versionar e integrar a ETAPA 9 na `main`;
+- não iniciar a ETAPA 10 sem integração e autorização explícita.
+
+---
+
+## Tarefa CP-1 — Validação da plataforma educacional
+
+**Responsável:** Desenvolvedor principal
+**Status:** INTEGRADO
 **Branch:** `test/checkpoint-1`
 
 ### Objetivo
@@ -93,10 +163,10 @@ docs/ROADMAP.md
 - bloqueio de `/admin` e `/admin/cursos` para `USER` aprovado;
 - outra conta iniciou com `0%`, confirmando o isolamento do progresso.
 
-### Pendente
+### Integração
 
-- revisar, versionar e integrar a documentação do CHECKPOINT 1 na `main`;
-- não iniciar a ETAPA 9 sem autorização explícita do desenvolvedor principal.
+- documentação integrada na `main` em `eb1e008`;
+- ETAPA 9 autorizada explicitamente pelo desenvolvedor principal.
 
 ---
 
@@ -611,7 +681,8 @@ P-5: INTEGRADO — main 65712a2
 P-6: INTEGRADO — commit funcional 1eb21ae; merge confirmado pelo usuário
 P-7: INTEGRADO — commit funcional 195bebf; merge confirmado pelo usuário
 P-8: INTEGRADO — main 149068b
-CP-1: PRONTO PARA REVISÃO — test/checkpoint-1
+CP-1: INTEGRADO — main eb1e008
+P-9: PRONTO PARA REVISÃO — feature/knowledge-base
 Segundo desenvolvedor: NENHUMA TAREFA ATIVA REGISTRADA
 ```
 
@@ -1041,8 +1112,8 @@ HANDOFF
 Responsável: Desenvolvedor principal
 Tarefa: CP-1 — Validação da plataforma educacional
 Branch: test/checkpoint-1
-Commit/PR: aguardando versionamento e integração
-Status: PRONTO PARA REVISÃO
+Commit/PR: ccb5e35 / integrado na main em eb1e008
+Status: INTEGRADO
 
 Arquivos principais alterados:
 - docs/checkpoint-1.md
@@ -1076,11 +1147,10 @@ Resultados reais:
 - outra conta iniciou em 0% e não recebeu o progresso da primeira conta
 
 Pendências:
-- versionar e integrar apenas a documentação do checkpoint na main
-- obter autorização explícita antes de iniciar a ETAPA 9
+- nenhuma pendência do CHECKPOINT 1
 
 Dependências para integração:
-- revisão dos quatro arquivos de documentação da branch test/checkpoint-1
+- integração concluída na main em eb1e008
 
 Arquivos compartilhados tocados:
 - docs/STATUS.md
@@ -1090,5 +1160,74 @@ Arquivos compartilhados tocados:
 Observações para o outro desenvolvedor:
 - CHECKPOINT 1 aprovado funcionalmente em 08/09/2026
 - nenhuma funcionalidade ou estrutura de banco foi alterada
-- ETAPA 9 permanece sem autorização de início
+- ETAPA 9 autorizada na branch feature/knowledge-base
+```
+
+## Handoff P-9 — ETAPA 9
+
+```text
+HANDOFF
+
+Responsável: Desenvolvedor principal
+Tarefa: P-9 — Base de conhecimento
+Branch: feature/knowledge-base
+Commit/PR: aguardando versionamento e integração
+Status: PRONTO PARA REVISÃO
+
+Arquivos principais alterados:
+- src/app/admin/base-conhecimento/**
+- src/lib/knowledge/**
+- src/components/courses/admin/admin-courses-nav.tsx
+- supabase/migrations/20260908000000_create_knowledge_documents_view.sql
+- supabase/tests/knowledge_base_validation.sql
+- docs/knowledge-base.md
+- docs/database.md
+- docs/DECISIONS.md
+- docs/ROADMAP.md
+- docs/STATUS.md
+- docs/WORKBOARD.md
+
+Banco/migrations:
+- nova view public.knowledge_documents
+- view security_invoker e security_barrier
+- authenticated com apenas SELECT e anon sem acesso
+- migration aplicada no Supabase compartilhado
+
+Testes executados:
+- npm.cmd run lint
+- npm.cmd run build
+- git diff --check
+- teste local do particionamento Markdown
+- supabase/tests/knowledge_base_validation.sql
+- acesso à base como ADMIN
+- acesso direto à rota como USER
+
+Resultados reais:
+- lint e build aprovados
+- particionamento não gerou trechos vazios ou acima de 1.200 caracteres
+- teste SQL concluído sem exceção
+- painel exibiu 1 curso, 2 aulas, 2 trechos e 2 fontes
+- conteúdo em rascunho permaneceu fora da base
+- vínculo para a aula funcionou
+- USER recebeu HTTP 307 e foi redirecionado para /area-autenticada
+
+Pendências:
+- versionar e integrar a ETAPA 9 na main
+- obter autorização explícita antes de iniciar a ETAPA 10
+
+Dependências para integração:
+- revisar migration, teste SQL, camada server-only e rota administrativa
+
+Arquivos compartilhados tocados:
+- src/components/courses/admin/admin-courses-nav.tsx
+- docs/database.md
+- docs/DECISIONS.md
+- docs/ROADMAP.md
+- docs/STATUS.md
+- docs/WORKBOARD.md
+
+Observações para o outro desenvolvedor:
+- a base deriva diretamente do conteúdo publicado e não exige sincronização
+- nenhuma chamada OpenAI, embedding, busca ou interface de chat foi criada
+- não criar migration concorrente para public.knowledge_documents
 ```

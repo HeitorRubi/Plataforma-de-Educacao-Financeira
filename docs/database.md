@@ -14,6 +14,10 @@ lessons    (1) ─── (N) lesson_progress
 courses        (1) ─── (N) modules
 modules        (1) ─── (N) lessons
 lessons        (1) ─── (N) lesson_sources
+
+courses + modules + lessons + lesson_sources
+                  ↓
+         knowledge_documents (view)
 ```
 
 ## Tabelas
@@ -94,6 +98,18 @@ idempotente.
 | `created_at` | `timestamptz` | sim | Preenchido pelo banco |
 | `updated_at` | `timestamptz` | sim | Atualizado por trigger |
 
+## Estruturas derivadas
+
+### knowledge_documents
+
+View somente de leitura criada na ETAPA 9. Cada documento representa uma aula
+com conteúdo, publicada dentro de um curso publicado. A view reúne o contexto do
+curso, módulo e aula e agrega as fontes da aula em JSON ordenado.
+
+Ela usa `security_invoker` para manter as policies RLS das tabelas de origem e
+`security_barrier` para preservar seus filtros. Não existe cópia ou sincronização:
+alterações de publicação e conteúdo são refletidas na próxima consulta.
+
 ## Exclusões relacionadas
 
 - Excluir um usuário remove seu perfil e seu progresso.
@@ -119,6 +135,8 @@ As evoluções de acesso são feitas por migrations novas:
   perfis `ADMIN`.
 - progresso: leitura e inserção somente para o próprio usuário, sem atualização
   ou exclusão.
+- base de conhecimento: `SELECT` autenticado na view `knowledge_documents`, com
+  `anon` revogado e RLS herdado das tabelas de conteúdo por `security_invoker`.
 
 A criação e a ordenação de módulos, aulas e fontes usam funções PostgreSQL
 transacionais com `SECURITY INVOKER`. Assim, a posição permanece única dentro
@@ -129,6 +147,12 @@ Na ETAPA 8 não houve alteração de schema ou de políticas. O arquivo
 `supabase/tests/admin_access_validation.sql` consolida a verificação das quatro
 tabelas de conteúdo, das doze policies administrativas, da ausência de escrita
 para usuários comuns e das funções de criação/ordenação com `SECURITY INVOKER`.
+
+Na ETAPA 9, a view `knowledge_documents` expõe somente aulas publicadas de
+cursos publicados com conteúdo não vazio. Os trechos usados pela aplicação são
+derivados no servidor e não criam uma tabela adicional. A migration e o teste
+SQL foram aplicados e aprovados no Supabase compartilhado em 08/09/2026,
+conforme confirmação do desenvolvedor principal.
 
 `service_role` mantém acesso administrativo no Supabase e nunca deverá ser
 exposta no navegador.
@@ -147,6 +171,9 @@ exposta no navegador.
 As migrations e os testes de acesso adicionados pelas etapas posteriores estão
 documentados em `docs/authentication.md`, `docs/courses.md`, `docs/modules.md`,
 `docs/lessons.md`, `docs/progress.md` e `docs/administration.md`.
+
+A base de conhecimento e seu teste estão documentados em
+`docs/knowledge-base.md`.
 
 A migration ainda não aplicada não deve ser marcada como executada apenas por
 existir no repositório.

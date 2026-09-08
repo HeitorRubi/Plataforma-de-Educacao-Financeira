@@ -21,6 +21,12 @@ export function AdminCoursesNav() {
       >
         Criar curso
       </Link>
+      <Link
+        className="text-sm font-semibold text-emerald-800 hover:underline"
+        href="/admin/base-conhecimento"
+      >
+        Base de conhecimento
+      </Link>
     </nav>
   );
 }

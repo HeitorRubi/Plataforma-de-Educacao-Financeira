@@ -6,15 +6,16 @@ Atualizado a partir do repositório e dos testes executados em 08/09/2026.
 
 ```text
 branch integrada: main
-base funcional integrada observada: 149068b
-última etapa integrada: ETAPA 8 — PAINEL ADMINISTRATIVO
-branch ativa: test/checkpoint-1
-tarefa atual: CHECKPOINT 1 CONCLUÍDO — AGUARDANDO INTEGRAÇÃO
+base funcional integrada observada: eb1e008
+última validação integrada: CHECKPOINT 1 — PLATAFORMA EDUCACIONAL
+branch ativa: feature/knowledge-base
+tarefa atual: ETAPA 9 — BASE DE CONHECIMENTO
 ```
 
 Histórico principal observado:
 
 ```text
+eb1e008  Documentação e aprovação do CHECKPOINT 1 integradas à main
 149068b  Painel administrativo integrado à main
 2c143d1  Progresso de aulas integrado à main
 99c9495  Implementação do painel administrativo
@@ -238,7 +239,7 @@ Validações locais registradas:
   2 de 2 aulas publicadas e 2 fontes;
 - navegação administrativa e bloqueio das rotas para `USER` aprovados.
 
-### CHECKPOINT 1 — concluído na branch `test/checkpoint-1`
+### CHECKPOINT 1 — integrado na `main`
 
 Validações locais registradas:
 
@@ -258,12 +259,39 @@ Validações locais registradas:
 - acesso direto de `USER` a `/admin` e `/admin/cursos` foi bloqueado;
 - outra conta iniciou o curso em `0%`, confirmando o isolamento do progresso.
 
+### ETAPA 9 — concluída na branch `feature/knowledge-base`
+
+Implementação local atual:
+
+- view `knowledge_documents` derivada somente de aulas e cursos publicados;
+- fontes estruturadas agregadas e ordenadas em cada documento;
+- `security_invoker`, `security_barrier` e acesso somente de leitura;
+- preparação server-only de trechos Markdown de até 1.200 caracteres;
+- rota administrativa `/admin/base-conhecimento` com cobertura, documentos,
+  trechos e fontes;
+- teste SQL estrutural e de privilégios;
+- ausência de embeddings, OpenAI, busca por pergunta e chatbot.
+
+Validações locais registradas:
+
+- `npm.cmd run lint` aprovado;
+- `npm.cmd run build` aprovado, incluindo `/admin/base-conhecimento`;
+- particionamento validado com blocos longos, sem trechos vazios ou acima do
+  limite configurado;
+- migration aplicada no Supabase compartilhado;
+- `supabase/tests/knowledge_base_validation.sql` aprovado sem exceção;
+- painel confirmou 1 curso coberto, 2 aulas disponíveis, 2 trechos preparados e
+  2 fontes associadas;
+- somente o curso e as aulas publicados apareceram na base;
+- vínculo para abrir a aula respondeu corretamente;
+- acesso como `USER` recebeu HTTP 307 e redirecionou para
+  `/area-autenticada`.
+
 ## Próxima ação
 
-Revisar e integrar a documentação da branch `test/checkpoint-1` na `main`.
-
-O CHECKPOINT 1 está aprovado. A ETAPA 9 não deve ser iniciada antes da integração
-desta documentação e de autorização explícita do desenvolvedor principal.
+Revisar, versionar e integrar a ETAPA 9 na `main`. A ETAPA 10 não deve ser
+iniciada antes da integração e de autorização explícita do desenvolvedor
+principal.
 
 ## Pontos que não foram verificados externamente nesta análise
 
