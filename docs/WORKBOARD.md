@@ -8,50 +8,102 @@ Este arquivo é o quadro operacional compartilhado dos dois desenvolvedores e do
 
 ```text
 branch integrada: main
-base funcional local utilizada: 195bebf
-última etapa integrada informada: ETAPA 7 — PROGRESSO
-etapa oficial atual: ETAPA 8 — PAINEL ADMINISTRATIVO
-branch de trabalho atual: feature/admin
+base funcional integrada observada: 149068b
+última etapa integrada: ETAPA 8 — PAINEL ADMINISTRATIVO
+tarefa oficial atual: CHECKPOINT 1 CONCLUÍDO — AGUARDANDO INTEGRAÇÃO
+branch de trabalho atual: test/checkpoint-1
 ```
 
 Antes de confiar nesse baseline, cada Codex deve comparar com o Git real.
 
-Em 04/09/2026, o desenvolvedor principal confirmou a integração da ETAPA 7.
-O `git fetch origin` não pôde autenticar no terminal automatizado; por isso,
-`feature/admin` foi criada diretamente do commit local validado `195bebf`, que
-contém a implementação completa e validada da ETAPA 7.
+Em 08/09/2026, o Git confirmou `main` e `origin/main` alinhadas em `149068b`,
+com a ETAPA 8 integrada. A branch `test/checkpoint-1` foi criada dessa base.
 
-## 2. Estratégia da ETAPA 8
+## 2. Estratégia do CHECKPOINT 1
 
-A ETAPA 8 será implementada integralmente pelo desenvolvedor principal. O
-segundo desenvolvedor não possui uma trilha paralela administrativa e atuará
-somente em melhorias pequenas de etapas já implementadas, registradas
-separadamente neste quadro.
+O CHECKPOINT 1 será executado pelo desenvolvedor principal para validar a
+plataforma educacional integrada. O segundo desenvolvedor não possui tarefa
+ativa nesta área.
 
 ```text
 DESENVOLVEDOR PRINCIPAL
           ↓
-PAINEL ADMINISTRATIVO
+FLUXO ADMINISTRATIVO COMPLETO
           ↓
-CURSOS E PUBLICAÇÃO
+CADASTRO E LOGIN DE USER
           ↓
-MÓDULOS E ORDEM
+CURSO, MÓDULOS E AULAS PUBLICADAS
           ↓
-AULAS, FONTES E ORDEM
+CONCLUSÃO E PERSISTÊNCIA DO PROGRESSO
           ↓
-VALIDAÇÃO DE BLOQUEIO PARA USER
+ISOLAMENTO E AUTORIZAÇÃO
 ```
 
-Esta tarefa não autoriza iniciar funcionalidades de IA ou o CHECKPOINT 1.
+Esta tarefa não autoriza iniciar funcionalidades de IA.
 
 ---
 
 # DESENVOLVEDOR PRINCIPAL
 
-## Tarefa P-8 — Painel administrativo
+## Tarefa CP-1 — Validação da plataforma educacional
 
 **Responsável:** Desenvolvedor principal
 **Status:** PRONTO PARA REVISÃO
+**Branch:** `test/checkpoint-1`
+
+### Objetivo
+
+Executar e documentar os fluxos integrados definidos em
+`docs/checkpoint-1.md`, sem adicionar funcionalidades ou alterar o banco.
+
+### Áreas reservadas ao desenvolvedor principal
+
+```text
+docs/checkpoint-1.md
+docs/STATUS.md
+docs/WORKBOARD.md
+docs/ROADMAP.md
+```
+
+### Regras
+
+- não iniciar a ETAPA 9;
+- não criar migration;
+- não alterar funcionalidades durante o checkpoint sem registrar um defeito;
+- não inventar resultados de testes;
+- não compartilhar credenciais nas evidências.
+
+### Validações locais executadas
+
+- `npm.cmd run lint` aprovado;
+- `npm.cmd run build` aprovado;
+- rotas `/`, `/login` e `/cadastro` responderam HTTP 200;
+- `/admin` sem sessão redirecionou por HTTP 307 para `/login`;
+- `/cursos` sem sessão enviou redirecionamento por streaming para `/login` sem
+  exibir o catálogo.
+
+### Validações manuais confirmadas
+
+- fluxo administrativo completo aprovado;
+- painel confirmou 2 cursos, 1 publicado, 2 módulos, 2 de 2 aulas publicadas e
+  2 fontes;
+- catálogo, conteúdo Markdown, fonte e ordenação aprovados como `USER`;
+- progresso parcial e conclusão em `100%` aprovados;
+- persistência após logout e novo login aprovada;
+- bloqueio de `/admin` e `/admin/cursos` para `USER` aprovado;
+- outra conta iniciou com `0%`, confirmando o isolamento do progresso.
+
+### Pendente
+
+- revisar, versionar e integrar a documentação do CHECKPOINT 1 na `main`;
+- não iniciar a ETAPA 9 sem autorização explícita do desenvolvedor principal.
+
+---
+
+## Tarefa P-8 — Painel administrativo
+
+**Responsável:** Desenvolvedor principal
+**Status:** INTEGRADO
 **Branch:** `feature/admin`
 
 ### Objetivo
@@ -281,18 +333,16 @@ Executar apenas melhorias pequenas em funcionalidades já implementadas. Cada
 melhoria deve possuir tarefa, branch, arquivos previstos e status registrados
 neste documento antes da alteração.
 
-### Não tocar durante a ETAPA 8 sem reatribuição explícita
+### Não tocar durante o CHECKPOINT 1 sem reatribuição explícita
 
 ```text
-src/app/admin/**
-src/components/admin/**
-src/components/courses/admin/admin-courses-nav.tsx
-src/lib/admin/**
-supabase/tests/*admin*.sql
-docs/administration.md
+docs/checkpoint-1.md
+docs/STATUS.md
+docs/WORKBOARD.md
+docs/ROADMAP.md
 ```
 
-Se uma melhoria precisar alterar arquivo compartilhado ou código administrativo, o
+Se uma melhoria precisar alterar a documentação do checkpoint, o
 segundo desenvolvedor deve registrar a necessidade e aguardar coordenação.
 
 ---
@@ -508,10 +558,10 @@ Confirmar que o projeto está sincronizado.
 
 ## Passo 1 — criar a branch da tarefa
 
-ETAPA 8:
+CHECKPOINT 1:
 
 ```bash
-git switch -c feature/admin
+git switch -c test/checkpoint-1
 ```
 
 A criação/troca de branch deve ser feita pelo humano ou com autorização explícita ao agente.
@@ -522,7 +572,7 @@ compatíveis com a tarefa registrada.
 ## Passo 2 — autorizar a tarefa
 
 ```text
-INICIAR ETAPA 8
+INICIAR CHECKPOINT 1
 ```
 
 ## Passo 3 — trabalhar sem cruzar responsabilidades
@@ -531,25 +581,25 @@ Cada Codex deve permanecer na tarefa e nos arquivos registrados.
 
 ## Passo 4 — integração
 
-A ETAPA 8 deve ser revisada e integrada por Pull Request/merge consciente. Uma
+O CHECKPOINT 1 deve ser revisado e integrado por Pull Request/merge consciente. Uma
 melhoria paralela só deve ser integrada depois de verificar conflitos e repetir
 os testes afetados.
 
-## Passo 5 — teste integrado da ETAPA 8
+## Passo 5 — teste integrado do CHECKPOINT 1
 
-A ETAPA 8 só pode ser marcada como concluída quando:
+O CHECKPOINT 1 só pode ser marcado como concluído quando:
 
 ```text
-ADMIN abre o painel → gerencia conteúdo → painel reflete a alteração
+ADMIN cria e publica curso, módulo e aula → USER visualiza
 ```
 
 e também for validado que:
 
 ```text
-USER tenta abrir /admin → servidor redireciona → RLS bloqueia escrita
+USER conclui aulas → logout/login → progresso permanece salvo
 ```
 
-Somente depois o CHECKPOINT 1 pode ser considerado elegível.
+Somente depois a ETAPA 9 pode ser considerada elegível.
 
 ---
 
@@ -560,7 +610,8 @@ P-4: INTEGRADO — main 94e7a2f
 P-5: INTEGRADO — main 65712a2
 P-6: INTEGRADO — commit funcional 1eb21ae; merge confirmado pelo usuário
 P-7: INTEGRADO — commit funcional 195bebf; merge confirmado pelo usuário
-P-8: PRONTO PARA REVISÃO — feature/admin
+P-8: INTEGRADO — main 149068b
+CP-1: PRONTO PARA REVISÃO — test/checkpoint-1
 Segundo desenvolvedor: NENHUMA TAREFA ATIVA REGISTRADA
 ```
 
@@ -920,8 +971,8 @@ HANDOFF
 Responsável: Desenvolvedor principal
 Tarefa: P-8 — Painel administrativo
 Branch: feature/admin
-Commit/PR: ainda não criado
-Status: PRONTO PARA REVISÃO
+Commit/PR: 99c9495 / integrado na main em 149068b
+Status: INTEGRADO
 
 Arquivos principais alterados:
 - src/app/admin/layout.tsx
@@ -965,7 +1016,7 @@ Pendências:
 - nenhuma pendência funcional da ETAPA 8
 
 Dependências para integração:
-- criar commit e integrar feature/admin na main
+- integração concluída na main em 149068b
 
 Arquivos compartilhados tocados:
 - src/components/auth/authenticated-header.tsx
@@ -977,7 +1028,67 @@ Arquivos compartilhados tocados:
 - docs/WORKBOARD.md
 
 Observações para o outro desenvolvedor:
-- não alterar o segmento /admin antes da integração
+- painel administrativo disponível na main como base do CHECKPOINT 1
 - nenhuma migration foi criada na ETAPA 8
 - relatórios de progresso e gestão de usuários permanecem fora do escopo
+```
+
+## Handoff CP-1 — CHECKPOINT 1
+
+```text
+HANDOFF
+
+Responsável: Desenvolvedor principal
+Tarefa: CP-1 — Validação da plataforma educacional
+Branch: test/checkpoint-1
+Commit/PR: aguardando versionamento e integração
+Status: PRONTO PARA REVISÃO
+
+Arquivos principais alterados:
+- docs/checkpoint-1.md
+- docs/STATUS.md
+- docs/WORKBOARD.md
+- docs/ROADMAP.md
+
+Banco/migrations:
+- nenhuma alteração de banco
+- nenhuma migration criada ou modificada
+
+Testes executados:
+- npm.cmd run lint
+- npm.cmd run build
+- git diff --check
+- requisições sem sessão para rotas públicas e protegidas
+- fluxo administrativo completo
+- cadastro e fluxo autenticado de USER
+- conclusão e persistência do progresso
+- bloqueio de rotas administrativas para USER
+- isolamento do progresso entre contas
+
+Resultados reais:
+- lint e build aprovados
+- rotas públicas responderam sem erro
+- rotas protegidas não exibiram dados sem autenticação
+- gerenciamento e publicação de cursos, módulos, aulas e fontes aprovados
+- USER visualizou apenas conteúdo publicado na ordem configurada
+- progresso parcial, conclusão em 100% e persistência após novo login aprovados
+- USER não acessou /admin nem /admin/cursos
+- outra conta iniciou em 0% e não recebeu o progresso da primeira conta
+
+Pendências:
+- versionar e integrar apenas a documentação do checkpoint na main
+- obter autorização explícita antes de iniciar a ETAPA 9
+
+Dependências para integração:
+- revisão dos quatro arquivos de documentação da branch test/checkpoint-1
+
+Arquivos compartilhados tocados:
+- docs/STATUS.md
+- docs/WORKBOARD.md
+- docs/ROADMAP.md
+
+Observações para o outro desenvolvedor:
+- CHECKPOINT 1 aprovado funcionalmente em 08/09/2026
+- nenhuma funcionalidade ou estrutura de banco foi alterada
+- ETAPA 9 permanece sem autorização de início
 ```

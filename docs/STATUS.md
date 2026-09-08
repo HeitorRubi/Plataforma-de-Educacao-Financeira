@@ -1,20 +1,25 @@
 # Status Atual do Projeto
 
-Atualizado a partir do repositório e dos testes executados em 04/09/2026.
+Atualizado a partir do repositório e dos testes executados em 08/09/2026.
 
 ## Baseline Git observado
 
 ```text
 branch integrada: main
-base funcional local utilizada: 195bebf
-última etapa integrada informada: ETAPA 7 — PROGRESSO
-branch ativa: feature/admin
-tarefa pronta para revisão: ETAPA 8 — PAINEL ADMINISTRATIVO
+base funcional integrada observada: 149068b
+última etapa integrada: ETAPA 8 — PAINEL ADMINISTRATIVO
+branch ativa: test/checkpoint-1
+tarefa atual: CHECKPOINT 1 CONCLUÍDO — AGUARDANDO INTEGRAÇÃO
 ```
 
 Histórico principal observado:
 
 ```text
+149068b  Painel administrativo integrado à main
+2c143d1  Progresso de aulas integrado à main
+99c9495  Implementação do painel administrativo
+195bebf  Implementação do progresso de aulas
+1eb21ae  Aulas textuais e fontes
 65712a2  Adicionado gerenciamento de módulos
 94e7a2f  Gerenciamento e catálogo de cursos integrado à main
 610560d  Contexto compartilhado entre Codex
@@ -209,7 +214,7 @@ Validações reais registradas:
 - conta `ADMIN` iniciou com `0%`, confirmando isolamento entre usuários;
 - Server Actions de conclusão executadas sem erro nos logs.
 
-### ETAPA 8 — concluída na branch `feature/admin`
+### ETAPA 8 — integrada na `main`
 
 Implementação local atual:
 
@@ -233,12 +238,32 @@ Validações locais registradas:
   2 de 2 aulas publicadas e 2 fontes;
 - navegação administrativa e bloqueio das rotas para `USER` aprovados.
 
+### CHECKPOINT 1 — concluído na branch `test/checkpoint-1`
+
+Validações locais registradas:
+
+- roteiro integrado criado em `docs/checkpoint-1.md`;
+- `npm.cmd run lint` aprovado;
+- `npm.cmd run build` aprovado para todas as rotas das etapas 1 a 8;
+- `/`, `/login` e `/cadastro` responderam HTTP 200;
+- `/admin` sem sessão respondeu HTTP 307 para `/login`;
+- `/cursos` sem sessão não exibiu dados e enviou `NEXT_REDIRECT` para `/login`
+  pelo fluxo de streaming do Next.js;
+- fluxo administrativo completo aprovado pelo desenvolvedor principal;
+- painel confirmou 2 cursos, 1 publicado, 2 módulos, 2 de 2 aulas publicadas e
+  2 fontes;
+- fluxo `USER` confirmou catálogo, conteúdo Markdown, fonte e ordem das aulas;
+- progresso parcial e conclusão em `100%` foram confirmados;
+- progresso em `100%` permaneceu salvo após logout e novo login;
+- acesso direto de `USER` a `/admin` e `/admin/cursos` foi bloqueado;
+- outra conta iniciou o curso em `0%`, confirmando o isolamento do progresso.
+
 ## Próxima ação
 
-Revisar, criar o commit e integrar a branch `feature/admin` na `main`.
+Revisar e integrar a documentação da branch `test/checkpoint-1` na `main`.
 
-O CHECKPOINT 1 permanece bloqueado até a integração da ETAPA 8 e autorização
-explícita do desenvolvedor principal.
+O CHECKPOINT 1 está aprovado. A ETAPA 9 não deve ser iniciada antes da integração
+desta documentação e de autorização explícita do desenvolvedor principal.
 
 ## Pontos que não foram verificados externamente nesta análise
 
