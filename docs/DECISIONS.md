@@ -206,3 +206,21 @@ barreira de acesso, e novas páginas administrativas devem nascer protegidas.
 **JUSTIFICATIVA:** o layout reduz o risco de uma rota administrativa esquecida,
 enquanto as verificações locais e o RLS protegem mutações e acessos diretos ao
 banco sem elevar privilégios.
+
+## D-020 — Base derivada do conteúdo publicado
+
+**DECISÃO:** representar a base de conhecimento por uma view `security_invoker`
+que reúne aulas publicadas de cursos publicados e suas fontes, preparando os
+trechos de Markdown no servidor sem persistir uma cópia.
+
+**MOTIVO:** o conteúdo aprovado já possui ciclo de publicação e autorização. Uma
+cópia exigiria sincronização e poderia manter na base uma versão despublicada ou
+desatualizada.
+
+**ALTERNATIVAS CONSIDERADAS:** criar uma tabela de documentos sincronizada por
+ações administrativas, adicionar triggers de cópia ou iniciar embeddings nesta
+etapa.
+
+**JUSTIFICATIVA:** a view mantém rastreabilidade e atualização imediata com menor
+complexidade. O particionamento determinístico prepara unidades menores para a
+recuperação futura, enquanto embeddings, busca e OpenAI permanecem na ETAPA 10.
