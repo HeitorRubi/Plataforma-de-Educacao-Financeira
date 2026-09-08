@@ -13,7 +13,7 @@ Este roadmap mantém o desenvolvimento incremental do projeto. Uma etapa não de
 - [x] ETAPA 6 — Aulas
 - [x] ETAPA 7 — Progresso
 - [x] ETAPA 8 — Painel administrativo
-- [ ] CHECKPOINT 1 — Plataforma educacional
+- [x] CHECKPOINT 1 — Plataforma educacional
 - [ ] ETAPA 9 — Base de conhecimento
 - [ ] ETAPA 10 — RAG e OpenAI
 - [ ] ETAPA 11 — Interface do chatbot
