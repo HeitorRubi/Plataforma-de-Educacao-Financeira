@@ -261,3 +261,19 @@ OpenAI contra a camada compatível da Groq ou interromper a ETAPA 10.
 integração simples no servidor. O modelo escolhido aparece na lista de produção
 da Groq e atende ao RAG textual do MVP com custo baixo. `GROQ_API_KEY` permanece
 fora do frontend e do Git.
+
+## D-023 — Interface transitória do assistente
+
+**DECISÃO:** implementar `/chat` como página autenticada com um componente
+cliente que mantém somente a consulta atual em memória e consome o endpoint
+`POST /api/chat` da ETAPA 10.
+
+**MOTIVO:** a ETAPA 11 precisa validar a experiência do assistente sem antecipar
+o modelo de sessões e mensagens reservado à ETAPA 12.
+
+**ALTERNATIVAS CONSIDERADAS:** persistir mensagens no PostgreSQL, manter um
+histórico em `localStorage` ou implementar streaming da resposta nesta etapa.
+
+**JUSTIFICATIVA:** uma consulta transitória permite tratar envio, erro, resposta
+e referências com menor alteração. A chave e a integração Groq continuam no
+servidor, enquanto persistência e histórico permanecem uma entrega separada.

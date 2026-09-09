@@ -6,15 +6,16 @@ Atualizado a partir do repositório e dos testes executados em 09/09/2026.
 
 ```text
 branch integrada: main
-base funcional integrada observada: 95ee7f8
-última etapa integrada: ETAPA 9 — BASE DE CONHECIMENTO
-branch ativa: feature/rag
-tarefa atual: ETAPA 10 — RAG E GROQ
+base funcional integrada observada: 3b99cac
+última etapa integrada: ETAPA 10 — RAG E GROQ
+branch ativa: feature/chatbot-ui
+tarefa atual: ETAPA 11 — INTERFACE DO CHATBOT
 ```
 
 Histórico principal observado:
 
 ```text
+3b99cac  RAG educacional com Groq integrado à main
 95ee7f8  Base de conhecimento integrada à main
 eb1e008  Documentação e aprovação do CHECKPOINT 1 integradas à main
 149068b  Painel administrativo integrado à main
@@ -289,7 +290,7 @@ Validações locais registradas:
 - acesso como `USER` recebeu HTTP 307 e redirecionou para
   `/area-autenticada`.
 
-### ETAPA 10 — concluída na branch `feature/rag`
+### ETAPA 10 — integrada na `main`
 
 Implementação local atual:
 
@@ -317,10 +318,36 @@ Validações locais registradas:
 - pergunta fora da base retornou `insufficient_context`;
 - pedido de recomendação personalizada retornou `restricted`.
 
+### ETAPA 11 — concluída na branch `feature/chatbot-ui`
+
+Implementação local atual:
+
+- rota autenticada `/chat` protegida por `requireUser()`;
+- formulário de pergunta com limite visível de 500 caracteres;
+- consumo do contrato existente `POST /api/chat`;
+- estados de consulta, falha, resposta fundamentada, contexto insuficiente e
+  solicitação limitada;
+- resposta Markdown e referências rastreáveis para aulas e fontes;
+- acesso pelo cabeçalho autenticado e pela área inicial do usuário;
+- somente a consulta atual permanece no estado do navegador;
+- ausência de banco, migration e persistência de mensagens.
+
+Validações locais registradas:
+
+- `npm.cmd run lint` aprovado;
+- `npm.cmd run build` aprovado, incluindo a rota dinâmica `/chat`;
+- login e carregamento autenticado de `/chat` aprovados;
+- pergunta coberta exibiu resposta fundamentada e duas referências;
+- pergunta fora da base exibiu contexto insuficiente;
+- pedido de recomendação personalizada exibiu solicitação limitada;
+- as consultas responderam HTTP 200 sem erro no servidor;
+- `Abrir aula` e os vínculos externos das fontes funcionaram;
+- a consulta anterior desapareceu após atualizar a página.
+
 ## Próxima ação
 
-Revisar, versionar e integrar a ETAPA 10 na `main`. Não iniciar a interface da
-ETAPA 11 antes da integração e de autorização explícita.
+Revisar, versionar e integrar a ETAPA 11 na `main`. Não iniciar persistência ou
+histórico da ETAPA 12 antes da integração e de autorização explícita.
 
 ## Pontos que não foram verificados externamente nesta análise
 
