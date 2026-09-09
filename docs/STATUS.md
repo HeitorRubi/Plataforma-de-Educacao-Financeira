@@ -1,20 +1,21 @@
 # Status Atual do Projeto
 
-Atualizado a partir do repositório e dos testes executados em 08/09/2026.
+Atualizado a partir do repositório e dos testes executados em 09/09/2026.
 
 ## Baseline Git observado
 
 ```text
 branch integrada: main
-base funcional integrada observada: eb1e008
-última validação integrada: CHECKPOINT 1 — PLATAFORMA EDUCACIONAL
-branch ativa: feature/knowledge-base
-tarefa atual: ETAPA 9 — BASE DE CONHECIMENTO
+base funcional integrada observada: 95ee7f8
+última etapa integrada: ETAPA 9 — BASE DE CONHECIMENTO
+branch ativa: feature/rag
+tarefa atual: ETAPA 10 — RAG E GROQ
 ```
 
 Histórico principal observado:
 
 ```text
+95ee7f8  Base de conhecimento integrada à main
 eb1e008  Documentação e aprovação do CHECKPOINT 1 integradas à main
 149068b  Painel administrativo integrado à main
 2c143d1  Progresso de aulas integrado à main
@@ -40,6 +41,7 @@ Há também o commit de resolução `6d9917f` relacionado ao README.
 - Tailwind CSS `^4`
 - `@supabase/supabase-js`
 - `@supabase/ssr`
+- Groq SDK `^1.6.0`
 - ESLint
 
 ## Etapas observadas
@@ -259,7 +261,7 @@ Validações locais registradas:
 - acesso direto de `USER` a `/admin` e `/admin/cursos` foi bloqueado;
 - outra conta iniciou o curso em `0%`, confirmando o isolamento do progresso.
 
-### ETAPA 9 — concluída na branch `feature/knowledge-base`
+### ETAPA 9 — integrada na `main`
 
 Implementação local atual:
 
@@ -287,11 +289,38 @@ Validações locais registradas:
 - acesso como `USER` recebeu HTTP 307 e redirecionou para
   `/area-autenticada`.
 
+### ETAPA 10 — concluída na branch `feature/rag`
+
+Implementação local atual:
+
+- recuperação determinística de trechos publicados;
+- recusa controlada para contexto insuficiente e aconselhamento personalizado;
+- integração server-only com a Groq Chat Completions API;
+- rota autenticada `POST /api/chat` com entrada limitada e resposta sem cache;
+- referências rastreáveis aos trechos, aulas e fontes;
+- SDK oficial `groq-sdk` e configuração privada por ambiente;
+- ausência de migration, interface e histórico de chat nesta etapa.
+
+Validações locais registradas:
+
+- `npm.cmd run test:rag` aprovado para recuperação, guardrails e entrada;
+- `npm.cmd run lint` aprovado;
+- `npm.cmd run build` aprovado, incluindo a rota dinâmica `/api/chat`;
+- chamada sem sessão retornou HTTP 401 em JSON e sem cache;
+- a chamada à OpenAI alcançou o provedor, mas recebeu HTTP 429 por saldo
+  esgotado;
+- o desenvolvedor principal autorizou substituir OpenAI por Groq;
+- `GROQ_API_KEY` nova foi configurada localmente e a variável antiga da OpenAI
+  foi removida;
+- pergunta coberta retornou HTTP 200, `status: answered` e duas referências pela
+  Groq;
+- pergunta fora da base retornou `insufficient_context`;
+- pedido de recomendação personalizada retornou `restricted`.
+
 ## Próxima ação
 
-Revisar, versionar e integrar a ETAPA 9 na `main`. A ETAPA 10 não deve ser
-iniciada antes da integração e de autorização explícita do desenvolvedor
-principal.
+Revisar, versionar e integrar a ETAPA 10 na `main`. Não iniciar a interface da
+ETAPA 11 antes da integração e de autorização explícita.
 
 ## Pontos que não foram verificados externamente nesta análise
 

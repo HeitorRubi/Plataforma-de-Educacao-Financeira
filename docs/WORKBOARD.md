@@ -8,46 +8,125 @@ Este arquivo é o quadro operacional compartilhado dos dois desenvolvedores e do
 
 ```text
 branch integrada: main
-base funcional integrada observada: eb1e008
-última validação integrada: CHECKPOINT 1 — PLATAFORMA EDUCACIONAL
-tarefa oficial atual: ETAPA 9 — BASE DE CONHECIMENTO
-branch de trabalho atual: feature/knowledge-base
+base funcional integrada observada: 95ee7f8
+última etapa integrada: ETAPA 9 — BASE DE CONHECIMENTO
+tarefa oficial atual: ETAPA 10 — RAG E GROQ
+branch de trabalho atual: feature/rag
 ```
 
 Antes de confiar nesse baseline, cada Codex deve comparar com o Git real.
 
-Em 08/09/2026, o Git confirmou `main` e `origin/main` alinhadas em `eb1e008`,
-com o CHECKPOINT 1 integrado. A branch `feature/knowledge-base` foi criada dessa
-base.
+Em 08/09/2026, o Git confirmou a ETAPA 9 integrada em `origin/main` no commit
+`95ee7f8`. A branch `feature/rag` foi criada dessa base com autorização explícita
+do desenvolvedor principal.
 
-## 2. Estratégia da ETAPA 9
+## 2. Estratégia da ETAPA 10
 
-A ETAPA 9 será executada pelo desenvolvedor principal para preparar o conteúdo
-publicado que a recuperação da ETAPA 10 poderá consumir. O segundo desenvolvedor
-não possui tarefa ativa nesta área.
+A ETAPA 10 será executada pelo desenvolvedor principal para recuperar trechos da
+base integrada e gerar respostas educacionais pela Groq no servidor. O segundo
+desenvolvedor não possui tarefa ativa nesta área.
 
 ```text
-CONTEÚDO EDITORIAL PUBLICADO
+PERGUNTA AUTENTICADA E VALIDADA
           ↓
-VIEW SEGURA E SEM CÓPIA
+RECUPERAÇÃO DETERMINÍSTICA DE TRECHOS
           ↓
-DOCUMENTOS COM FONTES
+CONTEXTO RASTREÁVEL DA PLATAFORMA
           ↓
-TRECHOS DETERMINÍSTICOS NO SERVIDOR
+GROQ CHAT COMPLETIONS NO SERVIDOR
           ↓
-INSPEÇÃO ADMINISTRATIVA
+RESPOSTA EDUCACIONAL COM REFERÊNCIAS
 ```
 
-Esta tarefa não autoriza OpenAI, embeddings, recuperação por pergunta ou chat.
+Esta tarefa não autoriza interface de chatbot, histórico, persistência de
+mensagens, embeddings ou aconselhamento financeiro personalizado.
 
 ---
 
 # DESENVOLVEDOR PRINCIPAL
 
-## Tarefa P-9 — Base de conhecimento
+## Tarefa P-10 — RAG e Groq
 
 **Responsável:** Desenvolvedor principal
 **Status:** PRONTO PARA REVISÃO
+**Branch:** `feature/rag`
+
+### Objetivo
+
+Implementar o backend autenticado que recupera trechos publicados relevantes e
+gera uma resposta educacional pela Groq, preservando as referências às aulas e
+fontes da plataforma.
+
+### Áreas reservadas ao desenvolvedor principal
+
+```text
+src/app/api/chat/**
+src/lib/rag/**
+.env.example
+package.json
+package-lock.json
+docs/rag.md
+docs/DECISIONS.md
+docs/ROADMAP.md
+docs/STATUS.md
+docs/WORKBOARD.md
+```
+
+### Regras
+
+- exigir sessão autenticada antes da recuperação e da chamada externa;
+- validar e limitar a pergunta recebida;
+- usar somente conteúdo publicado retornado pela base da ETAPA 9;
+- executar a Groq exclusivamente em módulo `server-only`;
+- nunca expor nem versionar `GROQ_API_KEY`;
+- retornar referências rastreáveis sem inventar dados ausentes;
+- reconhecer contexto insuficiente sem chamar o modelo;
+- não oferecer recomendação individualizada de compra ou venda;
+- não persistir perguntas ou respostas;
+- não implementar interface de chatbot nesta etapa.
+
+### Dependências
+
+- ETAPA 9 integrada na `main` em `95ee7f8`;
+- view `public.knowledge_documents` aplicada no Supabase compartilhado;
+- sessão Supabase SSR e RLS existentes;
+- `GROQ_API_KEY` nova configurada localmente e mantida fora do Git.
+
+### Implementação local atual
+
+- recuperação lexical determinística de até quatro trechos;
+- guardrails para contexto insuficiente e aconselhamento personalizado;
+- Groq Chat Completions API em módulo `server-only`;
+- rota autenticada `POST /api/chat` com validação e respostas sem cache;
+- referências numeradas com vínculo a aula e fontes;
+- SDK oficial `groq-sdk` e configuração privada por ambiente;
+- validador reproduzível em `npm.cmd run test:rag`.
+
+### Validações locais executadas
+
+- preflight Git confirmou `feature/rag` limpa sobre `origin/main` em `95ee7f8`.
+- `npm.cmd run test:rag` aprovado;
+- `npm.cmd run lint` aprovado;
+- `npm.cmd run build` aprovado, incluindo `/api/chat`;
+- requisição sem sessão retornou HTTP 401 em JSON e `Cache-Control: no-store`.
+- OpenAI retornou HTTP 429 com saldo esgotado no teste real;
+- troca para Groq autorizada explicitamente pelo desenvolvedor principal;
+- SDK e configuração foram migrados sem usar a chave exposta na conversa.
+- variável antiga da OpenAI removida do ambiente local;
+- pergunta coberta retornou HTTP 200, `answered` e duas referências pela Groq;
+- pergunta fora da base retornou `insufficient_context`;
+- pedido personalizado retornou `restricted`.
+
+### Pendente
+
+- revisar, versionar e integrar a ETAPA 10 na `main`.
+
+---
+
+## Tarefa P-9 — Base de conhecimento
+
+**Responsável:** Desenvolvedor principal
+**Status:** INTEGRADO
 **Branch:** `feature/knowledge-base`
 
 ### Objetivo
@@ -108,10 +187,10 @@ docs/WORKBOARD.md
 - `USER` foi redirecionado de `/admin/base-conhecimento` para
   `/area-autenticada`.
 
-### Pendente
+### Integração
 
-- revisar, versionar e integrar a ETAPA 9 na `main`;
-- não iniciar a ETAPA 10 sem integração e autorização explícita.
+- integrada na `main` em `95ee7f8`;
+- ETAPA 10 autorizada explicitamente pelo desenvolvedor principal.
 
 ---
 
@@ -1230,4 +1309,75 @@ Observações para o outro desenvolvedor:
 - a base deriva diretamente do conteúdo publicado e não exige sincronização
 - nenhuma chamada OpenAI, embedding, busca ou interface de chat foi criada
 - não criar migration concorrente para public.knowledge_documents
+```
+
+## Handoff P-10 — ETAPA 10
+
+```text
+HANDOFF
+
+Responsável: Desenvolvedor principal
+Tarefa: P-10 — RAG e Groq
+Branch: feature/rag
+Commit/PR: aguardando versionamento e integração
+Status: PRONTO PARA REVISÃO
+
+Arquivos principais alterados:
+- src/app/api/chat/route.ts
+- src/lib/rag/**
+- scripts/validate-rag.mjs
+- .env.example
+- package.json
+- package-lock.json
+- AGENTS.md
+- docs/rag.md
+- docs/PROJECT_SPEC.md
+- docs/DECISIONS.md
+- docs/ROADMAP.md
+- docs/STATUS.md
+- docs/WORKBOARD.md
+
+Banco/migrations:
+- nenhuma alteração de banco
+- nenhuma migration criada ou modificada
+
+Testes executados:
+- npm.cmd run test:rag
+- npm.cmd run lint
+- npm.cmd run build
+- POST /api/chat sem sessão
+- pergunta autenticada coberta pela base
+- pergunta autenticada fora da base
+- pedido de recomendação personalizada
+
+Resultados reais:
+- recuperação, guardrails e validação de entrada aprovados
+- lint e build aprovados com a rota dinâmica /api/chat
+- requisição sem sessão retornou HTTP 401 e Cache-Control: no-store
+- pergunta coberta retornou HTTP 200, answered e duas referências pela Groq
+- pergunta fora da base retornou insufficient_context
+- recomendação personalizada retornou restricted
+- chave da Groq permaneceu somente no .env.local ignorado pelo Git
+
+Pendências:
+- versionar e integrar a ETAPA 10 na main
+
+Dependências para integração:
+- revisar backend RAG, contrato HTTP, SDK e documentação
+
+Arquivos compartilhados tocados:
+- AGENTS.md
+- .env.example
+- package.json
+- package-lock.json
+- docs/PROJECT_SPEC.md
+- docs/DECISIONS.md
+- docs/ROADMAP.md
+- docs/STATUS.md
+- docs/WORKBOARD.md
+
+Observações para o outro desenvolvedor:
+- o provedor autorizado é Groq, não OpenAI
+- a interface e o histórico do chatbot não foram iniciados
+- não expor GROQ_API_KEY nem adicionar prefixo NEXT_PUBLIC_
 ```

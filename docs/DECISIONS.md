@@ -223,4 +223,41 @@ etapa.
 
 **JUSTIFICATIVA:** a view mantém rastreabilidade e atualização imediata com menor
 complexidade. O particionamento determinístico prepara unidades menores para a
-recuperação futura, enquanto embeddings, busca e OpenAI permanecem na ETAPA 10.
+recuperação futura, enquanto embeddings, busca e geração por IA permanecem na
+ETAPA 10.
+
+## D-021 — Recuperação lexical antes da geração
+
+**DECISÃO:** recuperar no servidor até quatro trechos por correspondência lexical
+antes de chamar a Groq Chat Completions API e devolver as referências estruturadas
+separadamente da resposta gerada.
+
+**MOTIVO:** a base atual é pequena e já possui trechos rastreáveis. O backend
+precisa recusar perguntas sem cobertura antes de gerar custo ou permitir que o
+modelo responda sem apoio no conteúdo publicado.
+
+**ALTERNATIVAS CONSIDERADAS:** enviar toda a base ao modelo, responder com
+conhecimento geral do provedor ou criar embeddings e armazenamento vetorial
+nesta etapa.
+
+**JUSTIFICATIVA:** a busca lexical é determinística, explicável no TG e não exige
+nova infraestrutura. O limite de saída e a chave somente no servidor reduzem
+custo e exposição. Embeddings podem ser avaliados no futuro se a base crescer e
+a qualidade da recuperação deixar de ser suficiente.
+
+## D-022 — Groq como provedor de geração da ETAPA 10
+
+**DECISÃO:** usar a Groq API com o SDK oficial `groq-sdk`, a Chat Completions API
+e o modelo de produção `openai/gpt-oss-20b` como padrão configurável.
+
+**MOTIVO:** a conta OpenAI disponível respondeu com saldo esgotado, e o
+desenvolvedor principal autorizou explicitamente a substituição do provedor em
+08/09/2026.
+
+**ALTERNATIVAS CONSIDERADAS:** adicionar créditos à conta OpenAI, usar o SDK da
+OpenAI contra a camada compatível da Groq ou interromper a ETAPA 10.
+
+**JUSTIFICATIVA:** o SDK próprio deixa o provedor explícito no código e mantém a
+integração simples no servidor. O modelo escolhido aparece na lista de produção
+da Groq e atende ao RAG textual do MVP com custo baixo. `GROQ_API_KEY` permanece
+fora do frontend e do Git.

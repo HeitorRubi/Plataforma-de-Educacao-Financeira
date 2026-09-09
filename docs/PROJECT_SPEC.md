@@ -17,7 +17,7 @@ O sistema deverá permitir aprendizado por cursos e disponibilizar, posteriormen
 | Backend | Next.js |
 | Banco | PostgreSQL |
 | Banco/Auth | Supabase |
-| IA | OpenAI API |
+| IA | Groq API |
 | Chatbot | RAG / recuperação de conteúdo |
 | Versionamento | Git |
 | Repositório | GitHub |
@@ -67,7 +67,7 @@ O chatbot deverá:
 - não atuar como consultor financeiro;
 - não fornecer recomendações individualizadas de compra ou venda.
 
-A chave da OpenAI nunca pode ser exposta no frontend.
+A chave da Groq nunca pode ser exposta no frontend.
 
 ## Fora do escopo atual
 
@@ -113,7 +113,7 @@ Next.js server
   ↓
 Recuperação de conteúdo
   ↓
-OpenAI API
+Groq API
   ↓
 Resposta
 ```

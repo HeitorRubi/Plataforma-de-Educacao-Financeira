@@ -15,7 +15,7 @@ Este roadmap mantém o desenvolvimento incremental do projeto. Uma etapa não de
 - [x] ETAPA 8 — Painel administrativo
 - [x] CHECKPOINT 1 — Plataforma educacional
 - [x] ETAPA 9 — Base de conhecimento
-- [ ] ETAPA 10 — RAG e OpenAI
+- [x] ETAPA 10 — RAG e Groq
 - [ ] ETAPA 11 — Interface do chatbot
 - [ ] ETAPA 12 — Histórico do chat
 - [ ] ETAPA 13 — Revisão de segurança e RLS
@@ -50,7 +50,7 @@ CHECKPOINT 1
     ↓
 9 Base de conhecimento
     ↓
-10 RAG/OpenAI
+10 RAG/Groq
     ↓
 11 Interface do chatbot
     ↓
@@ -155,7 +155,7 @@ IA permanece bloqueada até este checkpoint ser aprovado.
 ## ETAPAS 9–12 — IA
 
 9. Preparar conteúdo aprovado como base de conhecimento.
-10. Recuperação de conteúdo + OpenAI no servidor.
+10. Recuperação de conteúdo + Groq no servidor.
 11. Interface básica do chatbot.
 12. Persistência de sessões e mensagens.
 
