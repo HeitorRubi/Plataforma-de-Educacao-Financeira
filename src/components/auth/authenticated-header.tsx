@@ -26,6 +26,9 @@ export function AuthenticatedHeader({
           <Link className="font-medium text-emerald-800 hover:underline" href="/cursos">
             Cursos
           </Link>
+          <Link className="font-medium text-emerald-800 hover:underline" href="/chat">
+            Assistente
+          </Link>
           {role === "ADMIN" && (
             <Link
               className="font-medium text-emerald-800 hover:underline"

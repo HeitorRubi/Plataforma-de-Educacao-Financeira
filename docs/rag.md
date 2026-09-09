@@ -3,8 +3,8 @@
 ## Escopo da ETAPA 10
 
 A ETAPA 10 implementa o backend autenticado que recupera trechos da base de
-conhecimento e gera respostas educacionais pela Groq. A interface e o
-histórico do chatbot permanecem reservados, respectivamente, às ETAPAS 11 e 12.
+conhecimento e gera respostas educacionais pela Groq. A ETAPA 11 consome esse
+contrato pela interface `/chat`; o histórico permanece reservado à ETAPA 12.
 
 Não foi criada migration nesta etapa. A recuperação lê a view
 `public.knowledge_documents` integrada na ETAPA 9 sob a sessão e o RLS já
@@ -137,8 +137,8 @@ npm.cmd run lint
 npm.cmd run build
 ```
 
-Para testar a API antes da interface da ETAPA 11, faça login, abra o console do
-navegador e execute:
+Para testar diretamente a API, faça login, abra o console do navegador e
+execute:
 
 ```javascript
 await fetch("/api/chat", {

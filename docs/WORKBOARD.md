@@ -8,47 +8,119 @@ Este arquivo é o quadro operacional compartilhado dos dois desenvolvedores e do
 
 ```text
 branch integrada: main
-base funcional integrada observada: 95ee7f8
-última etapa integrada: ETAPA 9 — BASE DE CONHECIMENTO
-tarefa oficial atual: ETAPA 10 — RAG E GROQ
-branch de trabalho atual: feature/rag
+base funcional integrada observada: 3b99cac
+última etapa integrada: ETAPA 10 — RAG E GROQ
+tarefa oficial atual: ETAPA 11 — INTERFACE DO CHATBOT
+branch de trabalho atual: feature/chatbot-ui
 ```
 
 Antes de confiar nesse baseline, cada Codex deve comparar com o Git real.
 
-Em 08/09/2026, o Git confirmou a ETAPA 9 integrada em `origin/main` no commit
-`95ee7f8`. A branch `feature/rag` foi criada dessa base com autorização explícita
-do desenvolvedor principal.
+Em 09/09/2026, o Git confirmou a ETAPA 10 integrada em `origin/main` no commit
+`3b99cac`. A branch `feature/chatbot-ui` foi criada dessa base com autorização
+explícita do desenvolvedor principal.
 
-## 2. Estratégia da ETAPA 10
+## 2. Estratégia da ETAPA 11
 
-A ETAPA 10 será executada pelo desenvolvedor principal para recuperar trechos da
-base integrada e gerar respostas educacionais pela Groq no servidor. O segundo
-desenvolvedor não possui tarefa ativa nesta área.
+A ETAPA 11 será executada pelo desenvolvedor principal para oferecer a interface
+autenticada do assistente sobre o contrato da ETAPA 10. O segundo desenvolvedor
+não possui tarefa ativa nesta área.
 
 ```text
-PERGUNTA AUTENTICADA E VALIDADA
+PÁGINA AUTENTICADA /CHAT
           ↓
-RECUPERAÇÃO DETERMINÍSTICA DE TRECHOS
+FORMULÁRIO COM LIMITE E ESTADO DE ENVIO
           ↓
-CONTEXTO RASTREÁVEL DA PLATAFORMA
+POST /API/CHAT
           ↓
-GROQ CHAT COMPLETIONS NO SERVIDOR
+RESPOSTA EDUCACIONAL
           ↓
-RESPOSTA EDUCACIONAL COM REFERÊNCIAS
+REFERÊNCIAS PARA AULAS E FONTES
 ```
 
-Esta tarefa não autoriza interface de chatbot, histórico, persistência de
-mensagens, embeddings ou aconselhamento financeiro personalizado.
+Esta tarefa não autoriza histórico persistente, tabelas de conversa,
+`localStorage`, streaming, embeddings ou aconselhamento financeiro
+personalizado.
 
 ---
 
 # DESENVOLVEDOR PRINCIPAL
 
-## Tarefa P-10 — RAG e Groq
+## Tarefa P-11 — Interface do chatbot
 
 **Responsável:** Desenvolvedor principal
 **Status:** PRONTO PARA REVISÃO
+**Branch:** `feature/chatbot-ui`
+
+### Objetivo
+
+Permitir que o usuário autenticado consulte o assistente educacional e visualize
+a resposta e suas referências sem expor a Groq ou persistir a conversa.
+
+### Áreas reservadas ao desenvolvedor principal
+
+```text
+src/app/chat/**
+src/components/chat/**
+src/components/auth/authenticated-header.tsx
+src/app/area-autenticada/page.tsx
+src/app/globals.css
+docs/chatbot-ui.md
+docs/rag.md
+docs/DECISIONS.md
+docs/ROADMAP.md
+docs/STATUS.md
+docs/WORKBOARD.md
+```
+
+### Regras
+
+- exigir sessão pela página e manter a autenticação do endpoint;
+- enviar somente a pergunta ao backend existente;
+- limitar a pergunta a 500 caracteres também na interface;
+- exibir estados de carregamento, erro e resposta;
+- diferenciar resposta fundamentada, contexto insuficiente e bloqueio;
+- exibir somente referências recebidas do servidor;
+- preservar os vínculos internos das aulas e externos das fontes;
+- não expor `GROQ_API_KEY` nem importar módulos server-only no cliente;
+- não persistir perguntas, respostas ou sessões nesta etapa.
+
+### Dependências
+
+- ETAPA 10 integrada na `main` em `3b99cac`;
+- rota autenticada `POST /api/chat` disponível;
+- base de conhecimento publicada e Groq configurada no servidor.
+
+### Implementação local atual
+
+- rota protegida `/chat` com cabeçalho autenticado;
+- componente cliente isolado para formulário e resultado;
+- resposta Markdown com estado semântico do RAG;
+- referências agrupadas por trecho, aula e fontes;
+- navegação para o assistente no cabeçalho e na área autenticada;
+- estado transitório limitado à consulta atual.
+
+### Validações locais executadas
+
+- `npm.cmd run lint` aprovado;
+- `npm.cmd run build` aprovado, incluindo `/chat`;
+- login e carregamento autenticado de `/chat` aprovados;
+- resposta fundamentada com duas referências aprovada;
+- contexto insuficiente e solicitação limitada aprovados;
+- requisições da interface responderam HTTP 200 sem erro no servidor.
+- `Abrir aula` e os vínculos externos das fontes aprovados;
+- atualização da página removeu a consulta anterior.
+
+### Pendente
+
+- revisar, versionar e integrar a ETAPA 11 na `main`.
+
+---
+
+## Tarefa P-10 — RAG e Groq
+
+**Responsável:** Desenvolvedor principal
+**Status:** INTEGRADO
 **Branch:** `feature/rag`
 
 ### Objetivo
@@ -119,7 +191,7 @@ docs/WORKBOARD.md
 
 ### Pendente
 
-- revisar, versionar e integrar a ETAPA 10 na `main`.
+- nenhuma pendência funcional da ETAPA 10.
 
 ---
 
@@ -1319,8 +1391,8 @@ HANDOFF
 Responsável: Desenvolvedor principal
 Tarefa: P-10 — RAG e Groq
 Branch: feature/rag
-Commit/PR: aguardando versionamento e integração
-Status: PRONTO PARA REVISÃO
+Commit/PR: integrado na main em 3b99cac
+Status: INTEGRADO
 
 Arquivos principais alterados:
 - src/app/api/chat/route.ts
@@ -1360,7 +1432,7 @@ Resultados reais:
 - chave da Groq permaneceu somente no .env.local ignorado pelo Git
 
 Pendências:
-- versionar e integrar a ETAPA 10 na main
+- nenhuma pendência funcional da ETAPA 10
 
 Dependências para integração:
 - revisar backend RAG, contrato HTTP, SDK e documentação
@@ -1378,6 +1450,64 @@ Arquivos compartilhados tocados:
 
 Observações para o outro desenvolvedor:
 - o provedor autorizado é Groq, não OpenAI
-- a interface e o histórico do chatbot não foram iniciados
+- a interface foi iniciada separadamente na ETAPA 11
+- o histórico do chatbot ainda não foi iniciado
 - não expor GROQ_API_KEY nem adicionar prefixo NEXT_PUBLIC_
+```
+
+## Handoff P-11 — ETAPA 11
+
+```text
+HANDOFF
+
+Responsável: Desenvolvedor principal
+Tarefa: P-11 — Interface do chatbot
+Branch: feature/chatbot-ui
+Commit/PR: aguardando versionamento e integração
+Status: PRONTO PARA REVISÃO
+
+Arquivos principais alterados:
+- src/app/chat/page.tsx
+- src/components/chat/chat-interface.tsx
+- src/components/auth/authenticated-header.tsx
+- src/app/area-autenticada/page.tsx
+- src/app/globals.css
+- docs/chatbot-ui.md
+- docs/rag.md
+- docs/DECISIONS.md
+- docs/STATUS.md
+- docs/WORKBOARD.md
+
+Banco/migrations:
+- nenhuma alteração de banco
+- nenhuma migration criada ou modificada
+
+Testes executados:
+- npm.cmd run lint
+- npm.cmd run build
+- pergunta coberta pela base na interface
+- pergunta fora da base na interface
+- pedido de recomendação personalizada na interface
+
+Resultados reais:
+- lint aprovado
+- build aprovado com a rota dinâmica /chat
+- resposta fundamentada exibida com duas referências
+- contexto insuficiente e solicitação limitada exibidos corretamente
+- requisições responderam HTTP 200 sem erro no servidor
+- links internos das aulas e externos das fontes funcionaram
+- atualização da página removeu a consulta anterior
+
+Pendências:
+- versionar e integrar a ETAPA 11 na main
+
+Dependências para integração:
+- confirmar resposta fundamentada e referências na interface
+- confirmar contexto insuficiente e solicitação limitada
+- conferir navegação para aula e fonte
+
+Observações para o outro desenvolvedor:
+- a interface mantém somente a consulta atual em memória
+- não há histórico, localStorage, tabela ou migration de mensagens
+- GROQ_API_KEY continua restrita ao servidor
 ```

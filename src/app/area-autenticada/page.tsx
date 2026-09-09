@@ -17,8 +17,8 @@ export default async function AuthenticatedAreaPage() {
         </p>
         <h1 className="mt-3 text-3xl font-bold">Olá, {displayName}</h1>
         <p className="mt-4 max-w-2xl leading-7 text-neutral-600">
-          Sua sessão está ativa. Acesse o catálogo para consultar os cursos
-          publicados pela equipe da plataforma.
+          Sua sessão está ativa. Acesse os cursos publicados e consulte o
+          assistente educacional da plataforma.
         </p>
 
         <dl className="mt-10 grid max-w-3xl border-y border-neutral-200 sm:grid-cols-2">
@@ -39,9 +39,15 @@ export default async function AuthenticatedAreaPage() {
           >
             Ver cursos
           </Link>
+          <Link
+            className="inline-flex h-11 items-center rounded-md border border-neutral-300 bg-white px-5 font-semibold text-neutral-800 transition hover:border-neutral-400"
+            href="/chat"
+          >
+            Abrir assistente
+          </Link>
           {user.profile.role === "ADMIN" && (
             <Link
-              className="inline-flex h-11 items-center rounded-md border border-neutral-300 bg-white px-5 font-semibold text-neutral-800 transition hover:border-neutral-400"
+              className="inline-flex h-11 items-center px-2 font-semibold text-emerald-800 hover:underline"
               href="/admin"
             >
               Abrir administração
