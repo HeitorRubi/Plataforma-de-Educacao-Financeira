@@ -100,7 +100,7 @@ Se sua tarefa depender de trabalho ainda não mesclado:
 - Tailwind CSS
 - PostgreSQL
 - Supabase
-- OpenAI API somente nas etapas de IA
+- Groq API somente nas etapas de IA
 - Git/GitHub
 
 Não adicionar microserviços, filas, containers ou outra infraestrutura sem necessidade comprovada e autorização.
