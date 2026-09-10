@@ -4,6 +4,13 @@ import {
   RagConfigurationError,
   RagProviderError,
 } from "@/lib/rag/groq";
+import {
+  appendChatExchange,
+  ChatHistoryError,
+  chatSessionExists,
+  getChatSession,
+} from "@/lib/chat-history/queries";
+import { isValidChatSessionId } from "@/lib/chat-history/validation";
 import { answerKnowledgeQuestion } from "@/lib/rag/service";
 import {
   MAX_CHAT_REQUEST_LENGTH,
@@ -67,15 +74,60 @@ export async function POST(request: Request) {
     typeof payload === "object" && payload !== null && "question" in payload
       ? payload.question
       : undefined;
+  const sessionIdValue =
+    typeof payload === "object" && payload !== null && "sessionId" in payload
+      ? payload.sessionId
+      : undefined;
   const validation = validateQuestion(questionValue);
 
   if (!validation.success) {
     return jsonResponse({ error: validation.message }, 400);
   }
 
+  if (
+    sessionIdValue !== undefined &&
+    sessionIdValue !== null &&
+    !isValidChatSessionId(sessionIdValue)
+  ) {
+    return jsonResponse({ error: "A conversa informada é inválida." }, 400);
+  }
+
+  const sessionId = isValidChatSessionId(sessionIdValue)
+    ? sessionIdValue
+    : null;
+
   try {
-    return jsonResponse(await answerKnowledgeQuestion(validation.question));
+    if (sessionId && !(await chatSessionExists(sessionId))) {
+      return jsonResponse({ error: "Conversa não encontrada." }, 404);
+    }
+
+    const answer = await answerKnowledgeQuestion(validation.question);
+    const persistedSessionId = await appendChatExchange(
+      sessionId,
+      validation.question,
+      answer,
+    );
+
+    if (!persistedSessionId) {
+      return jsonResponse({ error: "Conversa não encontrada." }, 404);
+    }
+
+    const session = await getChatSession(persistedSessionId);
+
+    if (!session) {
+      throw new ChatHistoryError("A conversa salva não pôde ser carregada.");
+    }
+
+    return jsonResponse({ ...answer, session });
   } catch (error) {
+    if (error instanceof ChatHistoryError) {
+      console.error("Chat history request error", error.message);
+      return jsonResponse(
+        { error: "Não foi possível salvar ou carregar a conversa." },
+        500,
+      );
+    }
+
     if (error instanceof RagConfigurationError) {
       console.error("RAG configuration error", error.message);
       return jsonResponse(

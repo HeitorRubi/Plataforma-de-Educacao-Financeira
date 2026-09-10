@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { AuthenticatedHeader } from "@/components/auth/authenticated-header";
 import { ChatInterface } from "@/components/chat/chat-interface";
 import { requireUser } from "@/lib/auth/session";
+import { listChatSessions } from "@/lib/chat-history/queries";
 
 export const metadata: Metadata = {
   title: "Assistente educacional | Plataforma Financeira",
@@ -10,7 +11,10 @@ export const metadata: Metadata = {
 };
 
 export default async function ChatPage() {
-  const user = await requireUser();
+  const [user, sessions] = await Promise.all([
+    requireUser(),
+    listChatSessions(),
+  ]);
   const displayName = user.profile.full_name ?? "Usuário";
 
   return (
@@ -26,12 +30,12 @@ export default async function ChatPage() {
             Pergunte sobre os cursos
           </h1>
           <p className="mt-3 max-w-2xl leading-7 text-neutral-600">
-            Consulte conceitos apresentados nas aulas publicadas e confira as
-            referências relacionadas à resposta.
+            Consulte conceitos apresentados nas aulas publicadas, confira as
+            referências e retome suas conversas anteriores.
           </p>
         </div>
 
-        <ChatInterface />
+        <ChatInterface initialSessions={sessions} />
       </main>
     </div>
   );

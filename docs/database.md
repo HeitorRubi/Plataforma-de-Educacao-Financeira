@@ -10,6 +10,8 @@ serão implementadas nas etapas correspondentes.
 auth.users (1) ─── (1) profiles
 profiles   (1) ─── (N) lesson_progress
 lessons    (1) ─── (N) lesson_progress
+profiles   (1) ─── (N) chat_sessions
+chat_sessions (1) ─── (N) chat_messages
 
 courses        (1) ─── (N) modules
 modules        (1) ─── (N) lessons
@@ -98,6 +100,33 @@ idempotente.
 | `created_at` | `timestamptz` | sim | Preenchido pelo banco |
 | `updated_at` | `timestamptz` | sim | Atualizado por trigger |
 
+### chat_sessions
+
+| Campo | Tipo | Obrigatório | Regra |
+| --- | --- | --- | --- |
+| `id` | `uuid` | sim | PK gerada pelo banco |
+| `user_id` | `uuid` | sim | FK para `profiles.id` |
+| `title` | `text` | sim | Não vazio, até 120 caracteres |
+| `created_at` | `timestamptz` | sim | Preenchido pelo banco |
+| `updated_at` | `timestamptz` | sim | Atividade atualizada por trigger |
+
+### chat_messages
+
+| Campo | Tipo | Obrigatório | Regra |
+| --- | --- | --- | --- |
+| `id` | `uuid` | sim | PK gerada pelo banco |
+| `session_id` | `uuid` | sim | FK para `chat_sessions.id` |
+| `role` | `text` | sim | `USER` ou `ASSISTANT` |
+| `content` | `text` | sim | Não vazio, até 20.000 caracteres |
+| `status` | `text` | não | Estado RAG apenas na resposta |
+| `citations` | `jsonb` | sim | Referências da resposta; padrão `[]` |
+| `position` | `integer` | sim | Positiva e única na sessão |
+| `created_at` | `timestamptz` | sim | Preenchido pelo banco |
+
+Pergunta e resposta são inseridas em uma única transação pela função
+`append_chat_exchange`. A posição mantém a ordem do histórico e a sessão é
+bloqueada durante a inclusão para evitar posições concorrentes duplicadas.
+
 ## Estruturas derivadas
 
 ### knowledge_documents
@@ -113,6 +142,7 @@ alterações de publicação e conteúdo são refletidas na próxima consulta.
 ## Exclusões relacionadas
 
 - Excluir um usuário remove seu perfil e seu progresso.
+- Excluir um usuário também remove suas sessões e mensagens de chat.
 - Excluir um curso remove seus módulos, aulas, progresso e fontes.
 - A aplicação deverá preferir despublicar cursos e aulas em vez de excluí-los.
 
@@ -137,6 +167,8 @@ As evoluções de acesso são feitas por migrations novas:
   ou exclusão.
 - base de conhecimento: `SELECT` autenticado na view `knowledge_documents`, com
   `anon` revogado e RLS herdado das tabelas de conteúdo por `security_invoker`.
+- histórico: sessões e mensagens visíveis e inseríveis somente pelo próprio
+  usuário, sem atualização ou exclusão das mensagens.
 
 A criação e a ordenação de módulos, aulas e fontes usam funções PostgreSQL
 transacionais com `SECURITY INVOKER`. Assim, a posição permanece única dentro
@@ -174,6 +206,12 @@ documentados em `docs/authentication.md`, `docs/courses.md`, `docs/modules.md`,
 
 A base de conhecimento e seu teste estão documentados em
 `docs/knowledge-base.md`.
+
+O histórico do chatbot, a migration e seu teste estão documentados em
+`docs/chat-history.md`.
+
+A migration e o teste SQL do histórico foram aplicados e aprovados no Supabase
+compartilhado em 10/09/2026, conforme confirmação do desenvolvedor principal.
 
 A migration ainda não aplicada não deve ser marcada como executada apenas por
 existir no repositório.

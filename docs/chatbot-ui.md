@@ -68,3 +68,9 @@ duas referências, a pergunta fora da base exibiu contexto insuficiente e o
 pedido de recomendação personalizada exibiu solicitação limitada. Todas as
 consultas responderam HTTP 200 sem erro no servidor. A abertura dos vínculos e o
 descarte da consulta após atualizar a página também foram aprovados.
+
+## Evolução na ETAPA 12
+
+A interface transitória descrita acima corresponde ao estado entregue na ETAPA
+11. A ETAPA 12 acrescenta histórico persistente, lista de conversas e reabertura
+das mensagens. O contrato atual está documentado em `docs/chat-history.md`.
