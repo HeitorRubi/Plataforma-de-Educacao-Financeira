@@ -1,20 +1,21 @@
 # Status Atual do Projeto
 
-Atualizado a partir do repositório e dos testes executados em 09/09/2026.
+Atualizado a partir do repositório e dos testes executados em 10/09/2026.
 
 ## Baseline Git observado
 
 ```text
 branch integrada: main
-base funcional integrada observada: 3b99cac
-última etapa integrada: ETAPA 10 — RAG E GROQ
-branch ativa: feature/chatbot-ui
-tarefa atual: ETAPA 11 — INTERFACE DO CHATBOT
+base funcional integrada observada: 3e9136d
+última etapa integrada: ETAPA 11 — INTERFACE DO CHATBOT
+branch ativa: feature/chat-history
+tarefa atual: ETAPA 12 — HISTÓRICO DO CHAT
 ```
 
 Histórico principal observado:
 
 ```text
+3e9136d  Adicionada interface do chatbot educacional
 3b99cac  RAG educacional com Groq integrado à main
 95ee7f8  Base de conhecimento integrada à main
 eb1e008  Documentação e aprovação do CHECKPOINT 1 integradas à main
@@ -318,7 +319,7 @@ Validações locais registradas:
 - pergunta fora da base retornou `insufficient_context`;
 - pedido de recomendação personalizada retornou `restricted`.
 
-### ETAPA 11 — concluída na branch `feature/chatbot-ui`
+### ETAPA 11 — integrada na `main`
 
 Implementação local atual:
 
@@ -344,10 +345,48 @@ Validações locais registradas:
 - `Abrir aula` e os vínculos externos das fontes funcionaram;
 - a consulta anterior desapareceu após atualizar a página.
 
+### ETAPA 12 — concluída na branch `feature/chat-history`
+
+Implementação local atual:
+
+- sessões privadas em `chat_sessions` e mensagens ordenadas em
+  `chat_messages`;
+- gravação atômica do par pergunta/resposta por RPC `SECURITY INVOKER`;
+- RLS de leitura e inserção limitada ao próprio usuário;
+- rota autenticada `GET /api/chat/sessions/[id]` sem cache;
+- `POST /api/chat` com `sessionId` opcional e persistência da resposta RAG;
+- lista das conversas recentes, nova conversa e reabertura do histórico em
+  `/chat`;
+- mensagens do assistente preservando estado, Markdown e referências;
+- ausência de exclusão, edição, histórico administrativo ou contexto
+  conversacional enviado à Groq.
+
+Validações locais executadas:
+
+- `npm.cmd run test:rag` aprovado;
+- `npm.cmd run lint` aprovado;
+- `npm.cmd run build` aprovado, incluindo `/api/chat/sessions/[id]`;
+- Supabase CLI indisponível no ambiente local, portanto o SQL ainda não foi
+  executado contra o banco compartilhado.
+
+Validações registradas:
+
+- migration aplicada no Supabase compartilhado, conforme confirmação do
+  desenvolvedor principal;
+- `supabase/tests/chat_history_validation.sql` aprovado sem exceção;
+- criação de conversa e persistência das mensagens aprovadas no navegador;
+- troca entre conversas e reabertura da conversa anterior aprovadas;
+- segunda conta não visualizou as conversas da primeira, confirmando o
+  isolamento;
+- `POST /api/chat` e `GET /api/chat/sessions/[id]` responderam HTTP 200 sem erro
+  no servidor;
+- sem sessão, `/chat` redirecionou ao login e as APIs retornaram HTTP 401 sem
+  cache.
+
 ## Próxima ação
 
-Revisar, versionar e integrar a ETAPA 11 na `main`. Não iniciar persistência ou
-histórico da ETAPA 12 antes da integração e de autorização explícita.
+Revisar, versionar e integrar a ETAPA 12 na `main`. Não iniciar a revisão de
+segurança da ETAPA 13 antes da integração e de autorização explícita.
 
 ## Pontos que não foram verificados externamente nesta análise
 

@@ -8,48 +8,122 @@ Este arquivo é o quadro operacional compartilhado dos dois desenvolvedores e do
 
 ```text
 branch integrada: main
-base funcional integrada observada: 3b99cac
-última etapa integrada: ETAPA 10 — RAG E GROQ
-tarefa oficial atual: ETAPA 11 — INTERFACE DO CHATBOT
-branch de trabalho atual: feature/chatbot-ui
+base funcional integrada observada: 3e9136d
+última etapa integrada: ETAPA 11 — INTERFACE DO CHATBOT
+tarefa oficial atual: ETAPA 12 — HISTÓRICO DO CHAT
+branch de trabalho atual: feature/chat-history
 ```
 
 Antes de confiar nesse baseline, cada Codex deve comparar com o Git real.
 
-Em 09/09/2026, o Git confirmou a ETAPA 10 integrada em `origin/main` no commit
-`3b99cac`. A branch `feature/chatbot-ui` foi criada dessa base com autorização
-explícita do desenvolvedor principal.
+Em 10/09/2026, o Git confirmou a ETAPA 11 integrada em `origin/main` no commit
+`3e9136d`. A branch `feature/chat-history` foi criada dessa base e o
+desenvolvedor principal autorizou explicitamente prosseguir nela.
 
-## 2. Estratégia da ETAPA 11
+## 2. Estratégia da ETAPA 12
 
-A ETAPA 11 será executada pelo desenvolvedor principal para oferecer a interface
-autenticada do assistente sobre o contrato da ETAPA 10. O segundo desenvolvedor
-não possui tarefa ativa nesta área.
+A ETAPA 12 será executada pelo desenvolvedor principal para persistir e reabrir
+conversas privadas do assistente. O segundo desenvolvedor não possui tarefa
+ativa nesta área.
 
 ```text
-PÁGINA AUTENTICADA /CHAT
-          ↓
-FORMULÁRIO COM LIMITE E ESTADO DE ENVIO
-          ↓
-POST /API/CHAT
-          ↓
-RESPOSTA EDUCACIONAL
-          ↓
-REFERÊNCIAS PARA AULAS E FONTES
+USUÁRIO AUTENTICADO
+        ↓
+SESSÃO PRÓPRIA + MENSAGENS ORDENADAS
+        ↓
+PERGUNTA E RESPOSTA EM UMA TRANSAÇÃO
+        ↓
+LISTAGEM E REABERTURA EM /CHAT
 ```
 
-Esta tarefa não autoriza histórico persistente, tabelas de conversa,
-`localStorage`, streaming, embeddings ou aconselhamento financeiro
-personalizado.
+Esta tarefa não autoriza exclusão, edição, compartilhamento, listagem
+administrativa global, streaming, embeddings ou uso do histórico como contexto
+adicional da Groq.
 
 ---
 
 # DESENVOLVEDOR PRINCIPAL
 
-## Tarefa P-11 — Interface do chatbot
+## Tarefa P-12 — Histórico do chat
 
 **Responsável:** Desenvolvedor principal
 **Status:** PRONTO PARA REVISÃO
+**Branch:** `feature/chat-history`
+
+### Objetivo
+
+Persistir sessões e mensagens do assistente por usuário, permitir continuar e
+reabrir conversas e manter o isolamento no PostgreSQL por RLS.
+
+### Áreas reservadas ao desenvolvedor principal
+
+```text
+src/app/chat/**
+src/app/api/chat/**
+src/components/chat/**
+src/lib/chat-history/**
+src/lib/rag/response-validation.ts
+scripts/validate-rag.mjs
+supabase/migrations/*chat_history*.sql
+supabase/tests/*chat_history*.sql
+docs/chat-history.md
+docs/chatbot-ui.md
+docs/rag.md
+docs/database.md
+docs/DECISIONS.md
+docs/ROADMAP.md
+docs/STATUS.md
+docs/WORKBOARD.md
+```
+
+### Regras
+
+- exigir sessão autenticada em toda leitura e gravação;
+- permitir acesso somente às conversas do próprio usuário;
+- gravar pergunta e resposta de forma atômica e ordenada;
+- preservar status e referências retornadas pelo RAG;
+- manter a chave da Groq exclusivamente no servidor;
+- não usar `service_role` na aplicação;
+- não permitir atualização ou exclusão de mensagens;
+- não enviar mensagens anteriores à Groq nesta etapa.
+
+### Dependências
+
+- ETAPA 11 integrada na `main` em `3e9136d`;
+- autenticação SSR, RLS, base publicada e endpoint RAG disponíveis;
+- migration mais recente anterior: `20260908000000_create_knowledge_documents_view.sql`.
+
+### Implementação local atual
+
+- tabelas `chat_sessions` e `chat_messages` com constraints e índices;
+- policies próprias e grants mínimos para `authenticated`;
+- função `append_chat_exchange` transacional com `SECURITY INVOKER`;
+- consulta server-only para listar, abrir e acrescentar conversas;
+- API de detalhe e extensão do `POST /api/chat` com `sessionId` opcional;
+- interface responsiva com lista, nova conversa e mensagens persistidas;
+- documentação e teste SQL estrutural.
+
+### Validações locais executadas
+
+- `npm.cmd run test:rag` aprovado;
+- `npm.cmd run lint` aprovado;
+- `npm.cmd run build` aprovado, incluindo `/api/chat/sessions/[id]`;
+- migration aplicada e teste SQL aprovado no Supabase compartilhado;
+- criação, troca e reabertura de conversas aprovadas no navegador;
+- conta diferente não visualizou o histórico da primeira conta;
+- endpoints autenticados responderam HTTP 200 sem erro no servidor;
+- acesso sem sessão foi bloqueado na página e nas APIs.
+
+### Pendente
+
+- revisar, versionar e integrar a ETAPA 12 na `main`.
+
+---
+
+## Tarefa P-11 — Interface do chatbot
+
+**Responsável:** Desenvolvedor principal
+**Status:** INTEGRADO
 **Branch:** `feature/chatbot-ui`
 
 ### Objetivo
@@ -113,7 +187,7 @@ docs/WORKBOARD.md
 
 ### Pendente
 
-- revisar, versionar e integrar a ETAPA 11 na `main`.
+- nenhuma pendência funcional da ETAPA 11.
 
 ---
 

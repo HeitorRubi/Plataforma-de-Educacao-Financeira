@@ -277,3 +277,23 @@ histórico em `localStorage` ou implementar streaming da resposta nesta etapa.
 **JUSTIFICATIVA:** uma consulta transitória permite tratar envio, erro, resposta
 e referências com menor alteração. A chave e a integração Groq continuam no
 servidor, enquanto persistência e histórico permanecem uma entrega separada.
+
+## D-024 — Histórico privado e gravação transacional
+
+**DECISÃO:** persistir cada conversa em `chat_sessions` e suas mensagens
+ordenadas em `chat_messages`, gravando o par pergunta/resposta pela função
+`append_chat_exchange` com `SECURITY INVOKER` e RLS do próprio usuário.
+
+**MOTIVO:** o histórico precisa sobreviver a atualização da página e novo login
+sem permitir leitura cruzada, respostas sem pergunta ou posições duplicadas em
+envios concorrentes.
+
+**ALTERNATIVAS CONSIDERADAS:** usar `localStorage`, inserir cada mensagem em uma
+requisição separada, guardar a conversa inteira em um único JSON ou consultar o
+banco com `service_role`.
+
+**JUSTIFICATIVA:** tabelas relacionais preservam ordem e integridade, enquanto a
+RPC mantém o par atômico e bloqueia a sessão durante o cálculo das posições. O
+cliente SSR continua sujeito aos grants e às policies, sem elevar privilégios.
+As referências são copiadas para a resposta histórica para manter o registro do
+que foi apresentado ao usuário naquele momento.

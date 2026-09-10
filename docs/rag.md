@@ -3,8 +3,9 @@
 ## Escopo da ETAPA 10
 
 A ETAPA 10 implementa o backend autenticado que recupera trechos da base de
-conhecimento e gera respostas educacionais pela Groq. A ETAPA 11 consome esse
-contrato pela interface `/chat`; o histórico permanece reservado à ETAPA 12.
+conhecimento e gera respostas educacionais pela Groq. A ETAPA 11 passou a
+consumir esse contrato pela interface `/chat`, e a ETAPA 12 o estende com o
+identificador opcional da conversa e a sessão persistida na resposta.
 
 Não foi criada migration nesta etapa. A recuperação lê a view
 `public.knowledge_documents` integrada na ETAPA 9 sob a sessão e o RLS já
@@ -68,7 +69,7 @@ Requisição:
 POST /api/chat
 Content-Type: application/json
 
-{"question":"O que a aula explica sobre ações?"}
+{"question":"O que a aula explica sobre ações?","sessionId":null}
 ```
 
 A pergunta deve ter entre 3 e 500 caracteres. O corpo completo é limitado a
@@ -114,6 +115,10 @@ Erros relevantes:
 - `503`: Groq ainda não configurada no servidor.
 
 Todas as respostas usam `Cache-Control: no-store`.
+
+Na ETAPA 12, `sessionId` pode ser `null` para criar uma conversa ou o UUID de uma
+conversa própria para continuar o histórico. A resposta mantém os três campos
+acima e acrescenta `session`. Consulte `docs/chat-history.md` para esse contrato.
 
 ## Configuração local
 
@@ -167,4 +172,5 @@ Em 09/09/2026:
 - pergunta fora da base retornou `insufficient_context`;
 - pedido de recomendação personalizada retornou `restricted`;
 - a chave da Groq permaneceu somente no `.env.local` ignorado pelo Git;
-- nenhuma pergunta, resposta ou sessão de chat foi persistida.
+- na ETAPA 10, nenhuma pergunta, resposta ou sessão de chat era persistida; essa
+  limitação foi removida pela ETAPA 12.
