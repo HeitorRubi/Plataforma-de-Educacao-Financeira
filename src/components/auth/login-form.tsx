@@ -4,6 +4,7 @@ import { useActionState } from "react";
 
 import { loginAction } from "@/app/auth/actions";
 import { initialFormState } from "@/lib/auth/form-state";
+import { EMAIL_MAX_LENGTH } from "@/lib/auth/validation";
 
 const inputClassName =
   "mt-2 h-11 w-full rounded-md border border-neutral-300 bg-white px-3 text-base outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/20";
@@ -24,6 +25,7 @@ export function LoginForm() {
           autoComplete="email"
           className={inputClassName}
           id="email"
+          maxLength={EMAIL_MAX_LENGTH}
           name="email"
           required
           type="email"

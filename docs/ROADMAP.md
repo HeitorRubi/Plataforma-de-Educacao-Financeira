@@ -18,7 +18,7 @@ Este roadmap mantém o desenvolvimento incremental do projeto. Uma etapa não de
 - [x] ETAPA 10 — RAG e Groq
 - [x] ETAPA 11 — Interface do chatbot
 - [x] ETAPA 12 — Histórico do chat
-- [ ] ETAPA 13 — Revisão de segurança e RLS
+- [x] ETAPA 13 — Revisão de segurança e RLS
 - [ ] ETAPA 14 — Testes
 - [ ] ETAPA 15 — Deploy
 - [ ] ETAPA 16 — Congelamento do MVP

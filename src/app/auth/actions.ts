@@ -5,15 +5,12 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import type { FieldErrors, FormState } from "@/lib/auth/form-state";
+import { validateEmail, validateFullName } from "@/lib/auth/validation";
 import { createClient } from "@/lib/supabase/server";
 
 function readText(formData: FormData, field: string) {
   const value = formData.get(field);
   return typeof value === "string" ? value : "";
-}
-
-function isValidEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 function validatePassword(password: string) {
@@ -68,8 +65,9 @@ export async function loginAction(
   const password = readText(formData, "password");
   const errors: FieldErrors = {};
 
-  if (!isValidEmail(email)) {
-    errors.email = "Informe um e-mail válido.";
+  const emailError = validateEmail(email);
+  if (emailError) {
+    errors.email = emailError;
   }
 
   if (!password) {
@@ -101,12 +99,14 @@ export async function signupAction(
   const confirmPassword = readText(formData, "confirmPassword");
   const errors: FieldErrors = {};
 
-  if (fullName.length < 2) {
-    errors.fullName = "Informe um nome com pelo menos 2 caracteres.";
+  const fullNameError = validateFullName(fullName);
+  if (fullNameError) {
+    errors.fullName = fullNameError;
   }
 
-  if (!isValidEmail(email)) {
-    errors.email = "Informe um e-mail válido.";
+  const emailError = validateEmail(email);
+  if (emailError) {
+    errors.email = emailError;
   }
 
   const passwordError = validatePassword(password);
@@ -152,11 +152,13 @@ export async function updateProfileAction(
 ): Promise<FormState> {
   const fullName = readText(formData, "fullName").trim();
 
-  if (fullName.length < 2) {
+  const fullNameError = validateFullName(fullName);
+
+  if (fullNameError) {
     return {
       message: "Revise o nome informado.",
       errors: {
-        fullName: "Informe um nome com pelo menos 2 caracteres.",
+        fullName: fullNameError,
       },
     };
   }

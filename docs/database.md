@@ -31,7 +31,7 @@ Complementa o usuário mantido pelo Supabase Auth.
 | Campo | Tipo | Obrigatório | Regra |
 | --- | --- | --- | --- |
 | `id` | `uuid` | sim | PK e FK para `auth.users.id` |
-| `full_name` | `text` | não | Nome informado pelo usuário |
+| `full_name` | `text` | não | Entre 2 e 100 caracteres quando informado |
 | `role` | `user_role` | sim | `USER` ou `ADMIN`; padrão `USER` |
 | `created_at` | `timestamptz` | sim | Preenchido pelo banco |
 | `updated_at` | `timestamptz` | sim | Atualizado por trigger |
@@ -41,8 +41,8 @@ Complementa o usuário mantido pelo Supabase Auth.
 | Campo | Tipo | Obrigatório | Regra |
 | --- | --- | --- | --- |
 | `id` | `uuid` | sim | PK gerada pelo banco |
-| `title` | `text` | sim | Não pode ser vazio |
-| `description` | `text` | não | Descrição do curso |
+| `title` | `text` | sim | Entre 3 e 120 caracteres |
+| `description` | `text` | não | Até 1.000 caracteres |
 | `is_published` | `boolean` | sim | Padrão `false` |
 | `created_at` | `timestamptz` | sim | Preenchido pelo banco |
 | `updated_at` | `timestamptz` | sim | Atualizado por trigger |
@@ -53,8 +53,8 @@ Complementa o usuário mantido pelo Supabase Auth.
 | --- | --- | --- | --- |
 | `id` | `uuid` | sim | PK gerada pelo banco |
 | `course_id` | `uuid` | sim | FK para `courses.id` |
-| `title` | `text` | sim | Não pode ser vazio |
-| `description` | `text` | não | Descrição do módulo |
+| `title` | `text` | sim | Entre 3 e 120 caracteres |
+| `description` | `text` | não | Até 1.000 caracteres |
 | `position` | `integer` | sim | Positiva e única no curso |
 | `created_at` | `timestamptz` | sim | Preenchido pelo banco |
 | `updated_at` | `timestamptz` | sim | Atualizado por trigger |
@@ -65,8 +65,8 @@ Complementa o usuário mantido pelo Supabase Auth.
 | --- | --- | --- | --- |
 | `id` | `uuid` | sim | PK gerada pelo banco |
 | `module_id` | `uuid` | sim | FK para `modules.id` |
-| `title` | `text` | sim | Não pode ser vazio |
-| `content` | `text` | sim | Começa vazio para permitir rascunho |
+| `title` | `text` | sim | Entre 3 e 120 caracteres |
+| `content` | `text` | sim | Começa vazio; até 100.000 caracteres |
 | `position` | `integer` | sim | Positiva e única no módulo |
 | `is_published` | `boolean` | sim | Padrão `false` |
 | `created_at` | `timestamptz` | sim | Preenchido pelo banco |
@@ -92,9 +92,9 @@ idempotente.
 | --- | --- | --- | --- |
 | `id` | `uuid` | sim | PK gerada pelo banco |
 | `lesson_id` | `uuid` | sim | FK para `lessons.id` |
-| `title` | `text` | sim | Não pode ser vazio |
-| `author` | `text` | não | Não deve ser preenchido por suposição |
-| `url` | `text` | não | Endereço da fonte, quando existir |
+| `title` | `text` | sim | Entre 3 e 200 caracteres |
+| `author` | `text` | não | Até 200 caracteres; não preencher por suposição |
+| `url` | `text` | não | HTTP/HTTPS, até 2.000 caracteres |
 | `publication_year` | `integer` | não | Ano informado pela própria fonte |
 | `position` | `integer` | sim | Positiva e única na aula |
 | `created_at` | `timestamptz` | sim | Preenchido pelo banco |
@@ -119,7 +119,7 @@ idempotente.
 | `role` | `text` | sim | `USER` ou `ASSISTANT` |
 | `content` | `text` | sim | Não vazio, até 20.000 caracteres |
 | `status` | `text` | não | Estado RAG apenas na resposta |
-| `citations` | `jsonb` | sim | Referências da resposta; padrão `[]` |
+| `citations` | `jsonb` | sim | De 1 a 4 na resposta fundamentada; `[]` nos demais estados |
 | `position` | `integer` | sim | Positiva e única na sessão |
 | `created_at` | `timestamptz` | sim | Preenchido pelo banco |
 
@@ -175,6 +175,11 @@ transacionais com `SECURITY INVOKER`. Assim, a posição permanece única dentro
 do respectivo pai e as funções continuam sujeitas aos grants e às policies RLS
 da sessão.
 
+Na ETAPA 13, os papéis `anon` e `authenticated` perderam `CREATE` no schema
+`public`. A execução pública implícita das funções foi revogada e somente os
+RPCs necessários foram concedidos novamente a `authenticated`. Os limites de
+entrada da aplicação também passaram a ser constraints validadas no banco.
+
 Na ETAPA 8 não houve alteração de schema ou de políticas. O arquivo
 `supabase/tests/admin_access_validation.sql` consolida a verificação das quatro
 tabelas de conteúdo, das doze policies administrativas, da ausência de escrita
@@ -209,6 +214,9 @@ A base de conhecimento e seu teste estão documentados em
 
 O histórico do chatbot, a migration e seu teste estão documentados em
 `docs/chat-history.md`.
+
+A revisão cumulativa de acesso, funções e constraints está documentada em
+`docs/security-review.md`.
 
 A migration e o teste SQL do histórico foram aplicados e aprovados no Supabase
 compartilhado em 10/09/2026, conforme confirmação do desenvolvedor principal.

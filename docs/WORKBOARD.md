@@ -8,46 +8,124 @@ Este arquivo é o quadro operacional compartilhado dos dois desenvolvedores e do
 
 ```text
 branch integrada: main
-base funcional integrada observada: 3e9136d
-última etapa integrada: ETAPA 11 — INTERFACE DO CHATBOT
-tarefa oficial atual: ETAPA 12 — HISTÓRICO DO CHAT
-branch de trabalho atual: feature/chat-history
+base funcional integrada observada: fcba907
+última etapa integrada: ETAPA 12 — HISTÓRICO DO CHAT
+tarefa oficial atual: ETAPA 13 — REVISÃO DE SEGURANÇA E RLS
+branch de trabalho atual: security/review
 ```
 
 Antes de confiar nesse baseline, cada Codex deve comparar com o Git real.
 
-Em 10/09/2026, o Git confirmou a ETAPA 11 integrada em `origin/main` no commit
-`3e9136d`. A branch `feature/chat-history` foi criada dessa base e o
-desenvolvedor principal autorizou explicitamente prosseguir nela.
+Em 10/09/2026, o Git confirmou a ETAPA 12 integrada em `origin/main` no commit
+`fcba907`. A branch `security/review` foi criada dessa base com autorização
+explícita do desenvolvedor principal.
 
-## 2. Estratégia da ETAPA 12
+## 2. Estratégia da ETAPA 13
 
-A ETAPA 12 será executada pelo desenvolvedor principal para persistir e reabrir
-conversas privadas do assistente. O segundo desenvolvedor não possui tarefa
-ativa nesta área.
+A ETAPA 13 será executada pelo desenvolvedor principal para revisar e endurecer
+as fronteiras já implementadas. O segundo desenvolvedor não possui tarefa ativa
+nesta área.
 
 ```text
-USUÁRIO AUTENTICADO
+ENTRADAS HTTP E SERVER ACTIONS
         ↓
-SESSÃO PRÓPRIA + MENSAGENS ORDENADAS
+AUTENTICAÇÃO + AUTORIZAÇÃO + RLS
         ↓
-PERGUNTA E RESPOSTA EM UMA TRANSAÇÃO
+GRANTS EXPLÍCITOS + CONSTRAINTS
         ↓
-LISTAGEM E REABERTURA EM /CHAT
+DADOS PRIVADOS E SEGREDOS PRESERVADOS
 ```
 
-Esta tarefa não autoriza exclusão, edição, compartilhamento, listagem
-administrativa global, streaming, embeddings ou uso do histórico como contexto
-adicional da Groq.
+Esta tarefa não autoriza funcionalidades novas, testes amplos da ETAPA 14,
+infraestrutura de rate limiting, deploy ou mudança de provedor.
 
 ---
 
 # DESENVOLVEDOR PRINCIPAL
 
-## Tarefa P-12 — Histórico do chat
+## Tarefa P-13 — Revisão de segurança e RLS
 
 **Responsável:** Desenvolvedor principal
 **Status:** PRONTO PARA REVISÃO
+**Branch:** `security/review`
+
+### Objetivo
+
+Revisar autenticação, autorização, RLS, dados privados, segredos e validações,
+corrigindo lacunas sem alterar os fluxos funcionais aprovados.
+
+### Áreas reservadas ao desenvolvedor principal
+
+```text
+src/app/auth/actions.ts
+src/components/auth/**
+src/lib/auth/**
+next.config.ts
+.env.example
+supabase/migrations/*harden_security*.sql
+supabase/tests/security_review_validation.sql
+docs/security-review.md
+docs/authentication.md
+docs/database.md
+docs/DECISIONS.md
+docs/ROADMAP.md
+docs/STATUS.md
+docs/WORKBOARD.md
+```
+
+### Regras
+
+- manter `service_role` fora da aplicação e do Git;
+- preservar `SECURITY INVOKER` nos RPCs da aplicação;
+- não reescrever migrations já aplicadas;
+- manter acesso privado por `auth.uid()` e administração por role persistida;
+- aplicar privilégio mínimo a tabelas, schema e funções;
+- validar entradas no servidor e no banco, não apenas na interface;
+- registrar controles externos e riscos residuais sem inventar aprovação.
+
+### Dependências
+
+- ETAPA 12 integrada na `main` em `fcba907`;
+- migration mais recente anterior:
+  `20260910000000_create_chat_history.sql`.
+
+### Implementação local atual
+
+- limites de nome e e-mail centralizados;
+- cabeçalhos HTTP defensivos e remoção de `X-Powered-By`;
+- nova migration de constraints e grants de função explícitos;
+- teste SQL cumulativo de RLS, policies, constraints e privilégios;
+- documentação dos controles e dos riscos que dependem de configuração externa.
+
+### Validações locais executadas
+
+- `git diff --check` aprovado, somente com avisos LF/CRLF;
+- `npm.cmd run test:rag` aprovado;
+- `npm.cmd run lint` aprovado;
+- `npm.cmd run build` aprovado;
+- `npm.cmd audit --json` sem vulnerabilidades nas 528 dependências;
+- cabeçalhos HTTP observados em `/login` e nas rotas protegidas;
+- `/chat` sem sessão redirecionou para `/login`;
+- APIs do chat sem sessão responderam HTTP 401 sem cache.
+- migration aplicada no Supabase compartilhado;
+- `supabase/tests/security_review_validation.sql` aprovado com `Success. No
+  rows returned` no SQL Editor.
+- cadastro, login, perfil, chat e operações administrativas aprovados após a
+  migration;
+- bloqueio sem sessão e isolamento entre contas confirmados pelo desenvolvedor
+  principal.
+
+### Pendente
+
+- versionar e integrar a ETAPA 13 na `main`;
+- confirmar a rotação da chave da Groq antes de configurar a Vercel.
+
+---
+
+## Tarefa P-12 — Histórico do chat
+
+**Responsável:** Desenvolvedor principal
+**Status:** INTEGRADO
 **Branch:** `feature/chat-history`
 
 ### Objetivo
@@ -116,7 +194,7 @@ docs/WORKBOARD.md
 
 ### Pendente
 
-- revisar, versionar e integrar a ETAPA 12 na `main`.
+- nenhuma pendência funcional da ETAPA 12.
 
 ---
 

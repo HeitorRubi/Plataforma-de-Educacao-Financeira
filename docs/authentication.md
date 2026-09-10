@@ -55,6 +55,10 @@ a confirmação ajuda a comprovar que o usuário controla o endereço cadastrado
 - Usuários autenticados atualizam apenas `full_name`; `role` não possui
   privilégio de atualização.
 - O perfil é criado automaticamente quando o Supabase cria o usuário.
+- Nome completo é limitado a 100 caracteres no formulário, na Server Action e
+  no PostgreSQL; o e-mail é limitado a 254 caracteres antes da chamada ao Auth.
+- A configuração de senha mínima, proteção contra senhas vazadas e confirmação
+  de e-mail deve ser conferida no painel do Supabase antes da publicação.
 
 ## Tratamento de indisponibilidade
 
