@@ -297,3 +297,21 @@ RPC mantém o par atômico e bloqueia a sessão durante o cálculo das posiçõe
 cliente SSR continua sujeito aos grants e às policies, sem elevar privilégios.
 As referências são copiadas para a resposta histórica para manter o registro do
 que foi apresentado ao usuário naquele momento.
+
+## D-025 — Privilégio mínimo e validação também no banco
+
+**DECISÃO:** espelhar no PostgreSQL os limites de entrada relevantes, revogar a
+execução pública implícita das funções e conceder somente os RPCs esperados aos
+papéis da aplicação.
+
+**MOTIVO:** validação de formulário e checagem de rota não protegem acessos
+diretos à Data API. Funções PostgreSQL também recebem `EXECUTE` de `PUBLIC` por
+padrão se esse privilégio não for removido explicitamente.
+
+**ALTERNATIVAS CONSIDERADAS:** confiar somente nas Server Actions, introduzir
+`service_role` no backend ou converter os RPCs existentes para
+`SECURITY DEFINER`.
+
+**JUSTIFICATIVA:** constraints, grants explícitos, RLS e `SECURITY INVOKER`
+mantêm as mesmas regras independentemente do ponto de entrada, sem armazenar um
+segredo administrativo na aplicação nem elevar privilégios das funções.

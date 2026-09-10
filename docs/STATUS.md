@@ -6,15 +6,16 @@ Atualizado a partir do repositório e dos testes executados em 10/09/2026.
 
 ```text
 branch integrada: main
-base funcional integrada observada: 3e9136d
-última etapa integrada: ETAPA 11 — INTERFACE DO CHATBOT
-branch ativa: feature/chat-history
-tarefa atual: ETAPA 12 — HISTÓRICO DO CHAT
+base funcional integrada observada: fcba907
+última etapa integrada: ETAPA 12 — HISTÓRICO DO CHAT
+branch ativa: security/review
+tarefa atual: ETAPA 13 — REVISÃO DE SEGURANÇA E RLS
 ```
 
 Histórico principal observado:
 
 ```text
+fcba907  Adicionado histórico persistente do chatbot
 3e9136d  Adicionada interface do chatbot educacional
 3b99cac  RAG educacional com Groq integrado à main
 95ee7f8  Base de conhecimento integrada à main
@@ -345,7 +346,7 @@ Validações locais registradas:
 - `Abrir aula` e os vínculos externos das fontes funcionaram;
 - a consulta anterior desapareceu após atualizar a página.
 
-### ETAPA 12 — concluída na branch `feature/chat-history`
+### ETAPA 12 — integrada na `main`
 
 Implementação local atual:
 
@@ -383,10 +384,52 @@ Validações registradas:
 - sem sessão, `/chat` redirecionou ao login e as APIs retornaram HTTP 401 sem
   cache.
 
+### ETAPA 13 — concluída na branch `security/review`
+
+Implementação local atual:
+
+- revisão das oito tabelas com RLS e das fronteiras de autenticação e
+  autorização do servidor;
+- limites de nome e e-mail compartilhados entre formulários e Server Actions;
+- nova migration com constraints para os dados de perfil, conteúdo e histórico;
+- execução de funções revogada de `PUBLIC`/`anon` e concedida novamente apenas
+  aos papéis necessários;
+- papéis da API sem permissão de criar objetos no schema `public`;
+- cabeçalhos HTTP contra enquadramento, MIME sniffing, referrer excessivo e APIs
+  desnecessárias do navegador;
+- varredura do código e histórico sem chave privada versionada;
+- teste SQL cumulativo em `supabase/tests/security_review_validation.sql`;
+- riscos residuais e configuração externa registrados em
+  `docs/security-review.md`.
+
+Validações locais registradas até o momento:
+
+- `git diff --check` aprovado, somente com avisos de normalização LF/CRLF;
+- `npm.cmd run test:rag` aprovado;
+- `npm.cmd run lint` aprovado;
+- `npm.cmd run build` aprovado;
+- `npm.cmd audit --json` sem vulnerabilidades nas 528 dependências analisadas;
+- `/login` respondeu HTTP 200 com todos os cabeçalhos configurados e sem
+  `X-Powered-By`;
+- `/chat` sem sessão respondeu HTTP 307 para `/login`;
+- as duas APIs do histórico sem sessão responderam HTTP 401 e
+  `Cache-Control: no-store`;
+- migration aplicada no Supabase compartilhado em 10/09/2026, conforme
+  confirmação do desenvolvedor principal;
+- `supabase/tests/security_review_validation.sql` aprovado com `Success. No
+  rows returned` no SQL Editor;
+- cadastro, login e edição de perfil aprovados após a migration;
+- fluxos críticos de `USER` e `ADMIN` aprovados pelo desenvolvedor principal;
+- isolamento de dados privados e bloqueio sem sessão confirmados novamente;
+- criação e reabertura de conversa aprovadas após a revogação dos privilégios
+  implícitos de funções;
+- cliente PostgreSQL/Supabase não está disponível no ambiente local para
+  executar o teste estrutural contra o banco.
+
 ## Próxima ação
 
-Revisar, versionar e integrar a ETAPA 12 na `main`. Não iniciar a revisão de
-segurança da ETAPA 13 antes da integração e de autorização explícita.
+Versionar e integrar a ETAPA 13 na `main`. Depois, executar a ETAPA 14 antes de
+preparar o deploy da ETAPA 15.
 
 ## Pontos que não foram verificados externamente nesta análise
 
