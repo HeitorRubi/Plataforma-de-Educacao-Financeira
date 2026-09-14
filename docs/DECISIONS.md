@@ -315,3 +315,19 @@ padrão se esse privilégio não for removido explicitamente.
 **JUSTIFICATIVA:** constraints, grants explícitos, RLS e `SECURITY INVOKER`
 mantêm as mesmas regras independentemente do ponto de entrada, sem armazenar um
 segredo administrativo na aplicação nem elevar privilégios das funções.
+
+## D-026 — Checkpoint final em camadas
+
+**DECISÃO:** validar o MVP com testes determinísticos das regras de domínio,
+smoke HTTP reutilizável, teste SQL cumulativo e roteiro manual autenticado.
+
+**MOTIVO:** os Server Components assíncronos e os fluxos com Supabase/Groq
+dependem de serviços e contas reais, enquanto validações puras e contratos HTTP
+podem ser repetidos sem credenciais.
+
+**ALTERNATIVAS CONSIDERADAS:** registrar somente testes manuais ou introduzir
+uma suíte E2E com credenciais de usuário e administrador armazenadas no ambiente.
+
+**JUSTIFICATIVA:** a combinação amplia a regressão automatizada sem colocar
+segredos no Git nem criar dados remotamente a cada execução. O roteiro manual
+preserva a prova dos fluxos reais que exigem sessão e serviços externos.
