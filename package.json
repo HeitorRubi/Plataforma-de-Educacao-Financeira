@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:rag": "node --no-warnings --experimental-strip-types scripts/validate-rag.mjs"
+    "test:platform": "node --no-warnings --experimental-strip-types scripts/validate-platform.mjs",
+    "test:rag": "node --no-warnings --experimental-strip-types scripts/validate-rag.mjs",
+    "test:http": "node scripts/validate-http.mjs",
+    "test:all": "npm run test:platform && npm run test:rag"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.5",

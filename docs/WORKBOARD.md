@@ -8,45 +8,116 @@ Este arquivo é o quadro operacional compartilhado dos dois desenvolvedores e do
 
 ```text
 branch integrada: main
-base funcional integrada observada: fcba907
-última etapa integrada: ETAPA 12 — HISTÓRICO DO CHAT
-tarefa oficial atual: ETAPA 13 — REVISÃO DE SEGURANÇA E RLS
-branch de trabalho atual: security/review
+base funcional integrada observada: f2240e4
+última etapa integrada: ETAPA 13 — REVISÃO DE SEGURANÇA E RLS
+tarefa oficial atual: ETAPA 14 — TESTES FINAIS
+branch de trabalho atual: test/stage-14
 ```
 
 Antes de confiar nesse baseline, cada Codex deve comparar com o Git real.
 
-Em 10/09/2026, o Git confirmou a ETAPA 12 integrada em `origin/main` no commit
-`fcba907`. A branch `security/review` foi criada dessa base com autorização
+Em 14/09/2026, o Git confirmou a ETAPA 13 integrada em `origin/main` no commit
+`f2240e4`. A branch `test/stage-14` foi criada dessa base com autorização
 explícita do desenvolvedor principal.
 
-## 2. Estratégia da ETAPA 13
+## 2. Estratégia da ETAPA 14
 
-A ETAPA 13 será executada pelo desenvolvedor principal para revisar e endurecer
-as fronteiras já implementadas. O segundo desenvolvedor não possui tarefa ativa
-nesta área.
+A ETAPA 14 será executada pelo desenvolvedor principal para validar a plataforma
+e o chatbot integrados. O segundo desenvolvedor não possui tarefa ativa nesta
+área.
 
 ```text
-ENTRADAS HTTP E SERVER ACTIONS
+VALIDAÇÕES DETERMINÍSTICAS
         ↓
-AUTENTICAÇÃO + AUTORIZAÇÃO + RLS
+SMOKE HTTP + TESTE SQL
         ↓
-GRANTS EXPLÍCITOS + CONSTRAINTS
+FLUXOS REAIS DE ADMIN E USER
         ↓
-DADOS PRIVADOS E SEGREDOS PRESERVADOS
+CHATBOT + HISTÓRICO + ISOLAMENTO
 ```
 
-Esta tarefa não autoriza funcionalidades novas, testes amplos da ETAPA 14,
-infraestrutura de rate limiting, deploy ou mudança de provedor.
+Esta tarefa não autoriza funcionalidades novas, mudanças de schema, deploy
+formal, armazenamento de credenciais ou mudança de provedor.
 
 ---
 
 # DESENVOLVEDOR PRINCIPAL
 
-## Tarefa P-13 — Revisão de segurança e RLS
+## Tarefa P-14 — Testes finais
 
 **Responsável:** Desenvolvedor principal
 **Status:** PRONTO PARA REVISÃO
+**Branch:** `test/stage-14`
+
+### Objetivo
+
+Comprovar o funcionamento integrado do MVP e do chatbot depois da revisão de
+segurança, com resultados automatizados, SQL e manuais reproduzíveis.
+
+### Áreas reservadas ao desenvolvedor principal
+
+```text
+scripts/validate-platform.mjs
+scripts/validate-http.mjs
+supabase/tests/final_checkpoint_validation.sql
+docs/checkpoint-2.md
+package.json
+docs/DECISIONS.md
+docs/ROADMAP.md
+docs/STATUS.md
+docs/WORKBOARD.md
+```
+
+### Regras
+
+- não adicionar funcionalidades nem migration;
+- não registrar credenciais ou dados privados;
+- distinguir teste automatizado, SQL e manual;
+- não marcar como aprovado o que ainda não foi executado;
+- testar bloqueio sem sessão e isolamento entre contas;
+- testar resposta fundamentada, contexto insuficiente e solicitação limitada.
+
+### Dependências
+
+- ETAPA 13 integrada na `main` em `f2240e4`;
+- migrations até `20260911000000_harden_security_boundaries.sql` aplicadas;
+- ambiente local e deployment com Supabase e Groq configurados.
+
+### Implementação local atual
+
+- validações determinísticas de autenticação, conteúdo e chunking;
+- smoke HTTP para ambiente local ou URL publicada;
+- teste SQL cumulativo do schema, RLS, policies, view e RPCs;
+- roteiro manual do CHECKPOINT 2.
+
+### Validações executadas
+
+- `npm.cmd run test:platform` aprovado;
+- `npm.cmd run test:rag` aprovado;
+- `npm.cmd run lint` aprovado;
+- `npm.cmd run build` aprovado;
+- `git diff --check` aprovado, somente com avisos LF/CRLF;
+- smoke HTTP aprovado no build local de produção;
+- smoke HTTP aprovado em `https://pla-financeiro.vercel.app`;
+- `npm.cmd audit --json` sem vulnerabilidades nas 528 dependências.
+- `supabase/tests/final_checkpoint_validation.sql` aprovado no Supabase com
+  `Success. No rows returned`.
+- fluxos administrativos, publicação e ordenação aprovados;
+- fluxo `USER`, progresso persistente e bloqueio administrativo aprovados;
+- chatbot fundamentado, estados de recusa e histórico aprovados;
+- isolamento de progresso e conversas entre duas contas aprovado;
+- CHECKPOINT 2 aprovado pelo desenvolvedor principal em 14/09/2026.
+
+### Pendente
+
+- versionar e integrar a ETAPA 14 na `main`.
+
+---
+
+## Tarefa P-13 — Revisão de segurança e RLS
+
+**Responsável:** Desenvolvedor principal
+**Status:** INTEGRADO
 **Branch:** `security/review`
 
 ### Objetivo
@@ -117,8 +188,7 @@ docs/WORKBOARD.md
 
 ### Pendente
 
-- versionar e integrar a ETAPA 13 na `main`;
-- confirmar a rotação da chave da Groq antes de configurar a Vercel.
+- nenhuma pendência funcional da ETAPA 13.
 
 ---
 

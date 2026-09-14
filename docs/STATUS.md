@@ -1,20 +1,21 @@
 # Status Atual do Projeto
 
-Atualizado a partir do repositório e dos testes executados em 10/09/2026.
+Atualizado a partir do repositório e dos testes executados em 14/09/2026.
 
 ## Baseline Git observado
 
 ```text
 branch integrada: main
-base funcional integrada observada: fcba907
-última etapa integrada: ETAPA 12 — HISTÓRICO DO CHAT
-branch ativa: security/review
-tarefa atual: ETAPA 13 — REVISÃO DE SEGURANÇA E RLS
+base funcional integrada observada: f2240e4
+última etapa integrada: ETAPA 13 — REVISÃO DE SEGURANÇA E RLS
+branch ativa: test/stage-14
+tarefa atual: ETAPA 14 — TESTES FINAIS
 ```
 
 Histórico principal observado:
 
 ```text
+f2240e4  Reforçada a segurança e as validações da plataforma
 fcba907  Adicionado histórico persistente do chatbot
 3e9136d  Adicionada interface do chatbot educacional
 3b99cac  RAG educacional com Groq integrado à main
@@ -384,7 +385,7 @@ Validações registradas:
 - sem sessão, `/chat` redirecionou ao login e as APIs retornaram HTTP 401 sem
   cache.
 
-### ETAPA 13 — concluída na branch `security/review`
+### ETAPA 13 — integrada na `main`
 
 Implementação local atual:
 
@@ -426,10 +427,41 @@ Validações locais registradas até o momento:
 - cliente PostgreSQL/Supabase não está disponível no ambiente local para
   executar o teste estrutural contra o banco.
 
+### ETAPA 14 — concluída na branch `test/stage-14`
+
+Implementação local atual:
+
+- testes determinísticos para autenticação, cursos, módulos, aulas, fontes e
+  particionamento da base de conhecimento;
+- smoke HTTP reutilizável no build local e no domínio publicado;
+- teste SQL cumulativo de relações, RLS, policies, view e RPCs;
+- roteiro autenticado do CHECKPOINT 2 sem credenciais versionadas;
+- nenhuma funcionalidade, migration ou regra de negócio alterada.
+
+Validações executadas:
+
+- `npm.cmd run test:platform` aprovado;
+- `npm.cmd run test:rag` aprovado;
+- `npm.cmd run lint` aprovado;
+- `npm.cmd run build` aprovado;
+- `git diff --check` aprovado, somente com avisos LF/CRLF;
+- smoke HTTP aprovado no build local de produção;
+- smoke HTTP aprovado em `https://pla-financeiro.vercel.app`;
+- `npm.cmd audit --json` sem vulnerabilidades nas 528 dependências;
+- `supabase/tests/final_checkpoint_validation.sql` aprovado no Supabase com
+  `Success. No rows returned`;
+- fluxo administrativo e persistência da ordenação aprovados;
+- catálogo, aulas, fontes e progresso persistente aprovados como `USER`;
+- bloqueio administrativo para `USER` aprovado;
+- respostas fundamentada, sem contexto e limitada aprovadas no chatbot;
+- histórico entre conversas e referências aprovado;
+- isolamento de progresso e conversas entre duas contas aprovado;
+- CHECKPOINT 2 aprovado pelo desenvolvedor principal em 14/09/2026.
+
 ## Próxima ação
 
-Versionar e integrar a ETAPA 13 na `main`. Depois, executar a ETAPA 14 antes de
-preparar o deploy da ETAPA 15.
+Versionar e integrar a ETAPA 14 na `main`. Depois, preparar e validar o deploy
+formal da ETAPA 15.
 
 ## Pontos que não foram verificados externamente nesta análise
 
