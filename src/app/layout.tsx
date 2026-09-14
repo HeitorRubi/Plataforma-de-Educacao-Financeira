@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -6,7 +7,9 @@ export const metadata: Metadata = {
   description: "Plataforma gratuita de educação financeira.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  await connection();
+
   return (
     <html lang="pt-BR">
       <body className="min-h-screen bg-neutral-50 text-neutral-950 antialiased">
