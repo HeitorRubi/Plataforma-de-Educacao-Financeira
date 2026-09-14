@@ -8,45 +8,112 @@ Este arquivo é o quadro operacional compartilhado dos dois desenvolvedores e do
 
 ```text
 branch integrada: main
-base funcional integrada observada: f2240e4
-última etapa integrada: ETAPA 13 — REVISÃO DE SEGURANÇA E RLS
-tarefa oficial atual: ETAPA 14 — TESTES FINAIS
-branch de trabalho atual: test/stage-14
+base funcional integrada observada: f7f6caf
+última etapa integrada: ETAPA 14 — TESTES FINAIS
+tarefa oficial atual: ETAPA 15 — DEPLOY
+branch de trabalho atual: deploy/vercel
 ```
 
 Antes de confiar nesse baseline, cada Codex deve comparar com o Git real.
 
-Em 14/09/2026, o Git confirmou a ETAPA 13 integrada em `origin/main` no commit
-`f2240e4`. A branch `test/stage-14` foi criada dessa base com autorização
+Em 14/09/2026, o Git confirmou a ETAPA 14 integrada em `origin/main` no commit
+`f7f6caf`. A branch `deploy/vercel` foi criada dessa base com autorização
 explícita do desenvolvedor principal.
 
-## 2. Estratégia da ETAPA 14
+## 2. Estratégia da ETAPA 15
 
-A ETAPA 14 será executada pelo desenvolvedor principal para validar a plataforma
-e o chatbot integrados. O segundo desenvolvedor não possui tarefa ativa nesta
-área.
+A ETAPA 15 será executada pelo desenvolvedor principal para formalizar e validar
+o deployment Vercel que já existe. O segundo desenvolvedor não possui tarefa
+ativa nesta área.
 
 ```text
-VALIDAÇÕES DETERMINÍSTICAS
+BUILD LOCAL APROVADO
         ↓
-SMOKE HTTP + TESTE SQL
+PREVIEW DEPLOYMENT
         ↓
-FLUXOS REAIS DE ADMIN E USER
+SMOKE HTTP + FLUXOS AUTENTICADOS
         ↓
-CHATBOT + HISTÓRICO + ISOLAMENTO
+PRODUCTION DEPLOYMENT DOCUMENTADO
 ```
 
-Esta tarefa não autoriza funcionalidades novas, mudanças de schema, deploy
-formal, armazenamento de credenciais ou mudança de provedor.
+Esta tarefa não autoriza funcionalidades novas, mudanças de schema,
+armazenamento de credenciais, novo provedor ou novo projeto de hospedagem.
 
 ---
 
 # DESENVOLVEDOR PRINCIPAL
 
+## Tarefa P-15 — Deploy na Vercel
+
+**Responsável:** Desenvolvedor principal
+**Status:** EM VALIDAÇÃO
+**Branch:** `deploy/vercel`
+
+### Objetivo
+
+Formalizar o deployment existente, fechar os cabeçalhos reservados para HTTPS e
+comprovar que o MVP integrado funciona na Vercel sem expor segredos.
+
+### Áreas reservadas ao desenvolvedor principal
+
+```text
+next.config.ts
+src/proxy.ts
+src/lib/supabase/proxy.ts
+src/app/layout.tsx
+scripts/validate-http.mjs
+README.md
+docs/deployment.md
+docs/security-review.md
+docs/DECISIONS.md
+docs/ROADMAP.md
+docs/STATUS.md
+docs/WORKBOARD.md
+```
+
+### Regras
+
+- manter o projeto Vercel e o domínio já existentes;
+- não registrar valores de variáveis ou credenciais;
+- manter `GROQ_API_KEY` somente como Secret no servidor;
+- preservar cookies do Supabase ao adicionar cabeçalhos no `proxy`;
+- validar o deployment atualizado antes de concluir a etapa;
+- não criar migration nem funcionalidade de produto.
+
+### Dependências
+
+- ETAPA 14 integrada em `origin/main` no commit `f7f6caf`;
+- CHECKPOINT 2 aprovado;
+- projeto Vercel vinculado ao GitHub e variáveis configuradas.
+
+### Implementação local atual
+
+- documentação completa do deployment existente;
+- CSP com nonce único por requisição e renderização dinâmica;
+- HSTS e demais cabeçalhos defensivos;
+- smoke HTTP validando CSP, nonces distintos e HSTS em HTTPS;
+- README atualizado para o MVP publicado.
+
+### Validações executadas
+
+- `npm.cmd run test:all` aprovado;
+- `npm.cmd run lint` aprovado;
+- `npm.cmd run build` aprovado;
+- smoke HTTP local aprovado em `http://localhost:3100`;
+- todos os scripts observados no HTML receberam o nonce da resposta.
+
+### Pendente
+
+- confirmar a revogação e substituição da chave Groq anteriormente exposta;
+- publicar a branch e validar o deployment atualizado;
+- confirmar os fluxos autenticados no ambiente publicado.
+
+---
+
 ## Tarefa P-14 — Testes finais
 
 **Responsável:** Desenvolvedor principal
-**Status:** PRONTO PARA REVISÃO
+**Status:** INTEGRADO
 **Branch:** `test/stage-14`
 
 ### Objetivo
@@ -110,7 +177,7 @@ docs/WORKBOARD.md
 
 ### Pendente
 
-- versionar e integrar a ETAPA 14 na `main`.
+- nenhuma pendência funcional da ETAPA 14.
 
 ---
 

@@ -3,9 +3,10 @@ import assert from "node:assert/strict";
 const configuredBaseUrl =
   process.argv[2] ?? process.env.TEST_BASE_URL ?? "http://localhost:3000";
 const baseUrl = configuredBaseUrl.replace(/\/+$/, "");
+let parsedBaseUrl;
 
 try {
-  new URL(baseUrl);
+  parsedBaseUrl = new URL(baseUrl);
 } catch {
   throw new Error("TEST_BASE_URL deve conter uma URL absoluta válida.");
 }
@@ -32,7 +33,6 @@ for (const path of ["/", "/login", "/cadastro"]) {
 
 const loginResponse = await request("/login");
 const expectedHeaders = {
-  "content-security-policy": "frame-ancestors 'none'",
   "cross-origin-opener-policy": "same-origin",
   "permissions-policy": "camera=()",
   "referrer-policy": "strict-origin-when-cross-origin",
@@ -49,6 +49,44 @@ for (const [header, expectedValue] of Object.entries(expectedHeaders)) {
 }
 
 assert.equal(loginResponse.headers.has("x-powered-by"), false);
+
+const contentSecurityPolicy =
+  loginResponse.headers.get("content-security-policy") ?? "";
+for (const directive of [
+  "default-src 'self'",
+  "script-src 'self'",
+  "object-src 'none'",
+  "frame-ancestors 'none'",
+]) {
+  assert.match(
+    contentSecurityPolicy,
+    new RegExp(directive.replace(/[()']/g, "\\$&"), "i"),
+    `A CSP deveria conter ${directive}.`,
+  );
+}
+
+const nonce = contentSecurityPolicy.match(/'nonce-([^']+)'/)?.[1];
+assert.ok(nonce, "A CSP deveria incluir um nonce por requisicao.");
+
+const repeatedLoginResponse = await request("/login");
+const repeatedNonce = repeatedLoginResponse.headers
+  .get("content-security-policy")
+  ?.match(/'nonce-([^']+)'/)?.[1];
+assert.ok(repeatedNonce, "A segunda resposta deveria incluir um nonce.");
+assert.notEqual(nonce, repeatedNonce, "O nonce deve mudar a cada requisicao.");
+
+if (parsedBaseUrl.protocol === "https:") {
+  assert.match(
+    contentSecurityPolicy,
+    /upgrade-insecure-requests/i,
+    "A CSP do ambiente HTTPS deveria promover requisicoes inseguras.",
+  );
+  assert.match(
+    loginResponse.headers.get("strict-transport-security") ?? "",
+    /max-age=\d+/i,
+    "O ambiente HTTPS deveria enviar HSTS.",
+  );
+}
 
 for (const path of ["/admin", "/chat", "/perfil", "/area-autenticada"]) {
   const response = await request(path);

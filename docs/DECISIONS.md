@@ -331,3 +331,20 @@ uma suíte E2E com credenciais de usuário e administrador armazenadas no ambien
 **JUSTIFICATIVA:** a combinação amplia a regressão automatizada sem colocar
 segredos no Git nem criar dados remotamente a cada execução. O roteiro manual
 preserva a prova dos fluxos reais que exigem sessão e serviços externos.
+
+## D-027 — Deploy contínuo na Vercel com CSP por requisição
+
+**DECISÃO:** manter o projeto Next.js na Vercel, publicar a `main` pela integração
+com o GitHub e gerar no `proxy` uma CSP completa com nonce único por requisição.
+
+**MOTIVO:** o projeto já está hospedado e a Vercel suporta integralmente esta
+versão do Next.js. O nonce fecha a pendência de segurança da ETAPA 13 sem expor
+segredos nem depender de configuração manual do navegador.
+
+**ALTERNATIVAS CONSIDERADAS:** recriar a hospedagem, usar exportação estática,
+manter apenas a CSP parcial ou liberar scripts inline globalmente.
+
+**JUSTIFICATIVA:** o deploy contínuo reduz passos manuais e mantém rastreabilidade
+com a `main`. A renderização dinâmica permite que o Next.js aplique o nonce aos
+scripts de cada resposta, enquanto HSTS e os demais cabeçalhos preservam a
+fronteira HTTPS do ambiente publicado.

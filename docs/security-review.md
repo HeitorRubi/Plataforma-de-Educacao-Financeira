@@ -84,8 +84,8 @@ No console da Groq, revogue qualquer chave compartilhada fora do arquivo
 - `authenticated` insere o próprio histórico sob RLS porque o projeto não usa
   `service_role`; isso protege o isolamento, mas não comprova que toda mensagem
   própria foi gerada pela interface oficial;
-- HSTS e uma CSP completa com nonce devem ser fechados junto do domínio HTTPS
-  na ETAPA 15, para não quebrar o ambiente local nem antecipar o deploy.
+- HSTS e a CSP completa com nonce foram implementados e validados localmente na
+  ETAPA 15; a confirmação final depende do deployment atualizado na Vercel.
 
 Esses itens não permitem leitura cruzada nem expõem segredos, mas devem constar
 na avaliação de produção.

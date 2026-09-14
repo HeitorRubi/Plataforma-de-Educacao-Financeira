@@ -6,15 +6,17 @@ Atualizado a partir do repositório e dos testes executados em 14/09/2026.
 
 ```text
 branch integrada: main
-base funcional integrada observada: f2240e4
-última etapa integrada: ETAPA 13 — REVISÃO DE SEGURANÇA E RLS
-branch ativa: test/stage-14
-tarefa atual: ETAPA 14 — TESTES FINAIS
+base funcional integrada observada: f7f6caf
+última etapa integrada: ETAPA 14 — TESTES FINAIS
+branch ativa: deploy/vercel
+tarefa atual: ETAPA 15 — DEPLOY
 ```
 
 Histórico principal observado:
 
 ```text
+f7f6caf  Testes finais integrados na main
+c62be05  Adicionados testes finais da plataforma e do chatbot
 f2240e4  Reforçada a segurança e as validações da plataforma
 fcba907  Adicionado histórico persistente do chatbot
 3e9136d  Adicionada interface do chatbot educacional
@@ -427,7 +429,7 @@ Validações locais registradas até o momento:
 - cliente PostgreSQL/Supabase não está disponível no ambiente local para
   executar o teste estrutural contra o banco.
 
-### ETAPA 14 — concluída na branch `test/stage-14`
+### ETAPA 14 — integrada na `main`
 
 Implementação local atual:
 
@@ -458,10 +460,37 @@ Validações executadas:
 - isolamento de progresso e conversas entre duas contas aprovado;
 - CHECKPOINT 2 aprovado pelo desenvolvedor principal em 14/09/2026.
 
+### ETAPA 15 — em validação na branch `deploy/vercel`
+
+Implementação local atual:
+
+- projeto Vercel existente mantido com produção vinculada à `main`;
+- documentação do domínio, variáveis, Supabase Auth, publicação e rollback;
+- CSP completa com nonce único por requisição no `proxy`;
+- renderização dinâmica explícita para aplicação automática do nonce pelo Next.js;
+- HSTS e demais cabeçalhos defensivos preservados;
+- smoke HTTP ampliado para validar nonce e requisitos exclusivos de HTTPS;
+- README atualizado para representar o MVP publicado;
+- nenhuma migration, dependência ou funcionalidade de negócio alterada.
+
+Validações locais executadas:
+
+- `npm.cmd run test:all` aprovado;
+- `npm.cmd run lint` aprovado;
+- `npm.cmd run build` aprovado, com todas as rotas dinâmicas;
+- smoke HTTP aprovado no build local de produção em `http://localhost:3100`;
+- os 10 scripts da página de login receberam o nonce correspondente à resposta.
+
+Pendente:
+
+- confirmar a revogação da chave Groq anteriormente exposta;
+- publicar esta branch em Preview ou integrar para gerar o novo deployment;
+- repetir o smoke HTTP e os fluxos autenticados no deployment atualizado.
+
 ## Próxima ação
 
-Versionar e integrar a ETAPA 14 na `main`. Depois, preparar e validar o deploy
-formal da ETAPA 15.
+Versionar a ETAPA 15, validar o deployment atualizado na Vercel e somente então
+integrar a branch `deploy/vercel` na `main`.
 
 ## Pontos que não foram verificados externamente nesta análise
 
@@ -470,12 +499,6 @@ ETAPAS 4, 5, 6 e 7 foi confirmado pelas execuções e imagens fornecidas pelo us
 
 Alterações externas futuras ainda precisam ser registradas e testadas; não se
 deve presumir que o painel permaneceu igual apenas com base neste documento.
-
-## Dívida de documentação observada
-
-O `README.md` ainda descreve a versão como contendo apenas o ambiente base, embora o histórico já contenha banco e autenticação.
-
-Atualizar o README em uma tarefa de documentação apropriada, sem misturar essa correção a uma funcionalidade não relacionada.
 
 ## Próxima sincronização recomendada
 
