@@ -46,7 +46,7 @@ armazenamento de credenciais, novo provedor ou novo projeto de hospedagem.
 ## Tarefa P-15 — Deploy na Vercel
 
 **Responsável:** Desenvolvedor principal
-**Status:** EM VALIDAÇÃO
+**Status:** PRONTO PARA REVISÃO
 **Branch:** `deploy/vercel`
 
 ### Objetivo
@@ -100,13 +100,15 @@ docs/WORKBOARD.md
 - `npm.cmd run lint` aprovado;
 - `npm.cmd run build` aprovado;
 - smoke HTTP local aprovado em `http://localhost:3100`;
-- todos os scripts observados no HTML receberam o nonce da resposta.
+- todos os scripts observados no HTML receberam o nonce da resposta;
+- Preview publicado com variáveis de Supabase e Groq configuradas;
+- chave Groq anteriormente exposta revogada e substituída;
+- fluxos autenticados aprovados no Preview pelo desenvolvedor principal.
 
 ### Pendente
 
-- confirmar a revogação e substituição da chave Groq anteriormente exposta;
-- publicar a branch e validar o deployment atualizado;
-- confirmar os fluxos autenticados no ambiente publicado.
+- integrar a branch `deploy/vercel` na `main`;
+- repetir o smoke HTTP no domínio público após o Production Deployment.
 
 ---
 

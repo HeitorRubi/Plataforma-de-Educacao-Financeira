@@ -81,10 +81,15 @@ histórico. O teste HTTP não cria usuários nem armazena credenciais.
 - [x] Build local aprovado com todas as rotas dinâmicas.
 - [x] CSP com nonce validada no servidor local de produção.
 - [x] Smoke HTTP local aprovado.
-- [ ] Chave Groq anteriormente exposta confirmada como revogada e substituída.
-- [ ] Preview ou produção desta branch publicado pela Vercel.
-- [ ] Smoke HTTP aprovado após esse deployment.
-- [ ] Fluxos autenticados essenciais confirmados após esse deployment.
+- [x] Chave Groq anteriormente exposta confirmada como revogada e substituída.
+- [x] Preview desta branch publicado pela Vercel.
+- [ ] Smoke HTTP público aprovado após o deployment da `main`.
+- [x] Fluxos autenticados essenciais confirmados no Preview.
+
+O desenvolvedor principal confirmou em 14/09/2026 a rotação da chave e o
+funcionamento de login, cursos, progresso, chatbot e histórico no Preview. O
+Preview exige autenticação da Vercel, por isso o smoke externo será repetido no
+domínio público depois da integração.
 
 ## Rollback
 

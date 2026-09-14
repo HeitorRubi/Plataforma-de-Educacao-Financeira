@@ -460,7 +460,7 @@ Validações executadas:
 - isolamento de progresso e conversas entre duas contas aprovado;
 - CHECKPOINT 2 aprovado pelo desenvolvedor principal em 14/09/2026.
 
-### ETAPA 15 — em validação na branch `deploy/vercel`
+### ETAPA 15 — pronta para integração na branch `deploy/vercel`
 
 Implementação local atual:
 
@@ -479,18 +479,21 @@ Validações locais executadas:
 - `npm.cmd run lint` aprovado;
 - `npm.cmd run build` aprovado, com todas as rotas dinâmicas;
 - smoke HTTP aprovado no build local de produção em `http://localhost:3100`;
-- os 10 scripts da página de login receberam o nonce correspondente à resposta.
+- os 10 scripts da página de login receberam o nonce correspondente à resposta;
+- Preview da branch publicado com as quatro variáveis de ambiente esperadas;
+- chave Groq anteriormente exposta revogada e substituída;
+- login, cursos, progresso, chatbot e histórico aprovados no Preview pelo
+  desenvolvedor principal.
 
 Pendente:
 
-- confirmar a revogação da chave Groq anteriormente exposta;
-- publicar esta branch em Preview ou integrar para gerar o novo deployment;
-- repetir o smoke HTTP e os fluxos autenticados no deployment atualizado.
+- integrar a branch para gerar o novo Production Deployment;
+- repetir o smoke HTTP no domínio público após a integração.
 
 ## Próxima ação
 
-Versionar a ETAPA 15, validar o deployment atualizado na Vercel e somente então
-integrar a branch `deploy/vercel` na `main`.
+Versionar a aprovação do Preview e integrar `deploy/vercel` na `main`. Depois,
+repetir o smoke HTTP no domínio público atualizado.
 
 ## Pontos que não foram verificados externamente nesta análise
 
