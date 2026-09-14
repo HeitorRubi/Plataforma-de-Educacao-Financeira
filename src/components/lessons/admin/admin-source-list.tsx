@@ -1,3 +1,4 @@
+import { Pencil, Plus } from "lucide-react";
 import Link from "next/link";
 
 import { SourceOrderControls } from "@/components/lessons/admin/source-order-controls";
@@ -19,31 +20,31 @@ export function AdminSourceList({
   const basePath = `/admin/cursos/${courseId}/modulos/${moduleId}/aulas/${lessonId}`;
 
   return (
-    <section className="border-b border-neutral-200 py-8">
+    <section className="py-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold">Fontes e referências</h2>
+          <h2 className="section-title">Fontes e referências</h2>
           <p className="mt-1 text-sm text-neutral-600">
             {sources.length} {sources.length === 1 ? "fonte" : "fontes"}
           </p>
         </div>
         <Link
-          className="inline-flex h-10 items-center rounded-md bg-emerald-800 px-4 text-sm font-semibold text-white transition hover:bg-emerald-900"
+          className="button-primary h-10 px-4"
           href={`${basePath}/fontes/nova`}
         >
-          Adicionar fonte
+          <Plus aria-hidden="true" size={17} /> Adicionar fonte
         </Link>
       </div>
 
       {sources.length === 0 ? (
-        <div className="mt-6 border-y border-neutral-200 py-7">
+        <div className="content-panel mt-6 p-7">
           <p className="font-medium">Nenhuma fonte cadastrada</p>
           <p className="mt-2 text-sm leading-6 text-neutral-600">
             Cadastre somente referências verificadas para esta aula.
           </p>
         </div>
       ) : (
-        <ol className="mt-6 divide-y divide-neutral-200 border-y border-neutral-200">
+        <ol className="content-panel mt-6 divide-y divide-neutral-200 px-5">
           {sources.map((source, index) => (
             <li
               className="grid gap-5 py-5 md:grid-cols-[minmax(0,1fr)_auto] md:items-center"
@@ -75,10 +76,10 @@ export function AdminSourceList({
 
               <div className="flex flex-wrap items-start gap-4">
                 <Link
-                  className="inline-flex h-9 items-center text-sm font-semibold text-emerald-800 hover:underline"
+                  className="button-ghost h-9 px-2"
                   href={`${basePath}/fontes/${source.id}/editar`}
                 >
-                  Editar
+                  <Pencil aria-hidden="true" size={15} /> Editar
                 </Link>
                 <SourceOrderControls
                   courseId={courseId}

@@ -6,15 +6,16 @@ Atualizado a partir do repositório e dos testes executados em 14/09/2026.
 
 ```text
 branch integrada: main
-base funcional integrada observada: f7f6caf
-última etapa integrada: ETAPA 14 — TESTES FINAIS
-branch ativa: deploy/vercel
-tarefa atual: ETAPA 15 — DEPLOY
+base funcional integrada observada: 1f17eb2
+última etapa integrada: ETAPA 15 — DEPLOY
+branch ativa: release/mvp
+tarefa atual: ETAPA 16 — CONGELAMENTO E REFINAMENTO VISUAL DO MVP
 ```
 
 Histórico principal observado:
 
 ```text
+1f17eb2  Registrada validação do deploy na Vercel
 f7f6caf  Testes finais integrados na main
 c62be05  Adicionados testes finais da plataforma e do chatbot
 f2240e4  Reforçada a segurança e as validações da plataforma
@@ -460,7 +461,7 @@ Validações executadas:
 - isolamento de progresso e conversas entre duas contas aprovado;
 - CHECKPOINT 2 aprovado pelo desenvolvedor principal em 14/09/2026.
 
-### ETAPA 15 — pronta para integração na branch `deploy/vercel`
+### ETAPA 15 — integrada na `main`
 
 Implementação local atual:
 
@@ -485,15 +486,46 @@ Validações locais executadas:
 - login, cursos, progresso, chatbot e histórico aprovados no Preview pelo
   desenvolvedor principal.
 
+Validações após a integração:
+
+- integração registrada em `origin/main` no commit `1f17eb2`;
+- smoke HTTP aprovado em `https://pla-financeiro.vercel.app`;
+- CSP com nonce, HSTS, redirecionamentos, APIs sem sessão e política sem cache
+  confirmados no ambiente público.
+
+### ETAPA 16 — aprovada na branch `release/mvp`
+
+Implementação local atual:
+
+- sistema visual próprio mantido sobre Tailwind CSS, sem MUI ou Ant Design;
+- identidade da plataforma com marca, tipografia, cores e hierarquia consistentes;
+- navegação e comandos refinados com ícones acessíveis do `lucide-react`;
+- áreas pública, autenticada, educacional, chatbot e administração revisadas;
+- formulários, estados, listas, progresso e leitura Markdown padronizados;
+- responsividade conferida em capturas locais de desktop e largura mobile;
+- nenhuma rota, action, consulta, regra de negócio ou migration alterada.
+
+Validações locais executadas:
+
+- `npm.cmd run test:all` aprovado;
+- `npm.cmd run lint` aprovado;
+- `npm.cmd run build` aprovado, incluindo TypeScript e todas as rotas;
+- smoke HTTP aprovado em `http://localhost:3001`;
+- `git diff --check` aprovado, somente com avisos LF/CRLF;
+- página inicial e login inspecionados em renderização real com Edge headless;
+- login e integração com o Supabase confirmados no servidor local com acesso à
+  rede;
+- fluxos autenticados e novo visual aprovados pelo desenvolvedor principal em
+  14/09/2026.
+
 Pendente:
 
-- integrar a branch para gerar o novo Production Deployment;
-- repetir o smoke HTTP no domínio público após a integração.
+- versionar e integrar `release/mvp`.
 
 ## Próxima ação
 
-Versionar a aprovação do Preview e integrar `deploy/vercel` na `main`. Depois,
-repetir o smoke HTTP no domínio público atualizado.
+Versionar e integrar `release/mvp` para concluir o congelamento do MVP na
+`main`.
 
 ## Pontos que não foram verificados externamente nesta análise
 

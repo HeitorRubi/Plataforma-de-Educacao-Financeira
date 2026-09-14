@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import { Brand } from "@/components/brand";
 import { SignupForm } from "@/components/auth/signup-form";
 import { createClient } from "@/lib/supabase/server";
 
@@ -13,13 +14,21 @@ export default async function SignupPage() {
   }
 
   return (
-    <main className="min-h-screen bg-neutral-50 px-6 py-12">
-      <div className="mx-auto w-full max-w-md">
-        <Link className="text-sm font-semibold text-emerald-800" href="/">
-          Plataforma Financeira
-        </Link>
+    <main className="grid min-h-screen bg-neutral-50 lg:grid-cols-[minmax(20rem,0.8fr)_minmax(30rem,1.2fr)]">
+      <aside className="hidden bg-emerald-950 px-10 py-12 text-white lg:flex lg:flex-col lg:justify-between">
+        <Brand href="/" inverse />
+        <div className="max-w-md">
+          <p className="text-xs font-bold uppercase text-emerald-300">Acesso gratuito</p>
+          <p className="mt-4 text-3xl font-bold leading-tight">Organize seu aprendizado em um só lugar.</p>
+          <p className="mt-4 leading-7 text-emerald-50/75">Crie sua conta para acessar cursos publicados e o assistente educacional.</p>
+        </div>
+      </aside>
 
-        <section className="mt-8 rounded-lg border border-neutral-200 bg-white p-6 shadow-sm sm:p-8">
+      <div className="flex items-center px-5 py-10 sm:px-8">
+        <div className="mx-auto w-full max-w-md">
+          <div className="lg:hidden"><Brand href="/" /></div>
+
+          <section className="content-panel mt-8 p-6 sm:p-8 lg:mt-0">
           <h1 className="text-2xl font-bold">Criar conta</h1>
           <p className="mt-2 text-sm leading-6 text-neutral-600">
             Cadastre-se gratuitamente para acessar a plataforma.
@@ -31,11 +40,12 @@ export default async function SignupPage() {
 
           <p className="mt-6 text-center text-sm text-neutral-600">
             Já possui conta?{" "}
-            <Link className="font-semibold text-emerald-800 hover:underline" href="/login">
+            <Link className="text-link" href="/login">
               Entrar
             </Link>
           </p>
-        </section>
+          </section>
+        </div>
       </div>
     </main>
   );

@@ -1,3 +1,4 @@
+import { Check, Circle } from "lucide-react";
 import Link from "next/link";
 
 import type { LessonSummary } from "@/lib/lessons/types";
@@ -21,18 +22,18 @@ export function CourseModuleOutline({
   return (
     <section className="py-8">
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <h2 className="text-xl font-semibold">Módulos do curso</h2>
+        <h2 className="section-title">Módulos do curso</h2>
         <span className="text-sm text-neutral-500">
           {modules.length} {modules.length === 1 ? "módulo" : "módulos"}
         </span>
       </div>
 
       {modules.length === 0 ? (
-        <p className="mt-5 border-y border-neutral-200 py-6 text-neutral-600">
+        <p className="content-panel mt-5 p-6 text-neutral-600">
           Este curso ainda não possui módulos cadastrados.
         </p>
       ) : (
-        <ol className="mt-5 divide-y divide-neutral-200 border-y border-neutral-200">
+        <ol className="mt-5 space-y-4">
           {modules.map((module) => {
             const moduleLessons = lessons.filter(
               (lesson) => lesson.module_id === module.id,
@@ -40,7 +41,7 @@ export function CourseModuleOutline({
 
             return (
               <li
-                className="grid gap-3 py-6 sm:grid-cols-[6rem_1fr]"
+                className="content-panel grid gap-3 p-5 sm:grid-cols-[6rem_1fr] sm:p-6"
                 key={module.id}
               >
                 <p className="text-sm font-semibold text-emerald-800">
@@ -75,15 +76,18 @@ export function CourseModuleOutline({
                             {lesson.title}
                           </Link>
                           <span
-                            className={`text-sm font-medium ${
+                            className={`inline-flex items-center gap-1.5 text-sm font-medium ${
                               completedLessons.has(lesson.id)
                                 ? "text-emerald-800"
                                 : "text-neutral-500"
                             }`}
                           >
-                            {completedLessons.has(lesson.id)
-                              ? "Concluída"
-                              : "Pendente"}
+                            {completedLessons.has(lesson.id) ? (
+                              <Check aria-hidden="true" size={15} />
+                            ) : (
+                              <Circle aria-hidden="true" size={13} />
+                            )}
+                            {completedLessons.has(lesson.id) ? "Concluída" : "Pendente"}
                           </span>
                         </li>
                       ))}

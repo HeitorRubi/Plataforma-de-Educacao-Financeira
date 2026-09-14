@@ -7,8 +7,8 @@ export function CourseStatus({ isPublished }: CourseStatusProps) {
     <span
       className={
         isPublished
-          ? "inline-flex self-start items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800"
-          : "inline-flex self-start items-center gap-2 rounded-full bg-neutral-100 px-3 py-1 text-xs font-semibold text-neutral-700"
+          ? "inline-flex self-start items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-800"
+          : "inline-flex self-start items-center gap-2 rounded-full border border-neutral-200 bg-neutral-100 px-3 py-1 text-xs font-bold text-neutral-700"
       }
     >
       <span

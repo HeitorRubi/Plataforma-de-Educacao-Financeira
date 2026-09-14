@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import { Brand } from "@/components/brand";
 import { LoginForm } from "@/components/auth/login-form";
 import { createClient } from "@/lib/supabase/server";
 
@@ -24,13 +25,21 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const statusMessage = status ? statusMessages[status] : null;
 
   return (
-    <main className="min-h-screen bg-neutral-50 px-6 py-12">
-      <div className="mx-auto w-full max-w-md">
-        <Link className="text-sm font-semibold text-emerald-800" href="/">
-          Plataforma Financeira
-        </Link>
+    <main className="grid min-h-screen bg-neutral-50 lg:grid-cols-[minmax(20rem,0.8fr)_minmax(30rem,1.2fr)]">
+      <aside className="hidden bg-emerald-950 px-10 py-12 text-white lg:flex lg:flex-col lg:justify-between">
+        <Brand href="/" inverse />
+        <div className="max-w-md">
+          <p className="text-xs font-bold uppercase text-emerald-300">Ambiente de aprendizagem</p>
+          <p className="mt-4 text-3xl font-bold leading-tight">Continue sua jornada de educação financeira.</p>
+          <p className="mt-4 leading-7 text-emerald-50/75">Seus cursos, progresso e conversas ficam disponíveis em uma única conta.</p>
+        </div>
+      </aside>
 
-        <section className="mt-8 rounded-lg border border-neutral-200 bg-white p-6 shadow-sm sm:p-8">
+      <div className="flex items-center px-5 py-10 sm:px-8">
+        <div className="mx-auto w-full max-w-md">
+          <div className="lg:hidden"><Brand href="/" /></div>
+
+          <section className="content-panel mt-8 p-6 sm:p-8 lg:mt-0">
           <h1 className="text-2xl font-bold">Entrar</h1>
           <p className="mt-2 text-sm leading-6 text-neutral-600">
             Acesse sua área na plataforma.
@@ -39,7 +48,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           {statusMessage && (
             <p
               aria-live="polite"
-              className="mt-5 border-l-4 border-emerald-700 bg-emerald-50 px-4 py-3 text-sm text-emerald-900"
+              className="status-message-success mt-5"
             >
               {statusMessage}
             </p>
@@ -51,11 +60,12 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
           <p className="mt-6 text-center text-sm text-neutral-600">
             Ainda não possui conta?{" "}
-            <Link className="font-semibold text-emerald-800 hover:underline" href="/cadastro">
+            <Link className="text-link" href="/cadastro">
               Cadastre-se
             </Link>
           </p>
-        </section>
+          </section>
+        </div>
       </div>
     </main>
   );

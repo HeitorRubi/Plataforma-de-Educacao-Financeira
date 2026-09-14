@@ -1,3 +1,4 @@
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -56,23 +57,23 @@ export default async function LessonPage({
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="app-shell">
       <AuthenticatedHeader fullName={displayName} role={user.profile.role} />
 
-      <main className="mx-auto max-w-4xl px-6 py-10">
+      <main className="mx-auto w-full max-w-4xl px-5 py-8 sm:px-6 sm:py-10">
         <Link
-          className="text-sm font-semibold text-emerald-800 hover:underline"
+          className="text-link text-sm"
           href={`/cursos/${courseId}`}
         >
-          Voltar para o curso
+          <ArrowLeft aria-hidden="true" size={16} /> Voltar para o curso
         </Link>
 
         <article className="mt-8">
-          <header className="border-b border-neutral-200 pb-8">
-            <p className="text-sm font-semibold text-emerald-800">
+          <header className="page-intro">
+            <p className="eyebrow">
               Módulo {courseModule.position} · Aula {lesson.position}
             </p>
-            <h1 className="mt-3 text-3xl font-bold leading-tight sm:text-4xl">
+            <h1 className="page-title">
               {lesson.title}
             </h1>
             <p className="mt-4 text-neutral-600">
@@ -80,7 +81,7 @@ export default async function LessonPage({
             </p>
           </header>
 
-          <section className="py-8">
+          <section className="py-9">
             <MarkdownContent content={lesson.content} />
           </section>
 
@@ -101,14 +102,14 @@ export default async function LessonPage({
           <div>
             {previousLesson && (
               <Link
-                className="block border-l-2 border-emerald-700 pl-4 hover:bg-white"
+                className="group block rounded-md border border-neutral-200 bg-white p-4 transition hover:border-emerald-300"
                 href={publicLessonPath(previousLesson)}
               >
                 <span className="text-xs font-semibold uppercase text-neutral-500">
                   Aula anterior
                 </span>
                 <span className="mt-1 block font-semibold text-emerald-800">
-                  {previousLesson.title}
+                  <ArrowLeft aria-hidden="true" className="mr-1 inline" size={15} /> {previousLesson.title}
                 </span>
               </Link>
             )}
@@ -116,14 +117,14 @@ export default async function LessonPage({
           <div className="sm:text-right">
             {nextLesson && (
               <Link
-                className="block border-r-2 border-emerald-700 pr-4 hover:bg-white"
+                className="group block rounded-md border border-neutral-200 bg-white p-4 transition hover:border-emerald-300"
                 href={publicLessonPath(nextLesson)}
               >
                 <span className="text-xs font-semibold uppercase text-neutral-500">
                   Próxima aula
                 </span>
                 <span className="mt-1 block font-semibold text-emerald-800">
-                  {nextLesson.title}
+                  {nextLesson.title} <ArrowRight aria-hidden="true" className="ml-1 inline" size={15} />
                 </span>
               </Link>
             )}

@@ -1,3 +1,5 @@
+import { ExternalLink } from "lucide-react";
+
 import type { LessonSource } from "@/lib/lessons/types";
 
 type LessonSourcesProps = {
@@ -11,8 +13,8 @@ export function LessonSources({ sources }: LessonSourcesProps) {
 
   return (
     <section className="border-t border-neutral-200 py-8">
-      <h2 className="text-xl font-semibold">Fontes e referências</h2>
-      <ol className="mt-5 divide-y divide-neutral-200 border-y border-neutral-200">
+      <h2 className="section-title">Fontes e referências</h2>
+      <ol className="content-panel mt-5 divide-y divide-neutral-200 px-5">
         {sources.map((source) => (
           <li className="py-5" key={source.id}>
             <p className="font-semibold">{source.title}</p>
@@ -25,12 +27,12 @@ export function LessonSources({ sources }: LessonSourcesProps) {
             )}
             {source.url && (
               <a
-                className="mt-2 inline-flex text-sm font-semibold text-emerald-800 hover:underline"
+                className="text-link mt-2 text-sm"
                 href={source.url}
                 rel="noreferrer"
                 target="_blank"
               >
-                Acessar fonte
+                Acessar fonte <ExternalLink aria-hidden="true" size={14} />
               </a>
             )}
           </li>

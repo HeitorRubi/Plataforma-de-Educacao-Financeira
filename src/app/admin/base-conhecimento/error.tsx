@@ -1,9 +1,13 @@
 "use client";
 
+import { AlertTriangle, RotateCcw } from "lucide-react";
+
 export default function KnowledgeBaseError({ reset }: { reset: () => void }) {
   return (
-    <main className="mx-auto max-w-3xl px-6 py-16">
-      <p className="text-sm font-semibold text-red-700">Erro ao carregar</p>
+    <main className="mx-auto max-w-3xl px-5 py-16 sm:px-6">
+      <div className="content-panel p-8">
+      <AlertTriangle aria-hidden="true" className="text-red-700" size={28} />
+      <p className="eyebrow mt-5 text-red-700">Erro ao carregar</p>
       <h1 className="mt-3 text-3xl font-bold">
         A base de conhecimento não está disponível
       </h1>
@@ -11,12 +15,13 @@ export default function KnowledgeBaseError({ reset }: { reset: () => void }) {
         Não foi possível consultar o conteúdo publicado neste momento.
       </p>
       <button
-        className="mt-8 h-11 rounded-md bg-emerald-800 px-5 font-semibold text-white transition hover:bg-emerald-900"
+        className="button-primary mt-8"
         onClick={reset}
         type="button"
       >
-        Tentar novamente
+        <RotateCcw aria-hidden="true" size={17} /> Tentar novamente
       </button>
+      </div>
     </main>
   );
 }

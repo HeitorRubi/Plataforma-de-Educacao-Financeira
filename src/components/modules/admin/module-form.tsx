@@ -1,5 +1,6 @@
 "use client";
 
+import { Save } from "lucide-react";
 import { useActionState } from "react";
 
 import {
@@ -15,7 +16,7 @@ type ModuleFormProps = {
 };
 
 const fieldClassName =
-  "mt-2 w-full rounded-md border border-neutral-300 bg-white px-3 font-sans text-base outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/20";
+  "field-control";
 
 export function ModuleForm({ courseId, module }: ModuleFormProps) {
   const action = module
@@ -29,7 +30,7 @@ export function ModuleForm({ courseId, module }: ModuleFormProps) {
   return (
     <form action={formAction} className="space-y-6">
       <div>
-        <label className="text-sm font-medium" htmlFor="title">
+        <label className="form-label" htmlFor="title">
           Título
         </label>
         <input
@@ -48,7 +49,7 @@ export function ModuleForm({ courseId, module }: ModuleFormProps) {
       </div>
 
       <div>
-        <label className="text-sm font-medium" htmlFor="description">
+        <label className="form-label" htmlFor="description">
           Descrição
         </label>
         <textarea
@@ -70,7 +71,7 @@ export function ModuleForm({ courseId, module }: ModuleFormProps) {
         <p
           aria-live="polite"
           className={
-            state.success ? "text-sm text-emerald-800" : "text-sm text-red-700"
+            state.success ? "status-message-success" : "status-message-error"
           }
         >
           {state.message}
@@ -78,10 +79,11 @@ export function ModuleForm({ courseId, module }: ModuleFormProps) {
       )}
 
       <button
-        className="h-11 rounded-md bg-emerald-800 px-5 font-semibold text-white transition hover:bg-emerald-900 disabled:cursor-not-allowed disabled:opacity-60"
+        className="button-primary"
         disabled={pending}
         type="submit"
       >
+        <Save aria-hidden="true" size={18} />
         {pending
           ? module
             ? "Salvando..."

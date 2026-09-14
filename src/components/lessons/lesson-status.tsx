@@ -5,10 +5,10 @@ type LessonStatusProps = {
 export function LessonStatus({ isPublished }: LessonStatusProps) {
   return (
     <span
-      className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${
+      className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-bold ${
         isPublished
-          ? "bg-emerald-50 text-emerald-800"
-          : "bg-neutral-200 text-neutral-700"
+          ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+          : "border-neutral-200 bg-neutral-100 text-neutral-700"
       }`}
     >
       <span

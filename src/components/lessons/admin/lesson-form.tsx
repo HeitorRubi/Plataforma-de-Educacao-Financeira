@@ -1,5 +1,6 @@
 "use client";
 
+import { Eye, PencilLine, Save } from "lucide-react";
 import { useActionState, useState } from "react";
 
 import {
@@ -17,7 +18,7 @@ type LessonFormProps = {
 };
 
 const fieldClassName =
-  "mt-2 w-full rounded-md border border-neutral-300 bg-white px-3 font-sans text-base outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/20";
+  "field-control";
 
 export function LessonForm({ courseId, moduleId, lesson }: LessonFormProps) {
   const [mode, setMode] = useState<"edit" | "preview">("edit");
@@ -33,7 +34,7 @@ export function LessonForm({ courseId, moduleId, lesson }: LessonFormProps) {
   return (
     <form action={formAction} className="space-y-6">
       <div>
-        <label className="text-sm font-medium" htmlFor="title">
+        <label className="form-label" htmlFor="title">
           Título
         </label>
         <input
@@ -53,7 +54,7 @@ export function LessonForm({ courseId, moduleId, lesson }: LessonFormProps) {
 
       <div>
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <label className="text-sm font-medium" htmlFor="content">
+          <label className="form-label" htmlFor="content">
             Conteúdo
           </label>
           <div
@@ -71,6 +72,7 @@ export function LessonForm({ courseId, moduleId, lesson }: LessonFormProps) {
               onClick={() => setMode("edit")}
               type="button"
             >
+              <PencilLine aria-hidden="true" className="mr-1.5 inline" size={15} />
               Editar
             </button>
             <button
@@ -83,6 +85,7 @@ export function LessonForm({ courseId, moduleId, lesson }: LessonFormProps) {
               onClick={() => setMode("preview")}
               type="button"
             >
+              <Eye aria-hidden="true" className="mr-1.5 inline" size={15} />
               Visualizar
             </button>
           </div>
@@ -115,7 +118,7 @@ export function LessonForm({ courseId, moduleId, lesson }: LessonFormProps) {
         <p
           aria-live="polite"
           className={
-            state.success ? "text-sm text-emerald-800" : "text-sm text-red-700"
+            state.success ? "status-message-success" : "status-message-error"
           }
         >
           {state.message}
@@ -123,10 +126,11 @@ export function LessonForm({ courseId, moduleId, lesson }: LessonFormProps) {
       )}
 
       <button
-        className="h-11 rounded-md bg-emerald-800 px-5 font-semibold text-white transition hover:bg-emerald-900 disabled:cursor-not-allowed disabled:opacity-60"
+        className="button-primary"
         disabled={pending}
         type="submit"
       >
+        <Save aria-hidden="true" size={18} />
         {pending
           ? lesson
             ? "Salvando..."

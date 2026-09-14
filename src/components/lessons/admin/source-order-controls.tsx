@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { useActionState } from "react";
 
 import { moveSourceAction } from "@/app/admin/cursos/[id]/modulos/[moduleId]/aulas/[lessonId]/fontes/actions";
@@ -41,25 +42,25 @@ export function SourceOrderControls({
       <form action={formAction} className="flex min-h-9 gap-2">
         <button
           aria-label={`Mover ${sourceTitle} para cima`}
-          className="h-9 rounded-md border border-neutral-300 bg-white px-3 text-sm font-semibold text-neutral-700 transition hover:border-neutral-400 disabled:cursor-not-allowed disabled:opacity-40"
+          className="grid size-9 place-items-center rounded-md border border-neutral-300 bg-white text-neutral-700 transition hover:border-neutral-400 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-40"
           disabled={isFirst || pending}
           name="direction"
           title="Mover para cima"
           type="submit"
           value="up"
         >
-          Subir
+          <ChevronUp aria-hidden="true" size={17} />
         </button>
         <button
           aria-label={`Mover ${sourceTitle} para baixo`}
-          className="h-9 rounded-md border border-neutral-300 bg-white px-3 text-sm font-semibold text-neutral-700 transition hover:border-neutral-400 disabled:cursor-not-allowed disabled:opacity-40"
+          className="grid size-9 place-items-center rounded-md border border-neutral-300 bg-white text-neutral-700 transition hover:border-neutral-400 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-40"
           disabled={isLast || pending}
           name="direction"
           title="Mover para baixo"
           type="submit"
           value="down"
         >
-          Descer
+          <ChevronDown aria-hidden="true" size={17} />
         </button>
       </form>
       {state.message && (

@@ -1,3 +1,4 @@
+import { ArrowRight, Database } from "lucide-react";
 import Link from "next/link";
 
 import { AuthenticatedHeader } from "@/components/auth/authenticated-header";
@@ -38,14 +39,14 @@ export default async function KnowledgeBasePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="app-shell">
       <AuthenticatedHeader fullName={displayName} role={user.profile.role} />
 
-      <main className="mx-auto max-w-6xl px-6 py-10">
-        <div className="border-b border-neutral-200 pb-7">
-          <p className="text-sm font-semibold text-emerald-800">Administração</p>
-          <h1 className="mt-2 text-3xl font-bold">Base de conhecimento</h1>
-          <p className="mt-3 max-w-2xl leading-7 text-neutral-600">
+      <main className="page-container">
+        <div className="page-intro">
+          <p className="eyebrow">Administração</p>
+          <h1 className="page-title">Base de conhecimento</h1>
+          <p className="page-description">
             Conteúdo educacional publicado disponível para recuperação, com
             vínculo direto às aulas e fontes da plataforma.
           </p>
@@ -55,14 +56,14 @@ export default async function KnowledgeBasePage() {
           <AdminCoursesNav />
         </div>
 
-        <dl className="mt-8 grid grid-cols-2 border-y border-neutral-200 lg:grid-cols-4">
+        <dl className="content-panel mt-8 grid grid-cols-2 overflow-hidden lg:grid-cols-4">
           {summaryItems.map((item, index) => (
             <div
-              className={`py-5 ${
+              className={`p-5 ${
                 index % 2 === 1
-                  ? "border-l border-neutral-200 pl-5"
-                  : "pr-5"
-              } ${index > 0 ? "lg:border-l lg:pl-5" : "lg:pr-5"}`}
+                  ? "border-l border-neutral-200"
+                  : ""
+              } ${index > 0 ? "lg:border-l" : ""}`}
               key={item.label}
             >
               <dt className="text-sm text-neutral-500">{item.label}</dt>
@@ -76,7 +77,7 @@ export default async function KnowledgeBasePage() {
         <section className="mt-10">
           <div className="flex flex-wrap items-end justify-between gap-4 border-b border-neutral-200 pb-4">
             <div>
-              <h2 className="text-xl font-bold">Documentos disponíveis</h2>
+              <h2 className="section-title">Documentos disponíveis</h2>
               <p className="mt-1 text-sm text-neutral-600">
                 Cada documento corresponde a uma aula publicada com conteúdo.
               </p>
@@ -88,17 +89,18 @@ export default async function KnowledgeBasePage() {
           </div>
 
           {knowledgeBase.documents.length === 0 ? (
-            <div className="border-b border-neutral-200 py-10">
+            <div className="content-panel mt-6 p-8 text-center">
+              <Database aria-hidden="true" className="mx-auto text-neutral-400" size={28} />
               <h3 className="font-semibold">Nenhum conteúdo disponível</h3>
               <p className="mt-2 text-neutral-600">
                 Publique um curso e uma aula com conteúdo para compor a base.
               </p>
             </div>
           ) : (
-            <div>
+            <div className="content-panel mt-6 divide-y divide-neutral-200 px-5">
               {knowledgeBase.documents.map((document) => (
                 <article
-                  className="grid gap-5 border-b border-neutral-200 py-6 md:grid-cols-[minmax(0,1fr)_auto_auto] md:items-center"
+                  className="grid gap-5 py-6 md:grid-cols-[minmax(0,1fr)_auto_auto] md:items-center"
                   key={document.lessonId}
                 >
                   <div className="min-w-0">
@@ -135,10 +137,10 @@ export default async function KnowledgeBasePage() {
                   </dl>
 
                   <Link
-                    className="text-sm font-semibold text-emerald-800 hover:underline md:text-right"
+                    className="text-link text-sm md:text-right"
                     href={`/cursos/${document.courseId}/modulos/${document.moduleId}/aulas/${document.lessonId}`}
                   >
-                    Abrir aula
+                    Abrir aula <ArrowRight aria-hidden="true" size={15} />
                   </Link>
                 </article>
               ))}

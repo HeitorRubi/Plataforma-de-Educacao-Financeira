@@ -1,5 +1,12 @@
 "use client";
 
+import {
+  History,
+  LoaderCircle,
+  MessageSquarePlus,
+  MessagesSquare,
+  Send,
+} from "lucide-react";
 import { type FormEvent, useState } from "react";
 
 import { ChatMessage } from "@/components/chat/chat-message";
@@ -161,17 +168,21 @@ export function ChatInterface({ initialSessions }: ChatInterfaceProps) {
   }
 
   return (
-    <section className="mt-8 grid overflow-hidden border-y border-neutral-200 bg-white lg:grid-cols-[17rem_minmax(0,1fr)]">
-      <aside className="border-b border-neutral-200 p-4 lg:border-b-0 lg:border-r">
+    <section className="content-panel mt-8 grid min-h-[38rem] overflow-hidden lg:grid-cols-[18rem_minmax(0,1fr)]">
+      <aside className="border-b border-neutral-200 bg-neutral-50 p-4 lg:border-b-0 lg:border-r">
         <div className="flex items-center justify-between gap-3">
-          <h2 className="font-bold">Conversas</h2>
+          <h2 className="flex items-center gap-2 font-bold">
+            <History aria-hidden="true" size={17} /> Conversas
+          </h2>
           <button
-            className="text-sm font-semibold text-emerald-800 hover:underline disabled:cursor-not-allowed disabled:opacity-50"
+            aria-label="Iniciar nova conversa"
+            className="grid size-9 place-items-center rounded-md text-emerald-800 transition hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-50"
             disabled={isBusy}
             onClick={handleNewSession}
+            title="Nova conversa"
             type="button"
           >
-            Nova conversa
+            <MessageSquarePlus aria-hidden="true" size={19} />
           </button>
         </div>
 
@@ -192,8 +203,8 @@ export function ChatInterface({ initialSessions }: ChatInterfaceProps) {
                       aria-current={isActive ? "page" : undefined}
                       className={`w-full rounded-md px-3 py-3 text-left transition disabled:cursor-wait ${
                         isActive
-                          ? "bg-emerald-50 text-emerald-950"
-                          : "text-neutral-700 hover:bg-neutral-100"
+                          ? "bg-emerald-100 text-emerald-950"
+                          : "text-neutral-700 hover:bg-white"
                       }`}
                       disabled={isBusy}
                       onClick={() => handleSelectSession(session.id)}
@@ -218,7 +229,7 @@ export function ChatInterface({ initialSessions }: ChatInterfaceProps) {
 
       <div className="min-w-0">
         <header className="border-b border-neutral-200 px-5 py-4 sm:px-7">
-          <p className="text-xs font-semibold uppercase text-emerald-800">
+          <p className="eyebrow">
             {activeSession ? "Conversa salva" : "Nova conversa"}
           </p>
           <h2 className="mt-1 break-words text-lg font-bold">
@@ -232,13 +243,20 @@ export function ChatInterface({ initialSessions }: ChatInterfaceProps) {
           className="min-h-80 px-5 py-7 sm:px-7"
         >
           {loadingSessionId && (
-            <div className="border-l-4 border-emerald-700 pl-5">
+            <div className="flex items-center gap-3 text-neutral-600">
+              <LoaderCircle aria-hidden="true" className="animate-spin text-emerald-700" size={20} />
               <p className="font-semibold">Carregando conversa...</p>
             </div>
           )}
 
           {!loadingSessionId && !activeSession && !isSubmitting && (
-            <p className="text-neutral-500">Nova conversa pronta.</p>
+            <div className="flex min-h-64 flex-col items-center justify-center text-center text-neutral-500">
+              <span className="grid size-12 place-items-center rounded-md bg-emerald-50 text-emerald-700">
+                <MessagesSquare aria-hidden="true" size={24} />
+              </span>
+              <p className="mt-4 font-semibold text-neutral-700">Nova conversa</p>
+              <p className="mt-1 max-w-sm text-sm leading-6">Envie uma pergunta sobre os conteúdos disponíveis na plataforma.</p>
+            </div>
           )}
 
           {!loadingSessionId && activeSession && (
@@ -250,11 +268,14 @@ export function ChatInterface({ initialSessions }: ChatInterfaceProps) {
           )}
 
           {isSubmitting && (
-            <div className="mt-8 border-l-4 border-emerald-700 pl-5">
+            <div className="mt-8 flex items-start gap-3 rounded-md bg-emerald-50 p-4">
+              <LoaderCircle aria-hidden="true" className="mt-0.5 animate-spin text-emerald-700" size={19} />
+              <div>
               <p className="font-semibold">Consultando a base publicada...</p>
               <p className="mt-2 text-sm text-neutral-500">
                 A resposta será adicionada a esta conversa.
               </p>
+              </div>
             </div>
           )}
         </div>
@@ -263,11 +284,11 @@ export function ChatInterface({ initialSessions }: ChatInterfaceProps) {
           className="border-t border-neutral-200 px-5 py-6 sm:px-7"
           onSubmit={handleSubmit}
         >
-          <label className="text-sm font-semibold" htmlFor="chat-question">
+          <label className="form-label" htmlFor="chat-question">
             Sua pergunta
           </label>
           <textarea
-            className="mt-2 min-h-28 w-full resize-y rounded-md border border-neutral-300 bg-white px-4 py-3 leading-7 outline-none transition placeholder:text-neutral-400 focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/20 disabled:bg-neutral-100"
+            className="field-control min-h-28 resize-y px-4 py-3 leading-7"
             disabled={isBusy}
             id="chat-question"
             maxLength={MAX_QUESTION_LENGTH}
@@ -283,7 +304,7 @@ export function ChatInterface({ initialSessions }: ChatInterfaceProps) {
           {error && (
             <p
               aria-live="assertive"
-              className="mt-3 border-l-4 border-red-700 bg-red-50 px-4 py-3 text-sm text-red-900"
+              className="status-message-error mt-3"
             >
               {error}
             </p>
@@ -294,12 +315,13 @@ export function ChatInterface({ initialSessions }: ChatInterfaceProps) {
               {question.length}/{MAX_QUESTION_LENGTH} caracteres
             </span>
             <button
-              className="h-11 rounded-md bg-emerald-800 px-5 font-semibold text-white transition hover:bg-emerald-900 disabled:cursor-not-allowed disabled:opacity-60"
+              className="button-primary"
               disabled={
                 isBusy || question.trim().length < MIN_QUESTION_LENGTH
               }
               type="submit"
             >
+              <Send aria-hidden="true" size={17} />
               {isSubmitting ? "Consultando..." : "Enviar pergunta"}
             </button>
           </div>

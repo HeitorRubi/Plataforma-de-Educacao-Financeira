@@ -1,5 +1,6 @@
 "use client";
 
+import { LogIn } from "lucide-react";
 import { useActionState } from "react";
 
 import { loginAction } from "@/app/auth/actions";
@@ -7,7 +8,7 @@ import { initialFormState } from "@/lib/auth/form-state";
 import { EMAIL_MAX_LENGTH } from "@/lib/auth/validation";
 
 const inputClassName =
-  "mt-2 h-11 w-full rounded-md border border-neutral-300 bg-white px-3 text-base outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/20";
+  "field-control h-11";
 
 export function LoginForm() {
   const [state, formAction, pending] = useActionState(
@@ -18,7 +19,7 @@ export function LoginForm() {
   return (
     <form action={formAction} className="space-y-5">
       <div>
-        <label className="text-sm font-medium" htmlFor="email">
+        <label className="form-label" htmlFor="email">
           E-mail
         </label>
         <input
@@ -36,7 +37,7 @@ export function LoginForm() {
       </div>
 
       <div>
-        <label className="text-sm font-medium" htmlFor="password">
+        <label className="form-label" htmlFor="password">
           Senha
         </label>
         <input
@@ -53,16 +54,17 @@ export function LoginForm() {
       </div>
 
       {state.message && (
-        <p aria-live="polite" className="text-sm text-red-700">
+        <p aria-live="polite" className="status-message-error">
           {state.message}
         </p>
       )}
 
       <button
-        className="h-11 w-full rounded-md bg-emerald-800 px-4 font-semibold text-white transition hover:bg-emerald-900 disabled:cursor-not-allowed disabled:opacity-60"
+        className="button-primary w-full"
         disabled={pending}
         type="submit"
       >
+        <LogIn aria-hidden="true" size={18} />
         {pending ? "Entrando..." : "Entrar"}
       </button>
     </form>

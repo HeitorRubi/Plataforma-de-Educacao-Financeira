@@ -348,3 +348,20 @@ manter apenas a CSP parcial ou liberar scripts inline globalmente.
 com a `main`. A renderização dinâmica permite que o Next.js aplique o nonce aos
 scripts de cada resposta, enquanto HSTS e os demais cabeçalhos preservam a
 fronteira HTTPS do ambiente publicado.
+
+## D-028 — Sistema visual próprio sobre Tailwind CSS
+
+**DECISÃO:** manter o Tailwind CSS como base da interface, criar padrões visuais
+próprios e usar `lucide-react` somente para ícones funcionais.
+
+**MOTIVO:** o refinamento final precisa dar identidade ao projeto para a banca do
+TCC sem alterar funcionalidades nem introduzir a aparência padrão de uma
+biblioteca completa de componentes.
+
+**ALTERNATIVAS CONSIDERADAS:** migrar a interface para Material UI ou Ant Design,
+ou manter o conjunto anterior de classes sem uma linguagem visual compartilhada.
+
+**JUSTIFICATIVA:** preservar o Tailwind reduz risco de regressão no SSR, na CSP e
+nos fluxos já aprovados. Tokens, padrões de formulário, navegação e hierarquia
+compartilhados entregam consistência com menor dependência e permanecem simples
+de explicar durante a apresentação.
