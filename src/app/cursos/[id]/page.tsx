@@ -1,3 +1,4 @@
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -44,23 +45,24 @@ export default async function CoursePage({
   const displayName = user.profile.full_name ?? "Usuário";
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="app-shell">
       <AuthenticatedHeader fullName={displayName} role={user.profile.role} />
 
-      <main className="mx-auto max-w-4xl px-6 py-10">
+      <main className="mx-auto w-full max-w-4xl px-5 py-8 sm:px-6 sm:py-10">
         <Link
-          className="text-sm font-semibold text-emerald-800 hover:underline"
+          className="text-link text-sm"
           href="/cursos"
         >
+          <ArrowLeft aria-hidden="true" size={16} />
           Voltar para cursos
         </Link>
 
         <article className="mt-8">
           <CourseStatus isPublished={course.is_published} />
-          <h1 className="mt-4 text-3xl font-bold leading-tight sm:text-4xl">
+          <h1 className="page-title mt-4">
             {course.title}
           </h1>
-          <div className="mt-8 border-y border-neutral-200 py-8">
+          <div className="content-panel mt-8 p-6 sm:p-8">
             <h2 className="text-sm font-semibold text-neutral-500">Descrição</h2>
             <p className="mt-3 whitespace-pre-wrap text-lg leading-8 text-neutral-700">
               {course.description || "Sem descrição."}

@@ -1,3 +1,5 @@
+import { CircleCheckBig } from "lucide-react";
+
 import type { CourseProgress } from "@/lib/progress/types";
 
 type CourseProgressSummaryProps = {
@@ -8,10 +10,12 @@ export function CourseProgressSummary({
   progress,
 }: CourseProgressSummaryProps) {
   return (
-    <section className="border-b border-neutral-200 py-8">
+    <section className="content-panel mt-5 p-6 sm:p-7">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-sm font-semibold text-emerald-800">Seu progresso</p>
+          <p className="flex items-center gap-2 text-sm font-semibold text-emerald-800">
+            <CircleCheckBig aria-hidden="true" size={17} /> Seu progresso
+          </p>
           <h2 className="mt-1 text-xl font-semibold">
             {progress.completedLessons} de {progress.totalLessons}{" "}
             {progress.totalLessons === 1 ? "aula concluída" : "aulas concluídas"}
@@ -31,7 +35,7 @@ export function CourseProgressSummary({
         role="progressbar"
       >
         <div
-          className="h-full bg-emerald-700 transition-[width]"
+          className="h-full rounded-full bg-emerald-700 transition-[width]"
           style={{ width: `${progress.percentage}%` }}
         />
       </div>

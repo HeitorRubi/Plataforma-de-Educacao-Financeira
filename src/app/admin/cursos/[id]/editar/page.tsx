@@ -23,17 +23,17 @@ export default async function EditCoursePage({
   const displayName = user.profile.full_name ?? "Usuário";
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="app-shell">
       <AuthenticatedHeader fullName={displayName} role={user.profile.role} />
 
-      <main className="mx-auto max-w-3xl px-6 py-10">
+      <main className="mx-auto w-full max-w-3xl px-5 py-8 sm:px-6 sm:py-10">
         <AdminCoursesNav />
-        <div className="mt-8 border-b border-neutral-200 pb-7">
-          <p className="text-sm font-semibold text-emerald-800">Editar curso</p>
-          <h1 className="mt-2 text-3xl font-bold">{course.title}</h1>
+        <div className="page-intro mt-8">
+          <p className="eyebrow">Editar curso</p>
+          <h1 className="page-title">{course.title}</h1>
         </div>
 
-        <section className="pt-8">
+        <section className="content-panel mt-8 p-6 sm:p-8">
           <CourseForm course={course} />
         </section>
       </main>

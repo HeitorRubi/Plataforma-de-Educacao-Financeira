@@ -1,3 +1,4 @@
+import { BookOpen, Pencil, Plus } from "lucide-react";
 import Link from "next/link";
 
 import { ModuleOrderControls } from "@/components/modules/admin/module-order-controls";
@@ -10,31 +11,31 @@ type AdminModuleListProps = {
 
 export function AdminModuleList({ courseId, modules }: AdminModuleListProps) {
   return (
-    <section className="border-b border-neutral-200 py-8">
+    <section className="py-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold">Módulos</h2>
+          <h2 className="section-title">Módulos</h2>
           <p className="mt-1 text-sm text-neutral-600">
             {modules.length} {modules.length === 1 ? "módulo" : "módulos"}
           </p>
         </div>
         <Link
-          className="inline-flex h-10 items-center rounded-md bg-emerald-800 px-4 text-sm font-semibold text-white transition hover:bg-emerald-900"
+          className="button-primary h-10 px-4"
           href={`/admin/cursos/${courseId}/modulos/novo`}
         >
-          Criar módulo
+          <Plus aria-hidden="true" size={17} /> Criar módulo
         </Link>
       </div>
 
       {modules.length === 0 ? (
-        <div className="mt-6 border-y border-neutral-200 py-7">
+        <div className="content-panel mt-6 p-7">
           <p className="font-medium">Nenhum módulo cadastrado</p>
           <p className="mt-2 text-sm leading-6 text-neutral-600">
             Adicione o primeiro módulo para estruturar este curso.
           </p>
         </div>
       ) : (
-        <ol className="mt-6 divide-y divide-neutral-200 border-y border-neutral-200">
+        <ol className="content-panel mt-6 divide-y divide-neutral-200 px-5">
           {modules.map((module, index) => (
             <li
               className="grid gap-5 py-5 md:grid-cols-[minmax(0,1fr)_auto] md:items-center"
@@ -54,16 +55,16 @@ export function AdminModuleList({ courseId, modules }: AdminModuleListProps) {
 
               <div className="flex flex-wrap items-start gap-4">
                 <Link
-                  className="inline-flex h-9 items-center text-sm font-semibold text-emerald-800 hover:underline"
+                  className="button-ghost h-9 px-2"
                   href={`/admin/cursos/${courseId}/modulos/${module.id}`}
                 >
-                  Gerenciar aulas
+                  <BookOpen aria-hidden="true" size={16} /> Gerenciar aulas
                 </Link>
                 <Link
-                  className="inline-flex h-9 items-center text-sm font-semibold text-neutral-700 hover:text-neutral-950 hover:underline"
+                  className="button-ghost h-9 px-2 text-neutral-700 hover:bg-neutral-100 hover:text-neutral-950"
                   href={`/admin/cursos/${courseId}/modulos/${module.id}/editar`}
                 >
-                  Editar
+                  <Pencil aria-hidden="true" size={15} /> Editar
                 </Link>
                 <ModuleOrderControls
                   courseId={courseId}

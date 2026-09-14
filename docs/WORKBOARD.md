@@ -8,45 +8,100 @@ Este arquivo é o quadro operacional compartilhado dos dois desenvolvedores e do
 
 ```text
 branch integrada: main
-base funcional integrada observada: f7f6caf
-última etapa integrada: ETAPA 14 — TESTES FINAIS
-tarefa oficial atual: ETAPA 15 — DEPLOY
-branch de trabalho atual: deploy/vercel
+base funcional integrada observada: 1f17eb2
+última etapa integrada: ETAPA 15 — DEPLOY
+tarefa oficial atual: ETAPA 16 — CONGELAMENTO DO MVP
+branch de trabalho atual: release/mvp
 ```
 
 Antes de confiar nesse baseline, cada Codex deve comparar com o Git real.
 
-Em 14/09/2026, o Git confirmou a ETAPA 14 integrada em `origin/main` no commit
-`f7f6caf`. A branch `deploy/vercel` foi criada dessa base com autorização
-explícita do desenvolvedor principal.
+Em 14/09/2026, o Git confirmou a ETAPA 15 integrada em `origin/main` no commit
+`1f17eb2`. A branch `release/mvp` foi criada dessa base com autorização explícita
+do desenvolvedor principal.
 
-## 2. Estratégia da ETAPA 15
+## 2. Estratégia da ETAPA 16
 
-A ETAPA 15 será executada pelo desenvolvedor principal para formalizar e validar
-o deployment Vercel que já existe. O segundo desenvolvedor não possui tarefa
-ativa nesta área.
+A ETAPA 16 será executada pelo desenvolvedor principal para refinar a interface
+e congelar o MVP já publicado. O segundo desenvolvedor não possui tarefa ativa
+nesta área.
 
 ```text
-BUILD LOCAL APROVADO
+TAILWIND EXISTENTE
         ↓
-PREVIEW DEPLOYMENT
+SISTEMA VISUAL PRÓPRIO
         ↓
-SMOKE HTTP + FLUXOS AUTENTICADOS
+VALIDAÇÃO RESPONSIVA + REGRESSÃO
         ↓
-PRODUCTION DEPLOYMENT DOCUMENTADO
+CONGELAMENTO DO MVP
 ```
 
-Esta tarefa não autoriza funcionalidades novas, mudanças de schema,
-armazenamento de credenciais, novo provedor ou novo projeto de hospedagem.
+Esta tarefa não autoriza funcionalidades novas, mudanças de schema, alterações
+de regras de negócio, troca do Tailwind ou novo projeto de hospedagem.
 
 ---
 
 # DESENVOLVEDOR PRINCIPAL
 
-## Tarefa P-15 — Deploy na Vercel
+## Tarefa P-16 — Refinamento visual e congelamento do MVP
 
 **Responsável:** Desenvolvedor principal
 **Status:** PRONTO PARA REVISÃO
+**Branch:** `release/mvp`
+
+### Objetivo
+
+Dar identidade própria e acabamento profissional ao MVP para a apresentação do
+TCC, mantendo funcionalidades e contratos existentes.
+
+### Áreas reservadas ao desenvolvedor principal
+
+```text
+src/app/**/page.tsx
+src/app/**/loading.tsx
+src/app/**/error.tsx
+src/app/**/not-found.tsx
+src/app/globals.css
+src/components/**
+package.json
+package-lock.json
+docs/DECISIONS.md
+docs/ROADMAP.md
+docs/STATUS.md
+docs/WORKBOARD.md
+```
+
+### Implementação local atual
+
+- tokens e padrões visuais compartilhados sobre Tailwind CSS;
+- marca e navegação responsiva com ícones `lucide-react`;
+- páginas pública, de autenticação, cursos, aulas, chatbot e administração
+  refinadas;
+- formulários, listas, estados e leitura de conteúdo padronizados;
+- nenhuma funcionalidade, API, consulta ou migration alterada.
+
+### Validações executadas
+
+- `npm.cmd run test:all` aprovado;
+- `npm.cmd run lint` aprovado;
+- `npm.cmd run build` aprovado;
+- smoke HTTP aprovado em `http://localhost:3001`;
+- `git diff --check` aprovado com avisos LF/CRLF;
+- página inicial e login inspecionados em desktop e largura mobile;
+- conexão local com o Supabase confirmada;
+- novo visual e fluxos autenticados aprovados pelo desenvolvedor principal em
+  14/09/2026.
+
+### Pendente
+
+- versionar e integrar `release/mvp`.
+
+---
+
+## Tarefa P-15 — Deploy na Vercel
+
+**Responsável:** Desenvolvedor principal
+**Status:** INTEGRADO
 **Branch:** `deploy/vercel`
 
 ### Objetivo
@@ -107,8 +162,9 @@ docs/WORKBOARD.md
 
 ### Pendente
 
-- integrar a branch `deploy/vercel` na `main`;
-- repetir o smoke HTTP no domínio público após o Production Deployment.
+- nenhuma pendência da ETAPA 15;
+- integração registrada em `origin/main` no commit `1f17eb2`;
+- smoke HTTP público aprovado em `https://pla-financeiro.vercel.app`.
 
 ---
 

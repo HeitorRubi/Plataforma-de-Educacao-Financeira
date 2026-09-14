@@ -1,5 +1,6 @@
 "use client";
 
+import { Eye, EyeOff } from "lucide-react";
 import { useActionState } from "react";
 
 import { setLessonPublicationAction } from "@/app/admin/cursos/[id]/modulos/[moduleId]/aulas/actions";
@@ -33,10 +34,15 @@ export function LessonPublicationForm({
   return (
     <form action={formAction}>
       <button
-        className="h-11 rounded-md border border-neutral-300 bg-white px-5 font-semibold text-neutral-800 transition hover:border-neutral-400 disabled:cursor-not-allowed disabled:opacity-60"
+        className={isPublished ? "button-secondary" : "button-primary"}
         disabled={pending}
         type="submit"
       >
+        {isPublished ? (
+          <EyeOff aria-hidden="true" size={18} />
+        ) : (
+          <Eye aria-hidden="true" size={18} />
+        )}
         {pending
           ? "Salvando..."
           : isPublished
@@ -46,8 +52,8 @@ export function LessonPublicationForm({
       {state.message && (
         <p
           aria-live="polite"
-          className={`mt-3 text-sm ${
-            state.success ? "text-emerald-800" : "text-red-700"
+          className={`mt-3 ${
+            state.success ? "status-message-success" : "status-message-error"
           }`}
         >
           {state.message}

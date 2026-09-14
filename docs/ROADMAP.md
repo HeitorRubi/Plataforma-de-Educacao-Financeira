@@ -20,8 +20,8 @@ Este roadmap mantém o desenvolvimento incremental do projeto. Uma etapa não de
 - [x] ETAPA 12 — Histórico do chat
 - [x] ETAPA 13 — Revisão de segurança e RLS
 - [x] ETAPA 14 — Testes
-- [ ] ETAPA 15 — Deploy (em validação na branch `deploy/vercel`)
-- [ ] ETAPA 16 — Congelamento do MVP
+- [x] ETAPA 15 — Deploy
+- [ ] ETAPA 16 — Congelamento do MVP (aprovada na branch `release/mvp`, aguardando integração)
 
 O status observado detalhado está em `STATUS.md`.
 

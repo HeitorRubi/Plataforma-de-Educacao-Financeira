@@ -1,5 +1,6 @@
 "use client";
 
+import { Check } from "lucide-react";
 import { useActionState } from "react";
 
 import { completeLessonAction } from "@/app/cursos/[id]/modulos/[moduleId]/aulas/[lessonId]/actions";
@@ -26,7 +27,7 @@ export function LessonCompletionForm({
   const completed = isCompleted || state.success === true;
 
   return (
-    <section className="border-t border-neutral-200 py-8">
+    <section className="content-panel my-8 p-6">
       <p className="text-sm font-semibold text-emerald-800">
         Progresso da aula
       </p>
@@ -38,10 +39,11 @@ export function LessonCompletionForm({
         {!completed && (
           <form action={formAction}>
             <button
-              className="h-11 rounded-md bg-emerald-800 px-5 font-semibold text-white transition hover:bg-emerald-900 disabled:cursor-not-allowed disabled:opacity-60"
+              className="button-primary"
               disabled={pending}
               type="submit"
             >
+              <Check aria-hidden="true" size={18} />
               {pending ? "Concluindo..." : "Concluir aula"}
             </button>
           </form>
@@ -51,8 +53,8 @@ export function LessonCompletionForm({
       {state.message && (
         <p
           aria-live="polite"
-          className={`mt-3 text-sm ${
-            state.success ? "text-emerald-800" : "text-red-700"
+          className={`mt-3 ${
+            state.success ? "status-message-success" : "status-message-error"
           }`}
         >
           {state.message}

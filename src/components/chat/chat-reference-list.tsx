@@ -1,3 +1,4 @@
+import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 
 import type { RagReference } from "@/lib/rag/types";
@@ -50,10 +51,10 @@ function ReferenceItem({ reference }: { reference: RagReference }) {
       </div>
 
       <Link
-        className="text-sm font-semibold text-emerald-800 hover:underline sm:pt-0.5"
+        className="text-link text-sm sm:pt-0.5"
         href={reference.lessonUrl}
       >
-        Abrir aula
+        Abrir aula <ExternalLink aria-hidden="true" size={14} />
       </Link>
     </article>
   );

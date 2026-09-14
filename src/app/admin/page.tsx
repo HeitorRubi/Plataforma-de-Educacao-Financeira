@@ -1,3 +1,4 @@
+import { ArrowRight, Plus } from "lucide-react";
 import Link from "next/link";
 
 import { AuthenticatedHeader } from "@/components/auth/authenticated-header";
@@ -32,26 +33,26 @@ export default async function AdminPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="app-shell">
       <AuthenticatedHeader fullName={displayName} role={user.profile.role} />
 
-      <main className="mx-auto max-w-6xl px-6 py-10">
-        <div className="flex flex-wrap items-end justify-between gap-5 border-b border-neutral-200 pb-7">
+      <main className="page-container">
+        <div className="page-intro flex flex-wrap items-end justify-between gap-5">
           <div>
-            <p className="text-sm font-semibold text-emerald-800">
+            <p className="eyebrow">
               Administração
             </p>
-            <h1 className="mt-2 text-3xl font-bold">Painel de conteúdo</h1>
-            <p className="mt-3 max-w-2xl leading-7 text-neutral-600">
+            <h1 className="page-title">Painel de conteúdo</h1>
+            <p className="page-description">
               Acompanhe a estrutura publicada e acesse o gerenciamento de cada
               curso.
             </p>
           </div>
           <Link
-            className="inline-flex h-11 items-center rounded-md bg-emerald-800 px-5 font-semibold text-white transition hover:bg-emerald-900"
+            className="button-primary"
             href="/admin/cursos/novo"
           >
-            Criar curso
+            <Plus aria-hidden="true" size={18} /> Criar curso
           </Link>
         </div>
 
@@ -59,11 +60,11 @@ export default async function AdminPage() {
           <AdminCoursesNav />
         </div>
 
-        <dl className="mt-8 grid grid-cols-2 border-y border-neutral-200 sm:grid-cols-3 lg:grid-cols-5">
+        <dl className="content-panel mt-8 grid grid-cols-2 overflow-hidden sm:grid-cols-3 lg:grid-cols-5">
           {summaryItems.map((item, index) => (
             <div
-              className={`py-5 ${
-                index > 0 ? "border-l border-neutral-200 pl-5" : "pr-5"
+              className={`p-5 ${
+                index > 0 ? "border-l border-neutral-200" : ""
               }`}
               key={item.label}
             >
@@ -78,31 +79,31 @@ export default async function AdminPage() {
         <section className="mt-10">
           <div className="flex flex-wrap items-end justify-between gap-4 border-b border-neutral-200 pb-4">
             <div>
-              <h2 className="text-xl font-bold">Conteúdo por curso</h2>
+              <h2 className="section-title">Conteúdo por curso</h2>
               <p className="mt-1 text-sm text-neutral-600">
                 Módulos, aulas e fontes são gerenciados dentro de cada curso.
               </p>
             </div>
             <Link
-              className="text-sm font-semibold text-emerald-800 hover:underline"
+              className="text-link text-sm"
               href="/admin/cursos"
             >
-              Ver todos os cursos
+              Ver todos os cursos <ArrowRight aria-hidden="true" size={15} />
             </Link>
           </div>
 
           {overview.courses.length === 0 ? (
-            <div className="border-b border-neutral-200 py-10">
+            <div className="content-panel mt-6 p-8">
               <h3 className="font-semibold">Nenhum curso cadastrado</h3>
               <p className="mt-2 text-neutral-600">
                 Crie um curso para iniciar a estrutura de conteúdo.
               </p>
             </div>
           ) : (
-            <div>
+            <div className="content-panel mt-6 divide-y divide-neutral-200 px-5">
               {overview.courses.map((course) => (
                 <article
-                  className="grid gap-5 border-b border-neutral-200 py-6 md:grid-cols-[minmax(0,1fr)_auto_auto] md:items-center"
+                  className="grid gap-5 py-6 md:grid-cols-[minmax(0,1fr)_auto_auto] md:items-center"
                   key={course.id}
                 >
                   <div className="min-w-0">
@@ -133,10 +134,10 @@ export default async function AdminPage() {
                   </dl>
 
                   <Link
-                    className="text-sm font-semibold text-emerald-800 hover:underline md:text-right"
+                    className="text-link text-sm md:text-right"
                     href={`/admin/cursos/${course.id}`}
                   >
-                    Gerenciar conteúdo
+                    Gerenciar conteúdo <ArrowRight aria-hidden="true" size={15} />
                   </Link>
                 </article>
               ))}

@@ -1,3 +1,4 @@
+import { ArrowRight, BookOpen } from "lucide-react";
 import Link from "next/link";
 
 import { AuthenticatedHeader } from "@/components/auth/authenticated-header";
@@ -13,20 +14,25 @@ export default async function CoursesPage() {
   const displayName = user.profile.full_name ?? "Usuário";
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="app-shell">
       <AuthenticatedHeader fullName={displayName} role={user.profile.role} />
 
-      <main className="mx-auto max-w-6xl px-6 py-10">
-        <div className="max-w-3xl border-b border-neutral-200 pb-8">
-          <p className="text-sm font-semibold text-emerald-800">Catálogo</p>
-          <h1 className="mt-2 text-3xl font-bold">Cursos disponíveis</h1>
-          <p className="mt-3 leading-7 text-neutral-600">
+      <main className="page-container">
+        <div className="page-intro max-w-3xl">
+          <p className="eyebrow">Catálogo</p>
+          <h1 className="page-title">Cursos disponíveis</h1>
+          <p className="page-description">
             Consulte os cursos publicados pela equipe da plataforma.
           </p>
         </div>
 
         {courses.length === 0 ? (
-          <section className="mt-10 border-y border-neutral-200 py-10">
+          <section className="content-panel mt-8 p-8 text-center">
+            <BookOpen
+              aria-hidden="true"
+              className="mx-auto text-neutral-400"
+              size={28}
+            />
             <h2 className="text-lg font-semibold">Nenhum curso publicado</h2>
             <p className="mt-2 text-neutral-600">
               O catálogo ainda não possui cursos disponíveis.
@@ -36,19 +42,28 @@ export default async function CoursesPage() {
           <div className="mt-8 grid gap-5 md:grid-cols-2">
             {courses.map((course) => (
               <article
-                className="flex min-h-64 flex-col rounded-md border border-neutral-200 bg-white p-6"
+                className="group content-panel flex min-h-64 flex-col overflow-hidden p-6 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md"
                 key={course.id}
               >
+                <span
+                  aria-hidden="true"
+                  className="-mx-6 -mt-6 mb-6 h-1 bg-emerald-700"
+                />
                 <CourseStatus isPublished={course.is_published} />
                 <h2 className="mt-4 text-xl font-bold leading-7">{course.title}</h2>
                 <p className="mt-3 line-clamp-4 leading-7 text-neutral-600">
                   {course.description || "Sem descrição."}
                 </p>
                 <Link
-                  className="mt-auto pt-6 text-sm font-semibold text-emerald-800 hover:underline"
+                  className="mt-auto flex items-center gap-2 pt-6 text-sm font-bold text-emerald-800"
                   href={`/cursos/${course.id}`}
                 >
                   Consultar curso
+                  <ArrowRight
+                    aria-hidden="true"
+                    className="transition group-hover:translate-x-1"
+                    size={16}
+                  />
                 </Link>
               </article>
             ))}

@@ -1,3 +1,4 @@
+import { Eye, Pencil, Plus } from "lucide-react";
 import Link from "next/link";
 
 import { LessonOrderControls } from "@/components/lessons/admin/lesson-order-controls";
@@ -21,28 +22,28 @@ export function AdminLessonList({
     <section className="mt-8">
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-200 pb-6">
         <div>
-          <h2 className="text-xl font-semibold">Aulas</h2>
+          <h2 className="section-title">Aulas</h2>
           <p className="mt-1 text-sm text-neutral-600">
             {lessons.length} {lessons.length === 1 ? "aula" : "aulas"}
           </p>
         </div>
         <Link
-          className="inline-flex h-10 items-center rounded-md bg-emerald-800 px-4 text-sm font-semibold text-white transition hover:bg-emerald-900"
+          className="button-primary h-10 px-4"
           href={`${basePath}/aulas/nova`}
         >
-          Criar aula
+          <Plus aria-hidden="true" size={17} /> Criar aula
         </Link>
       </div>
 
       {lessons.length === 0 ? (
-        <div className="border-b border-neutral-200 py-8">
+        <div className="content-panel mt-6 p-7">
           <p className="font-medium">Nenhuma aula cadastrada</p>
           <p className="mt-2 text-sm leading-6 text-neutral-600">
             Adicione a primeira aula textual deste módulo.
           </p>
         </div>
       ) : (
-        <ol className="divide-y divide-neutral-200 border-b border-neutral-200">
+        <ol className="content-panel mt-6 divide-y divide-neutral-200 px-5">
           {lessons.map((lesson, index) => (
             <li
               className="grid gap-5 py-5 md:grid-cols-[minmax(0,1fr)_auto] md:items-center"
@@ -62,16 +63,16 @@ export function AdminLessonList({
 
               <div className="flex flex-wrap items-start gap-4">
                 <Link
-                  className="inline-flex h-9 items-center text-sm font-semibold text-emerald-800 hover:underline"
+                  className="button-ghost h-9 px-2"
                   href={`${basePath}/aulas/${lesson.id}`}
                 >
-                  Consultar
+                  <Eye aria-hidden="true" size={16} /> Consultar
                 </Link>
                 <Link
-                  className="inline-flex h-9 items-center text-sm font-semibold text-neutral-700 hover:text-neutral-950 hover:underline"
+                  className="button-ghost h-9 px-2 text-neutral-700 hover:bg-neutral-100 hover:text-neutral-950"
                   href={`${basePath}/aulas/${lesson.id}/editar`}
                 >
-                  Editar
+                  <Pencil aria-hidden="true" size={15} /> Editar
                 </Link>
                 <LessonOrderControls
                   courseId={courseId}

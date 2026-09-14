@@ -1,3 +1,4 @@
+import { ArrowLeft, Pencil } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -28,25 +29,25 @@ export default async function AdminModulePage({
   const displayName = user.profile.full_name ?? "Usuário";
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="app-shell">
       <AuthenticatedHeader fullName={displayName} role={user.profile.role} />
 
-      <main className="mx-auto max-w-5xl px-6 py-10">
+      <main className="mx-auto w-full max-w-5xl px-5 py-8 sm:px-6 sm:py-10">
         <AdminCoursesNav />
 
-        <div className="mt-8 border-b border-neutral-200 pb-8">
+        <div className="page-intro mt-8">
           <Link
-            className="text-sm font-semibold text-emerald-800 hover:underline"
+            className="text-link text-sm"
             href={`/admin/cursos/${course.id}`}
           >
-            Voltar para o curso
+            <ArrowLeft aria-hidden="true" size={16} /> Voltar para o curso
           </Link>
           <div className="mt-6 flex flex-wrap items-start justify-between gap-5">
             <div className="max-w-3xl">
-              <p className="text-sm font-semibold text-emerald-800">
+              <p className="eyebrow">
                 Módulo {module.position}
               </p>
-              <h1 className="mt-2 text-3xl font-bold leading-tight">
+              <h1 className="page-title">
                 {module.title}
               </h1>
               {module.description && (
@@ -56,10 +57,10 @@ export default async function AdminModulePage({
               )}
             </div>
             <Link
-              className="inline-flex h-11 items-center rounded-md border border-neutral-300 bg-white px-5 font-semibold text-neutral-800 transition hover:border-neutral-400"
+              className="button-secondary"
               href={`/admin/cursos/${course.id}/modulos/${module.id}/editar`}
             >
-              Editar módulo
+              <Pencil aria-hidden="true" size={17} /> Editar módulo
             </Link>
           </div>
           <p className="mt-5 text-sm text-neutral-500">Curso: {course.title}</p>
